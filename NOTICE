@@ -1,0 +1,16 @@
+ICEWS DATA NOTICE
+=================
+
+The files under data/icews/ are derived from the Integrated Crisis Early Warning
+System (ICEWS) event data, doi:10.7910/DVN/28075, version 37.0, published by the
+Harvard Dataverse.
+
+The ICEWS dataset is made available for research and teaching purposes only.
+Redistribution is not permitted. Do not publish, mirror, or commit
+data/icews/ (raw or derived parquet) to any public repository or service.
+
+Derived aggregates that do not permit reconstruction of individual records may
+be shared subject to the same terms; when in doubt, treat them as restricted.
+
+UNGA votes (doi:10.7910/DVN/7UBUUI) and ideal points (doi:10.7910/DVN/LEJUQZ)
+are subject to their Dataverse record terms. Wikidata facts are CC0.

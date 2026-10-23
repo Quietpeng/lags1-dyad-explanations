@@ -1,0 +1,3 @@
+model,p1_within_auc,strict_mean,strict_pooled,n_eligible
+conditional_logit,0.556141,0.5597090047936037,0.575943045223248,3310
+within_ols_lpm,0.538617,0.5382287992159321,0.5558997615184197,3310

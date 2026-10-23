@@ -1,0 +1,5 @@
+spec,C,select_log_loss
+logistic49_S1,1.0,0.233956
+logistic29_S1,0.3,0.23655
+logistic49_S2,1.0,0.233956
+logistic29_S2,0.3,0.23635

@@ -1,0 +1,507 @@
+{
+ "schema": "q2-worldline-preview/1",
+ "status": "illustrative_preview_not_validated",
+ "disclaimer": "ILLUSTRATIVE PREVIEW - NOT VALIDATED; NO MULTI-STEP ACCURACY CLAIM. Step 1 uses the frozen one-step model. Step 2 uses a state-lag-only approximation with static structural features frozen at the anchor. Actor states are induced by the sampled dyad subset, not the full network. The sample is selected for visibility, not random. No test labels were read.",
+ "no_multi_step_accuracy_claim": true,
+ "no_node_level_forecast_claim": true,
+ "no_test_labels_read": true,
+ "no_test_tuning": true,
+ "no_synthetic_or_t1": true,
+ "labels_used_for_scoring": false,
+ "accuracy_metrics": null,
+ "figure_note": "figure shows 2016-06 and 2017-06; the trace covers all four anchors",
+ "period": {
+  "name": "inner_validation_2016_17",
+  "anchors": [
+   "2016-06",
+   "2016-12",
+   "2017-06",
+   "2017-09"
+  ],
+  "t_idx": [
+   257,
+   263,
+   269,
+   272
+  ],
+  "note": "2016-01..2017-11 only; t=275 (2017-12) is embargoed"
+ },
+ "model": {
+  "name": "frozen Sprint B logistic49",
+  "source": "results/framework_pilot/stability/cache/coefs.npz",
+  "sha256": "fbc5516dec7f65b77a16db66c77caf4126f3f2c9e6ecd2641fbbd6cc6b6eda6c",
+  "n_features": 49,
+  "temperature": 1.0,
+  "feature_order": [
+   "active",
+   "log_ev",
+   "a1",
+   "a2",
+   "a3",
+   "a4",
+   "a5",
+   "a6",
+   "le1",
+   "le2",
+   "le3",
+   "am3",
+   "am6",
+   "am12",
+   "les3",
+   "les6",
+   "les12",
+   "since_act",
+   "since_first",
+   "log_n_act",
+   "rev_act",
+   "rev_am3",
+   "src_ev",
+   "tgt_ev",
+   "t_yr",
+   "mo_sin",
+   "mo_cos",
+   "g_deg_s",
+   "g_deg_t",
+   "g_wdeg_s",
+   "g_wdeg_t",
+   "g_deg12_s",
+   "g_deg12_t",
+   "g_eig_s",
+   "g_eig_t",
+   "g_pr_s",
+   "g_pr_t",
+   "g_cn",
+   "g_jaccard",
+   "g_aa",
+   "g_ra",
+   "g_two_hop",
+   "g_cn12",
+   "g_aa12",
+   "g_ra12",
+   "g_nra_s",
+   "g_nra_t",
+   "br",
+   "seen_tr"
+  ],
+  "scaler": {
+   "base": "DuckDB avg/stddev_pop on features_dyad.parquet split=train",
+   "graph": "graph_meta.json train_mean/train_std",
+   "br": "train panel, t_idx<>239, train-row base-rate moments",
+   "seen_tr": "constant 1 on train"
+  }
+ },
+ "sample_selection": {
+  "rule": "n_sources source actors at evenly spaced ranks of the active-source distribution; per source, up to n_active currently active dyads (mostly closest to p=0.5, plus one persistent high-p dyad) and n_inactive currently inactive high-p dyads",
+  "n_sources": 5,
+  "n_active": 3,
+  "n_inactive": 1,
+  "random": false,
+  "use": "visibility only; no prevalence or accuracy inference"
+ },
+ "step_semantics": {
+  "step0": "observed anchor state",
+  "step1": "sampled from the frozen one-step model p(t+1)",
+  "step2": "sampled from a state-lag-only approximation p(t+2); active/lag/rolling/history/calendar updated from the sampled state; graph, reverse-dyad, actor-ego, br/seen_tr frozen at anchor; event magnitude fixed at anchor value"
+ },
+ "anchors": [
+  {
+   "anchor": "2016-06",
+   "t_idx": 257,
+   "dates": [
+    "2016-06",
+    "2016-07",
+    "2016-08"
+   ],
+   "n_dyads": 20,
+   "n_sources": 5,
+   "n_targets": 15,
+   "sample_roles": {
+    "active_boundary": 9,
+    "inactive_high_p1": 5,
+    "active_persistent": 4,
+    "fill_high_p1": 2
+   },
+   "observed_active": 13,
+   "sampled_active_step1": 11,
+   "sampled_active_step2": 12,
+   "p1_summary": {
+    "mean": 0.559334,
+    "median": 0.513419,
+    "min": 0.085241,
+    "max": 0.997812
+   },
+   "p2_summary": {
+    "mean": 0.551022,
+    "median": 0.502358,
+    "min": 0.082929,
+    "max": 0.997479
+   },
+   "dyad_transitions": {
+    "step1": {
+     "00": 4,
+     "01": 3,
+     "10": 5,
+     "11": 8
+    },
+    "step2": {
+     "00": 6,
+     "01": 3,
+     "10": 2,
+     "11": 9
+    }
+   },
+   "node_transitions": {
+    "source": {
+     "step1": {
+      "00": 0,
+      "01": 0,
+      "10": 1,
+      "11": 4
+     },
+     "step2": {
+      "00": 0,
+      "01": 1,
+      "10": 1,
+      "11": 3
+     }
+    },
+    "target": {
+     "step1": {
+      "00": 1,
+      "01": 2,
+      "10": 5,
+      "11": 7
+     },
+     "step2": {
+      "00": 4,
+      "01": 2,
+      "10": 1,
+      "11": 8
+     }
+    }
+   },
+   "state_paths": {
+    "111": 6,
+    "100": 4,
+    "011": 3,
+    "110": 2,
+    "000": 2,
+    "101": 1,
+    "001": 2
+   }
+  },
+  {
+   "anchor": "2016-12",
+   "t_idx": 263,
+   "dates": [
+    "2016-12",
+    "2017-01",
+    "2017-02"
+   ],
+   "n_dyads": 20,
+   "n_sources": 5,
+   "n_targets": 16,
+   "sample_roles": {
+    "active_boundary": 9,
+    "inactive_high_p1": 5,
+    "active_persistent": 3,
+    "fill_high_p1": 3
+   },
+   "observed_active": 12,
+   "sampled_active_step1": 11,
+   "sampled_active_step2": 10,
+   "p1_summary": {
+    "mean": 0.491151,
+    "median": 0.526125,
+    "min": 0.054287,
+    "max": 0.998796
+   },
+   "p2_summary": {
+    "mean": 0.492233,
+    "median": 0.493726,
+    "min": 0.058378,
+    "max": 0.998739
+   },
+   "dyad_transitions": {
+    "step1": {
+     "00": 4,
+     "01": 4,
+     "10": 5,
+     "11": 7
+    },
+    "step2": {
+     "00": 6,
+     "01": 3,
+     "10": 4,
+     "11": 7
+    }
+   },
+   "node_transitions": {
+    "source": {
+     "step1": {
+      "00": 0,
+      "01": 0,
+      "10": 1,
+      "11": 4
+     },
+     "step2": {
+      "00": 1,
+      "01": 0,
+      "10": 0,
+      "11": 4
+     }
+    },
+    "target": {
+     "step1": {
+      "00": 3,
+      "01": 2,
+      "10": 5,
+      "11": 6
+     },
+     "step2": {
+      "00": 5,
+      "01": 3,
+      "10": 3,
+      "11": 5
+     }
+    }
+   },
+   "state_paths": {
+    "111": 3,
+    "110": 4,
+    "100": 3,
+    "011": 4,
+    "101": 2,
+    "001": 1,
+    "000": 3
+   }
+  },
+  {
+   "anchor": "2017-06",
+   "t_idx": 269,
+   "dates": [
+    "2017-06",
+    "2017-07",
+    "2017-08"
+   ],
+   "n_dyads": 20,
+   "n_sources": 5,
+   "n_targets": 15,
+   "sample_roles": {
+    "active_boundary": 9,
+    "inactive_high_p1": 5,
+    "active_persistent": 3,
+    "fill_high_p1": 3
+   },
+   "observed_active": 12,
+   "sampled_active_step1": 12,
+   "sampled_active_step2": 9,
+   "p1_summary": {
+    "mean": 0.462816,
+    "median": 0.480677,
+    "min": 0.018126,
+    "max": 0.998599
+   },
+   "p2_summary": {
+    "mean": 0.479107,
+    "median": 0.489783,
+    "min": 0.018144,
+    "max": 0.998611
+   },
+   "dyad_transitions": {
+    "step1": {
+     "00": 4,
+     "01": 4,
+     "10": 4,
+     "11": 8
+    },
+    "step2": {
+     "00": 8,
+     "01": 0,
+     "10": 3,
+     "11": 9
+    }
+   },
+   "node_transitions": {
+    "source": {
+     "step1": {
+      "00": 0,
+      "01": 0,
+      "10": 1,
+      "11": 4
+     },
+     "step2": {
+      "00": 1,
+      "01": 0,
+      "10": 0,
+      "11": 4
+     }
+    },
+    "target": {
+     "step1": {
+      "00": 2,
+      "01": 4,
+      "10": 2,
+      "11": 7
+     },
+     "step2": {
+      "00": 4,
+      "01": 0,
+      "10": 3,
+      "11": 8
+     }
+    }
+   },
+   "state_paths": {
+    "111": 5,
+    "100": 4,
+    "011": 4,
+    "110": 3,
+    "000": 4
+   }
+  },
+  {
+   "anchor": "2017-09",
+   "t_idx": 272,
+   "dates": [
+    "2017-09",
+    "2017-10",
+    "2017-11"
+   ],
+   "n_dyads": 20,
+   "n_sources": 5,
+   "n_targets": 17,
+   "sample_roles": {
+    "active_boundary": 9,
+    "inactive_high_p1": 5,
+    "active_persistent": 4,
+    "fill_high_p1": 2
+   },
+   "observed_active": 13,
+   "sampled_active_step1": 11,
+   "sampled_active_step2": 11,
+   "p1_summary": {
+    "mean": 0.531539,
+    "median": 0.524081,
+    "min": 0.044234,
+    "max": 0.998445
+   },
+   "p2_summary": {
+    "mean": 0.538428,
+    "median": 0.50919,
+    "min": 0.044277,
+    "max": 0.998393
+   },
+   "dyad_transitions": {
+    "step1": {
+     "00": 4,
+     "01": 3,
+     "10": 5,
+     "11": 8
+    },
+    "step2": {
+     "00": 5,
+     "01": 4,
+     "10": 4,
+     "11": 7
+    }
+   },
+   "node_transitions": {
+    "source": {
+     "step1": {
+      "00": 0,
+      "01": 0,
+      "10": 0,
+      "11": 5
+     },
+     "step2": {
+      "00": 0,
+      "01": 0,
+      "10": 1,
+      "11": 4
+     }
+    },
+    "target": {
+     "step1": {
+      "00": 3,
+      "01": 3,
+      "10": 5,
+      "11": 6
+     },
+     "step2": {
+      "00": 4,
+      "01": 4,
+      "10": 4,
+      "11": 5
+     }
+    }
+   },
+   "state_paths": {
+    "111": 5,
+    "101": 3,
+    "001": 1,
+    "100": 2,
+    "010": 1,
+    "110": 3,
+    "011": 2,
+    "000": 3
+   }
+  }
+ ],
+ "aggregate_transitions": {
+  "dyad": {
+   "step1": {
+    "00": 16,
+    "01": 14,
+    "10": 19,
+    "11": 31
+   },
+   "step2": {
+    "00": 25,
+    "01": 10,
+    "10": 13,
+    "11": 32
+   }
+  },
+  "source": {
+   "step1": {
+    "00": 0,
+    "01": 0,
+    "10": 3,
+    "11": 17
+   },
+   "step2": {
+    "00": 2,
+    "01": 1,
+    "10": 2,
+    "11": 15
+   }
+  },
+  "target": {
+   "step1": {
+    "00": 9,
+    "01": 11,
+    "10": 17,
+    "11": 26
+   },
+   "step2": {
+    "00": 17,
+    "01": 9,
+    "10": 11,
+    "11": 26
+   }
+  }
+ },
+ "files": {
+  "figure_png": "worldline_preview.png",
+  "figure_pdf": "worldline_preview.pdf",
+  "trace_csv": "worldline_trace.csv",
+  "node_trace_csv": "node_trace.csv"
+ },
+ "row_counts": {
+  "trace": 240,
+  "node_trace": 249
+ },
+ "runtime_seconds": 10.46,
+ "created_utc": "2026-10-23T07:03:05+00:00"
+}

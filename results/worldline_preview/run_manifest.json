@@ -1,0 +1,35 @@
+{
+ "script": "experiments/worldline_preview.py",
+ "argv": [
+  "experiments/worldline_preview.py",
+  "--threads",
+  "1"
+ ],
+ "created_utc": "2026-10-23T07:03:05+00:00",
+ "host": {
+  "platform": "Linux-6.12.74+deb13+1-amd64-x86_64-with-glibc2.41",
+  "python": "3.13.5",
+  "numpy": "2.5.4",
+  "pandas": "2.3.3",
+  "duckdb": "1.5.6",
+  "sklearn": "1.9.1",
+  "matplotlib": "3.11.2",
+  "cpu_count": 4
+ },
+ "inputs": {
+  "features_dyad.parquet": "394b005bb22fa51e0c543d835ef73dffc142593e37815b212190ce8916f9e388",
+  "panel_dyad.parquet": "8fb9fa0168093cab751a2a1e736d889be0c27b57c2c28b8d0747bc4470411067",
+  "graph_val.npy": "c74fc8721209b22627e227d2b284f0e585e2519c9a61370636e8b5e2c4a45083",
+  "graph_meta.json": "bc74b056ca193ebfea4a1b69d42a8290e01b67989ea7f02dba09bd4c55d08a58",
+  "actors.parquet": "a934d22dc688ff64ef50c768dea88582cfe49ba8945b26d24b222b994d93af62",
+  "coefs.npz": "fbc5516dec7f65b77a16db66c77caf4126f3f2c9e6ecd2641fbbd6cc6b6eda6c"
+ },
+ "outputs": {
+  "worldline_preview.png": "9354807b9a9658b0595d9bbe378964f179f51589425c53c778402814b984c4d6",
+  "worldline_preview.pdf": "6584b35898bd1b2e2a41b6353f86c378e1ce9d5f50b0f02c6dd5e423145c7a90",
+  "worldline_trace.csv": "80dc5b7bb14a5c0eb649ae2a1eacdaa022c2fdcd8fd0c7b4ee07df1345f7140b",
+  "node_trace.csv": "c8800b7166a3cfc58b94173acc1bd12d9215437e6a7bfba6da1d165ca1bb9ffe",
+  "worldline_trace.json": "3d545a3ced728d52c948bdc9946b33d562105e2b61d2d1a4bcd51bfefc55b099"
+ },
+ "runtime_seconds": 11.48
+}

@@ -1,0 +1,20 @@
+family,comparison,p,q,reject_0.05
+A_primary_ll,logistic49_temp vs per_dyad_markov,2.099694839122659e-90,4.199389678245318e-90,True
+A_primary_ll,logistic49_temp vs dyad_base_rate,8.78994569378105e-24,1.1719927591708068e-23,True
+A_primary_ll,logistic49_temp vs markov_recency,1.0954763899961161e-10,1.0954763899961161e-10,True
+A_primary_ll,logistic49_temp vs global_transition,2.099694839122659e-90,4.199389678245318e-90,True
+B_primary_other_metrics,d_ece vs per_dyad_markov,1.4052053453422457e-07,1.4052053453422457e-07,True
+B_primary_other_metrics,d_auc vs per_dyad_markov,1.5958831306693975e-116,2.393824696004096e-116,True
+B_primary_other_metrics,d_ap vs per_dyad_markov,0.0,0.0,True
+C_capacity_feature,hgb49 vs per_dyad_markov,1.9226768686833967e-18,2.884015303025095e-18,True
+C_capacity_feature,logistic29_temp vs per_dyad_markov,1.4316420487277664e-50,4.294926146183299e-50,True
+C_capacity_feature,hgb49 vs logistic49_temperature,0.0010660263580776798,0.0010660263580776798,True
+D_group_attribution,calendar,0.0,0.0,True
+D_group_attribution,dyad_current,0.0,0.0,True
+D_group_attribution,dyad_lags,0.0,0.0,True
+D_group_attribution,dyad_rolling,0.0,0.0,True
+D_group_attribution,dyad_history,0.0,0.0,True
+D_group_attribution,reverse_dyad,0.0,0.0,True
+D_group_attribution,actor_ego,0.0,0.0,True
+D_group_attribution,train_stats,0.0,0.0,True
+D_group_attribution,graph,0.0,0.0,True

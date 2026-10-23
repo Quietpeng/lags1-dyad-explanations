@@ -1,0 +1,10 @@
+groups,n_features,C,log_loss,ece,auc,ap
+['calendar'],3,0.1,0.348501,0.056787,0.505364,0.109184
+"['calendar', 'dyad_current']",5,0.1,0.260659,0.028954,0.738963,0.488117
+"['calendar', 'dyad_current', 'dyad_lags']",14,0.1,0.216621,0.018384,0.862096,0.634617
+"['calendar', 'dyad_current', 'dyad_lags', 'dyad_rolling']",20,1.0,0.206805,0.009602,0.881438,0.65144
+"['calendar', 'dyad_current', 'dyad_lags', 'dyad_rolling', 'dyad_history']",23,0.1,0.197393,0.012699,0.906372,0.670218
+"['calendar', 'dyad_current', 'dyad_lags', 'dyad_rolling', 'dyad_history', 'reverse_dyad']",25,1.0,0.197023,0.012296,0.906679,0.67094
+"['calendar', 'dyad_current', 'dyad_lags', 'dyad_rolling', 'dyad_history', 'reverse_dyad', 'actor_ego']",27,0.1,0.196991,0.015461,0.908137,0.672815
+"['calendar', 'dyad_current', 'dyad_lags', 'dyad_rolling', 'dyad_history', 'reverse_dyad', 'actor_ego', 'train_stats']",29,0.1,0.20487,0.024056,0.908305,0.671814
+"['calendar', 'dyad_current', 'dyad_lags', 'dyad_rolling', 'dyad_history', 'reverse_dyad', 'actor_ego', 'train_stats', 'graph']",49,0.1,0.21681,0.040875,0.910094,0.67158

@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this framework, please cite the manuscript and the archived release."
+title: "Actor-level explanations of dyadic event forecasts: an open-source framework with stability auditing"
+abstract: >-
+  A reproducible framework for binary dyad-month political event prediction with
+  exact additive source- and target-actor explanations and a stability audit.
+  The confirmatory evaluation uses a pre-registered unit-fresh 20% dyad holdout.
+authors:
+  - name: "LAGS-1 authors"
+version: "0.1.0"
+date-released: "2026-10-23"
+license: MIT
+keywords:
+  - dyadic event forecasting
+  - ICEWS
+  - explainability
+  - stability audit
+  - calibration
+  - reproducibility
+repository-code: "https://github.com/Quietpeng/lags1-dyad-explanations"

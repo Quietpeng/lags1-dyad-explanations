@@ -1,0 +1,907 @@
+{
+ "sprint": "B",
+ "task": "exact additive actor explanations + stability audit",
+ "status": "provisional_no_fresh_holdout",
+ "protocol": {
+  "embargo": {
+   "train": 239,
+   "select": 251,
+   "inner": 275,
+   "retro": 335
+  },
+  "periods": [
+   {
+    "name": "inner_2016_17",
+    "lo": 252,
+    "hi": 274,
+    "label": "2016-01..2017-11 (inner validation, embargoed)",
+    "status": "inner_validation"
+   },
+   {
+    "name": "retro_2018_22",
+    "lo": 276,
+    "hi": 334,
+    "label": "2018-01..2022-11 (burned retrospective, secondary)",
+    "status": "burned_retrospective"
+   },
+   {
+    "name": "covid_2020_21",
+    "lo": 300,
+    "hi": 323,
+    "label": "2020-01..2021-12 (COVID sub-window, secondary)",
+    "status": "burned_retrospective"
+   }
+  ],
+  "train_rows": 6344160,
+  "train_rows_used": 6317726,
+  "select_rows": 290774,
+  "n_actors": 196,
+  "n_features": 49,
+  "n_seed_replicates": 5,
+  "seed_semantics": "dyad-cluster bootstrap refits with fixed C; the lbfgs point fit is deterministic, so optimizer seed noise is exactly zero"
+ },
+ "model": {
+  "name": "logistic_full",
+  "C": 1.0,
+  "temperature_T": 1.0,
+  "select_log_loss": 0.233498,
+  "features": [
+   "active",
+   "log_ev",
+   "a1",
+   "a2",
+   "a3",
+   "a4",
+   "a5",
+   "a6",
+   "le1",
+   "le2",
+   "le3",
+   "am3",
+   "am6",
+   "am12",
+   "les3",
+   "les6",
+   "les12",
+   "since_act",
+   "since_first",
+   "log_n_act",
+   "rev_act",
+   "rev_am3",
+   "src_ev",
+   "tgt_ev",
+   "t_yr",
+   "mo_sin",
+   "mo_cos",
+   "g_deg_s",
+   "g_deg_t",
+   "g_wdeg_s",
+   "g_wdeg_t",
+   "g_deg12_s",
+   "g_deg12_t",
+   "g_eig_s",
+   "g_eig_t",
+   "g_pr_s",
+   "g_pr_t",
+   "g_cn",
+   "g_jaccard",
+   "g_aa",
+   "g_ra",
+   "g_two_hop",
+   "g_cn12",
+   "g_aa12",
+   "g_ra12",
+   "g_nra_s",
+   "g_nra_t",
+   "br",
+   "seen_tr"
+  ],
+  "coefs_top_abs": [
+   {
+    "feature": "g_wdeg_t",
+    "coef": -0.58269
+   },
+   {
+    "feature": "log_n_act",
+    "coef": 0.57977
+   },
+   {
+    "feature": "g_wdeg_s",
+    "coef": -0.5346
+   },
+   {
+    "feature": "br",
+    "coef": 0.45163
+   },
+   {
+    "feature": "tgt_ev",
+    "coef": 0.34942
+   },
+   {
+    "feature": "since_act",
+    "coef": -0.31017
+   },
+   {
+    "feature": "g_cn12",
+    "coef": 0.3042
+   },
+   {
+    "feature": "src_ev",
+    "coef": 0.29401
+   },
+   {
+    "feature": "g_nra_t",
+    "coef": 0.28735
+   },
+   {
+    "feature": "g_deg12_t",
+    "coef": -0.27882
+   },
+   {
+    "feature": "g_nra_s",
+    "coef": 0.27622
+   },
+   {
+    "feature": "g_deg12_s",
+    "coef": -0.24935
+   },
+   {
+    "feature": "g_ra",
+    "coef": -0.24697
+   },
+   {
+    "feature": "g_two_hop",
+    "coef": -0.21619
+   },
+   {
+    "feature": "log_ev",
+    "coef": 0.20305
+   },
+   {
+    "feature": "g_deg_t",
+    "coef": 0.18757
+   },
+   {
+    "feature": "g_deg_s",
+    "coef": 0.18703
+   },
+   {
+    "feature": "g_aa12",
+    "coef": 0.18177
+   },
+   {
+    "feature": "les3",
+    "coef": -0.13216
+   },
+   {
+    "feature": "am12",
+    "coef": 0.13158
+   }
+  ]
+ },
+ "metrics": {
+  "inner_2016_17": {
+   "n": 607982,
+   "positives": 67057,
+   "pos_rate": 0.110294,
+   "log_loss_raw": 0.20404,
+   "log_loss_temperature": 0.20404,
+   "log_loss_isotonic": 0.203378,
+   "ece_raw": 0.007658,
+   "ece_temperature": 0.007658,
+   "ece_isotonic": 0.006269,
+   "auc": 0.908989,
+   "ap": 0.667421,
+   "mean_abs_isotonic_logit_distortion": 0.214833,
+   "temperature_T": 1.0
+  },
+  "retro_2018_22": {
+   "n": 1559606,
+   "positives": 161539,
+   "pos_rate": 0.103577,
+   "log_loss_raw": 0.197285,
+   "log_loss_temperature": 0.197285,
+   "log_loss_isotonic": 0.196786,
+   "ece_raw": 0.006751,
+   "ece_temperature": 0.006751,
+   "ece_isotonic": 0.005315,
+   "auc": 0.908269,
+   "ap": 0.653356,
+   "mean_abs_isotonic_logit_distortion": 0.211732,
+   "temperature_T": 1.0
+  },
+  "covid_2020_21": {
+   "n": 634416,
+   "positives": 59253,
+   "pos_rate": 0.093398,
+   "log_loss_raw": 0.182687,
+   "log_loss_temperature": 0.182687,
+   "log_loss_isotonic": 0.182361,
+   "ece_raw": 0.006544,
+   "ece_temperature": 0.006544,
+   "ece_isotonic": 0.005175,
+   "auc": 0.912919,
+   "ap": 0.639512,
+   "mean_abs_isotonic_logit_distortion": 0.22565,
+   "temperature_T": 1.0
+  }
+ },
+ "exactness": [
+  {
+   "n_rows": 50000,
+   "raw_max_abs_error": 4.055259420532309e-05,
+   "raw_mean_abs_error": 1.4567008528825484e-07,
+   "raw_rows_above_tol": 0,
+   "temperature_T": 1.0,
+   "temperature_max_abs_error": 8.171241461241152e-14,
+   "temperature_rows_above_tol": 0,
+   "tol": 0.0001,
+   "intercept": -3.1800825595855713,
+   "decision_max_abs_error": 1.2010301988496508e-06,
+   "decision_mean_abs_error": 1.1786070292173711e-07,
+   "decision_rows_above_tol": 0,
+   "period": "inner_2016_17",
+   "sample_rows": 50000,
+   "accumulator_max_abs_error": 6.620954087388498e-05,
+   "accumulator_rows_above_tol": 4331,
+   "accumulator_tol": 1e-06
+  },
+  {
+   "n_rows": 50000,
+   "raw_max_abs_error": 3.542777251652751e-05,
+   "raw_mean_abs_error": 1.4437912052760386e-07,
+   "raw_rows_above_tol": 0,
+   "temperature_T": 1.0,
+   "temperature_max_abs_error": 7.638334409421077e-14,
+   "temperature_rows_above_tol": 0,
+   "tol": 0.0001,
+   "intercept": -3.1800825595855713,
+   "decision_max_abs_error": 1.1784781950296974e-06,
+   "decision_mean_abs_error": 1.2026408107725038e-07,
+   "decision_rows_above_tol": 0,
+   "period": "retro_2018_22",
+   "sample_rows": 50000,
+   "accumulator_max_abs_error": 0.00016665653596348307,
+   "accumulator_rows_above_tol": 9642,
+   "accumulator_tol": 1e-06
+  },
+  {
+   "n_rows": 50000,
+   "raw_max_abs_error": 3.787451757286675e-05,
+   "raw_mean_abs_error": 1.448913819559774e-07,
+   "raw_rows_above_tol": 0,
+   "temperature_T": 1.0,
+   "temperature_max_abs_error": 7.815970093361102e-14,
+   "temperature_rows_above_tol": 0,
+   "tol": 0.0001,
+   "intercept": -3.1800825595855713,
+   "decision_max_abs_error": 1.4166727746456331e-06,
+   "decision_mean_abs_error": 1.232180416698725e-07,
+   "decision_rows_above_tol": 0,
+   "period": "covid_2020_21",
+   "sample_rows": 50000,
+   "accumulator_max_abs_error": 4.408979300229987e-05,
+   "accumulator_rows_above_tol": 3194,
+   "accumulator_tol": 1e-06
+  }
+ ],
+ "bucket_contract": {
+  "source_actor": [
+   "src_ev",
+   "g_deg_s",
+   "g_wdeg_s",
+   "g_deg12_s",
+   "g_eig_s",
+   "g_pr_s",
+   "g_nra_s"
+  ],
+  "target_actor": [
+   "tgt_ev",
+   "g_deg_t",
+   "g_wdeg_t",
+   "g_deg12_t",
+   "g_eig_t",
+   "g_pr_t",
+   "g_nra_t"
+  ],
+  "dyad": [
+   "active",
+   "log_ev",
+   "a1",
+   "a2",
+   "a3",
+   "a4",
+   "a5",
+   "a6",
+   "le1",
+   "le2",
+   "le3",
+   "am3",
+   "am6",
+   "am12",
+   "les3",
+   "les6",
+   "les12",
+   "since_act",
+   "since_first",
+   "log_n_act",
+   "rev_act",
+   "rev_am3"
+  ],
+  "calendar": [
+   "t_yr",
+   "mo_sin",
+   "mo_cos"
+  ],
+  "graph": [
+   "g_cn",
+   "g_jaccard",
+   "g_aa",
+   "g_ra",
+   "g_two_hop",
+   "g_cn12",
+   "g_aa12",
+   "g_ra12"
+  ],
+  "train_stats": [
+   "br",
+   "seen_tr"
+  ]
+ },
+ "bucket_shares": [
+  {
+   "period": "inner_2016_17",
+   "view": "all_features",
+   "bucket": "source_actor",
+   "mean_contrib": -0.213259,
+   "mean_abs_contrib": 1.165893,
+   "abs_share": 0.2201
+  },
+  {
+   "period": "inner_2016_17",
+   "view": "all_features",
+   "bucket": "target_actor",
+   "mean_contrib": -0.250354,
+   "mean_abs_contrib": 1.257887,
+   "abs_share": 0.2374
+  },
+  {
+   "period": "inner_2016_17",
+   "view": "all_features",
+   "bucket": "dyad",
+   "mean_contrib": 0.439618,
+   "mean_abs_contrib": 1.571718,
+   "abs_share": 0.2967
+  },
+  {
+   "period": "inner_2016_17",
+   "view": "all_features",
+   "bucket": "calendar",
+   "mean_contrib": 0.144504,
+   "mean_abs_contrib": 0.166833,
+   "abs_share": 0.0315
+  },
+  {
+   "period": "inner_2016_17",
+   "view": "all_features",
+   "bucket": "graph",
+   "mean_contrib": 0.002498,
+   "mean_abs_contrib": 0.837151,
+   "abs_share": 0.158
+  },
+  {
+   "period": "inner_2016_17",
+   "view": "all_features",
+   "bucket": "train_stats",
+   "mean_contrib": 0.003373,
+   "mean_abs_contrib": 0.29809,
+   "abs_share": 0.0563
+  },
+  {
+   "period": "retro_2018_22",
+   "view": "all_features",
+   "bucket": "source_actor",
+   "mean_contrib": -0.249844,
+   "mean_abs_contrib": 1.177798,
+   "abs_share": 0.2196
+  },
+  {
+   "period": "retro_2018_22",
+   "view": "all_features",
+   "bucket": "target_actor",
+   "mean_contrib": -0.290771,
+   "mean_abs_contrib": 1.272231,
+   "abs_share": 0.2372
+  },
+  {
+   "period": "retro_2018_22",
+   "view": "all_features",
+   "bucket": "dyad",
+   "mean_contrib": 0.45506,
+   "mean_abs_contrib": 1.566233,
+   "abs_share": 0.2921
+  },
+  {
+   "period": "retro_2018_22",
+   "view": "all_features",
+   "bucket": "calendar",
+   "mean_contrib": 0.186294,
+   "mean_abs_contrib": 0.208888,
+   "abs_share": 0.039
+  },
+  {
+   "period": "retro_2018_22",
+   "view": "all_features",
+   "bucket": "graph",
+   "mean_contrib": -0.07608,
+   "mean_abs_contrib": 0.839202,
+   "abs_share": 0.1565
+  },
+  {
+   "period": "retro_2018_22",
+   "view": "all_features",
+   "bucket": "train_stats",
+   "mean_contrib": 0.003373,
+   "mean_abs_contrib": 0.29809,
+   "abs_share": 0.0556
+  },
+  {
+   "period": "covid_2020_21",
+   "view": "all_features",
+   "bucket": "source_actor",
+   "mean_contrib": -0.289554,
+   "mean_abs_contrib": 1.180366,
+   "abs_share": 0.2208
+  },
+  {
+   "period": "covid_2020_21",
+   "view": "all_features",
+   "bucket": "target_actor",
+   "mean_contrib": -0.335795,
+   "mean_abs_contrib": 1.27589,
+   "abs_share": 0.2387
+  },
+  {
+   "period": "covid_2020_21",
+   "view": "all_features",
+   "bucket": "dyad",
+   "mean_contrib": 0.425968,
+   "mean_abs_contrib": 1.533239,
+   "abs_share": 0.2869
+  },
+  {
+   "period": "covid_2020_21",
+   "view": "all_features",
+   "bucket": "calendar",
+   "mean_contrib": 0.192552,
+   "mean_abs_contrib": 0.215314,
+   "abs_share": 0.0403
+  },
+  {
+   "period": "covid_2020_21",
+   "view": "all_features",
+   "bucket": "graph",
+   "mean_contrib": -0.141248,
+   "mean_abs_contrib": 0.842055,
+   "abs_share": 0.1575
+  },
+  {
+   "period": "covid_2020_21",
+   "view": "all_features",
+   "bucket": "train_stats",
+   "mean_contrib": 0.003373,
+   "mean_abs_contrib": 0.29809,
+   "abs_share": 0.0558
+  }
+ ],
+ "actor_headline": {
+  "inner_2016_17": {
+   "source": {
+    "top_positive": [
+     {
+      "actor": "SMR",
+      "attribution": 0.672586,
+      "ego_abs_share": 0.6234
+     },
+     {
+      "actor": "ATG",
+      "attribution": 0.507193,
+      "ego_abs_share": 0.6061
+     },
+     {
+      "actor": "MCO",
+      "attribution": 0.385059,
+      "ego_abs_share": 0.5931
+     },
+     {
+      "actor": "KNA",
+      "attribution": 0.333254,
+      "ego_abs_share": 0.6146
+     },
+     {
+      "actor": "LIE",
+      "attribution": 0.321448,
+      "ego_abs_share": 0.6146
+     }
+    ],
+    "top_negative": [
+     {
+      "actor": "USA",
+      "attribution": -0.750147,
+      "ego_abs_share": 0.3869
+     },
+     {
+      "actor": "CHN",
+      "attribution": -0.686804,
+      "ego_abs_share": 0.4246
+     },
+     {
+      "actor": "GBR",
+      "attribution": -0.624381,
+      "ego_abs_share": 0.4215
+     },
+     {
+      "actor": "JPN",
+      "attribution": -0.585025,
+      "ego_abs_share": 0.4714
+     },
+     {
+      "actor": "RUS",
+      "attribution": -0.584228,
+      "ego_abs_share": 0.4327
+     }
+    ]
+   },
+   "target": {
+    "top_positive": [
+     {
+      "actor": "SMR",
+      "attribution": 0.670471,
+      "ego_abs_share": 0.6232
+     },
+     {
+      "actor": "ATG",
+      "attribution": 0.489259,
+      "ego_abs_share": 0.6127
+     },
+     {
+      "actor": "MCO",
+      "attribution": 0.35973,
+      "ego_abs_share": 0.5939
+     },
+     {
+      "actor": "ZAN",
+      "attribution": 0.304475,
+      "ego_abs_share": 0.6084
+     },
+     {
+      "actor": "MHL",
+      "attribution": 0.29076,
+      "ego_abs_share": 0.5971
+     }
+    ],
+    "top_negative": [
+     {
+      "actor": "USA",
+      "attribution": -0.775973,
+      "ego_abs_share": 0.4046
+     },
+     {
+      "actor": "CHN",
+      "attribution": -0.723624,
+      "ego_abs_share": 0.4336
+     },
+     {
+      "actor": "GBR",
+      "attribution": -0.669091,
+      "ego_abs_share": 0.4269
+     },
+     {
+      "actor": "FRA",
+      "attribution": -0.633943,
+      "ego_abs_share": 0.4336
+     },
+     {
+      "actor": "JPN",
+      "attribution": -0.612387,
+      "ego_abs_share": 0.4836
+     }
+    ]
+   }
+  },
+  "retro_2018_22": {
+   "source": {
+    "top_positive": [
+     {
+      "actor": "SMR",
+      "attribution": 0.602688,
+      "ego_abs_share": 0.6173
+     },
+     {
+      "actor": "KNA",
+      "attribution": 0.477832,
+      "ego_abs_share": 0.6139
+     },
+     {
+      "actor": "LIE",
+      "attribution": 0.427202,
+      "ego_abs_share": 0.6013
+     },
+     {
+      "actor": "ATG",
+      "attribution": 0.359476,
+      "ego_abs_share": 0.5999
+     },
+     {
+      "actor": "DMA",
+      "attribution": 0.350559,
+      "ego_abs_share": 0.6005
+     }
+    ],
+    "top_negative": [
+     {
+      "actor": "USA",
+      "attribution": -0.822293,
+      "ego_abs_share": 0.3891
+     },
+     {
+      "actor": "CHN",
+      "attribution": -0.763349,
+      "ego_abs_share": 0.4223
+     },
+     {
+      "actor": "RUS",
+      "attribution": -0.697637,
+      "ego_abs_share": 0.4345
+     },
+     {
+      "actor": "JPN",
+      "attribution": -0.694988,
+      "ego_abs_share": 0.4675
+     },
+     {
+      "actor": "GBR",
+      "attribution": -0.67419,
+      "ego_abs_share": 0.4237
+     }
+    ]
+   },
+   "target": {
+    "top_positive": [
+     {
+      "actor": "SMR",
+      "attribution": 0.600771,
+      "ego_abs_share": 0.6147
+     },
+     {
+      "actor": "KNA",
+      "attribution": 0.440299,
+      "ego_abs_share": 0.6089
+     },
+     {
+      "actor": "LIE",
+      "attribution": 0.396199,
+      "ego_abs_share": 0.6067
+     },
+     {
+      "actor": "ATG",
+      "attribution": 0.326543,
+      "ego_abs_share": 0.6059
+     },
+     {
+      "actor": "ZAN",
+      "attribution": 0.319822,
+      "ego_abs_share": 0.6064
+     }
+    ],
+    "top_negative": [
+     {
+      "actor": "USA",
+      "attribution": -0.855409,
+      "ego_abs_share": 0.4071
+     },
+     {
+      "actor": "CHN",
+      "attribution": -0.806418,
+      "ego_abs_share": 0.4325
+     },
+     {
+      "actor": "JPN",
+      "attribution": -0.737758,
+      "ego_abs_share": 0.4789
+     },
+     {
+      "actor": "RUS",
+      "attribution": -0.726774,
+      "ego_abs_share": 0.4421
+     },
+     {
+      "actor": "GBR",
+      "attribution": -0.722011,
+      "ego_abs_share": 0.4316
+     }
+    ]
+   }
+  },
+  "covid_2020_21": {
+   "source": {
+    "top_positive": [
+     {
+      "actor": "SMR",
+      "attribution": 0.58244,
+      "ego_abs_share": 0.6149
+     },
+     {
+      "actor": "KNA",
+      "attribution": 0.452545,
+      "ego_abs_share": 0.6147
+     },
+     {
+      "actor": "DMA",
+      "attribution": 0.437736,
+      "ego_abs_share": 0.5948
+     },
+     {
+      "actor": "ATG",
+      "attribution": 0.381601,
+      "ego_abs_share": 0.5994
+     },
+     {
+      "actor": "LIE",
+      "attribution": 0.348283,
+      "ego_abs_share": 0.602
+     }
+    ],
+    "top_negative": [
+     {
+      "actor": "USA",
+      "attribution": -0.88877,
+      "ego_abs_share": 0.3936
+     },
+     {
+      "actor": "CHN",
+      "attribution": -0.817545,
+      "ego_abs_share": 0.4263
+     },
+     {
+      "actor": "JPN",
+      "attribution": -0.784993,
+      "ego_abs_share": 0.4695
+     },
+     {
+      "actor": "RUS",
+      "attribution": -0.775751,
+      "ego_abs_share": 0.4396
+     },
+     {
+      "actor": "GBR",
+      "attribution": -0.739813,
+      "ego_abs_share": 0.4257
+     }
+    ]
+   },
+   "target": {
+    "top_positive": [
+     {
+      "actor": "SMR",
+      "attribution": 0.580907,
+      "ego_abs_share": 0.6123
+     },
+     {
+      "actor": "DMA",
+      "attribution": 0.412065,
+      "ego_abs_share": 0.5995
+     },
+     {
+      "actor": "KNA",
+      "attribution": 0.410733,
+      "ego_abs_share": 0.6107
+     },
+     {
+      "actor": "ATG",
+      "attribution": 0.351585,
+      "ego_abs_share": 0.6047
+     },
+     {
+      "actor": "LIE",
+      "attribution": 0.310304,
+      "ego_abs_share": 0.6076
+     }
+    ],
+    "top_negative": [
+     {
+      "actor": "USA",
+      "attribution": -0.930723,
+      "ego_abs_share": 0.4103
+     },
+     {
+      "actor": "CHN",
+      "attribution": -0.866726,
+      "ego_abs_share": 0.4368
+     },
+     {
+      "actor": "JPN",
+      "attribution": -0.841437,
+      "ego_abs_share": 0.48
+     },
+     {
+      "actor": "RUS",
+      "attribution": -0.815361,
+      "ego_abs_share": 0.4494
+     },
+     {
+      "actor": "GBR",
+      "attribution": -0.796658,
+      "ego_abs_share": 0.4353
+     }
+    ]
+   }
+  }
+ },
+ "collinearity": {
+  "condition_number": 270893.07,
+  "max_vif": 8329.28,
+  "n_high_vif_gt10": 32
+ },
+ "p1_reference": {
+  "available": true,
+  "n": 607982,
+  "max_abs_diff": 0.026233,
+  "mean_abs_diff": 0.000869,
+  "corr": 0.999969,
+  "log_loss_p1_preds": 0.204052,
+  "log_loss_refit": 0.20404,
+  "note": "P1 preds were produced before the current graph cache; the refit is the consistent source for Sprint B"
+ },
+ "test_access_log": [
+  {
+   "split": "test",
+   "months": "276..334 (2018-01..2022-11)",
+   "rows": 1559606,
+   "purpose": "burned retrospective secondary view (explicitly requested)",
+   "confirmatory": false,
+   "utc": "2026-10-23T05:41:00Z"
+  }
+ ],
+ "provisional": {
+  "fresh_dyad_holdout": "not available in this sprint (no Sprint A artifact)",
+  "confirmatory_claim_allowed": false,
+  "note": "All inner-window numbers are inner validation; 2018-22 and COVID are burned retrospective secondary. No test tuning was performed."
+ },
+ "input_hashes": {
+  "features_dyad.parquet": {
+   "sha256": "394b005bb22fa51e0c543d835ef73dffc142593e37815b212190ce8916f9e388",
+   "bytes": 92893927
+  },
+  "panel_dyad.parquet": {
+   "sha256": "8fb9fa0168093cab751a2a1e736d889be0c27b57c2c28b8d0747bc4470411067",
+   "bytes": 5030241
+  },
+  "actors.parquet": {
+   "sha256": "a934d22dc688ff64ef50c768dea88582cfe49ba8945b26d24b222b994d93af62",
+   "bytes": 1477
+  },
+  "graph_meta.json": {
+   "sha256": "bc74b056ca193ebfea4a1b69d42a8290e01b67989ea7f02dba09bd4c55d08a58",
+   "bytes": 2462
+  },
+  "features_actor.parquet": {
+   "sha256": "ac4dd1a5c9fd846d1e4f1a3928c840195ffad95555877d0d1babd0c356261eb9",
+   "bytes": 1523653
+  }
+ },
+ "runtime_seconds": 489.62,
+ "host": {
+  "platform": "Linux-6.12.74+deb13+1-amd64-x86_64-with-glibc2.41",
+  "machine": "x86_64",
+  "hostname": "debian",
+  "python": "3.13.5",
+  "cpu_count": 4,
+  "utc": "2026-10-23T05:41:00.699273+00:00",
+  "ram_gib": 15.5,
+  "numpy": "2.5.4",
+  "pandas": "2.3.3",
+  "duckdb": "1.5.6",
+  "scikit_learn": "1.9.1"
+ }
+}
