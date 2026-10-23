@@ -5,7 +5,6 @@ Examples
     python -m framework.run_pilot --stage corpus
     python -m framework.run_pilot --stage t1
     python -m framework.run_pilot --stage all
-    python -m framework.run_pilot --config configs/smoke.json --stage all
 
 Stages are independent except that ``synth`` requires ``corpus``.  ``report``
 reads the four parts and the leakage audit; it never refits a model.
@@ -59,7 +58,7 @@ def build_corpus(cfg: dict, force: bool = False) -> dict:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Q2 framework pilot runner")
-    ap.add_argument("--config", default="configs/framework_pilot.json")
+    ap.add_argument("--config", default=None)
     ap.add_argument("--stage", default="all",
                     choices=["corpus", "t1", "t2", "synth", "interp", "audit",
                              "report", "all"])

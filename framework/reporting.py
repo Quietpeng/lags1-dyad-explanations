@@ -606,7 +606,7 @@ def _report(cfg, t1r, t2w, syn, interp, head, audit, manifest) -> str:
     add("## 9. Next 3 days")
     add("")
     add("**Day 1 — lock the claim and the metric.** (i) Pre-register within-entity AUC as a "
-        "co-primary metric; freeze the strict t<275 boundary in `configs/`. (ii) Decide Option A "
+        "co-primary metric; freeze the strict t<275 boundary in the protocol. (ii) Decide Option A "
         "vs a dynamics model: run a dyad fixed-effects / conditional-logit check on T2 and an "
         "actor fixed-effects check on T1 high_q75. (iii) Re-run the graph probe under the corrected "
         "inductive mask; report AUC and within-dyad AUC, not only ΔLL. (iv) Freeze `summary.json` "
@@ -637,8 +637,8 @@ def _report(cfg, t1r, t2w, syn, interp, head, audit, manifest) -> str:
         "`counterfactual_t2.csv`, `edge_attribution.csv`, `failure_cases_t1.csv`, `failure_cases_t2.csv`")
     add("- `results/framework_pilot/audit/`: checklist, samples, kappa plan, leakage audit JSON/MD")
     add("- `results/framework_pilot/report.md`, `summary.json`, `selection_log.json`, `run.log`, `manifest.json`")
-    add("- `configs/`: `framework_pilot.json`, `t1_redesign.json`, `t2_windows.json`, `synth_arms.json`, `smoke.json`")
-    add("- `docs/framework_protocol.md`; `tests/test_smoke.py`")
+    add("- Configuration files are kept in the private working tree and are not redistributed.")
+    add("- `tests/test_smoke.py`")
     add("")
     return "\n".join(L) + "\n"
 

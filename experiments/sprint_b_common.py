@@ -13,7 +13,7 @@ inner     t 252..274 (2016-01..2017-11), t=275 dropped (label is 2018-01)
 retro     t 276..334 (2018-01..2022-11), t=335 dropped (label is 2023-01)
 covid     t 300..323 (2020-01..2021-12)
 
-The embargo follows docs/15_FRAMEWORK_PILOT.md section 3.2 (239/251/275/335).
+The embargo boundaries are frozen at 239/251/275/335.
 The P1 parts are *not* regenerated; this audit is therefore not row-for-row
 comparable with the P1 tables (607,982 vs 634,416 inner rows).
 """
