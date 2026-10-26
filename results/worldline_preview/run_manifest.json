@@ -56,8 +56,18 @@
   "distinct_dyads_across_anchors": 71,
   "holdout_rows": 0,
   "row_level_files_shipped": 0,
+  "aggregate_probability_summaries_shipped": [
+   "anchors[*].p1_summary",
+   "anchors[*].p2_summary"
+  ],
+  "aggregate_probability_summary_fields": [
+   "mean",
+   "median",
+   "min",
+   "max"
+  ],
   "machine_readable_traces_anonymized": true,
-  "release_rule": "no row-level predictions: the two per-row CSVs (240 and 249 rows) are withheld, not exported; only the rendered illustration and the aggregate JSON summaries ship; no headline number depends on this directory"
+  "release_rule": "no row-level predictions: the two per-row CSVs (240 and 249 rows) are withheld, not exported; only the rendered illustration and the aggregate JSON summaries ship (per-anchor counts, transition tallies and the p1_summary/p2_summary distribution statistics over the 20 sampled dyads per anchor; no per-dyad value and no identifier); no headline number depends on this directory"
  },
  "withheld_exports": {
   "worldline_trace.csv": {

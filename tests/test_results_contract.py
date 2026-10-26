@@ -518,11 +518,37 @@ class TestWorldlinePreview(unittest.TestCase):
         self.assertNotIn("465x380", manifest["figure_revision"])
 
     def test_docs_do_not_advertise_the_old_geometry(self):
+        # m01 (R2C3): CODE_MAP.md and notebooks/README.md carried the stale
+        # 164 mm / 465x380 pt sentence and were outside the original guard.
         for rel in ("results/README.md", "results/worldline_preview/README.md",
-                    "notebooks/03_worldline_preview.ipynb"):
+                    "notebooks/03_worldline_preview.ipynb", "CODE_MAP.md",
+                    "notebooks/README.md"):
             text = (ROOT / rel).read_text(encoding="utf-8")
             self.assertNotIn("164 mm", text, rel)
+            self.assertNotIn("465 × 380", text, rel)
+            self.assertNotIn("465x380", text, rel)
             self.assertIn("150", text, rel)
+
+    def test_aggregate_probability_summaries_are_documented(self):
+        # m02 (R2C3): the retained per-anchor p1/p2 distributions must be named
+        # in the inventory, while no row-level value may ship.
+        trace = strict_load(self.base() / "worldline_trace.json")
+        for anchor in trace["anchors"]:
+            for key in ("p1_summary", "p2_summary"):
+                block = anchor[key]
+                self.assertEqual(sorted(block), ["max", "mean", "median", "min"])
+                for value in block.values():
+                    self.assertIsInstance(value, float)
+        for rel in ("results/README.md", "DATA_EXCLUSIONS.md",
+                    "results/worldline_preview/README.md"):
+            text = (ROOT / rel).read_text(encoding="utf-8")
+            for token in ("p1_summary", "p2_summary"):
+                self.assertIn(token, text, rel)
+            self.assertIn("no per-dyad", text.lower(), rel)
+        scope = strict_load(self.base() / "run_manifest.json")["preview_scope"]
+        self.assertEqual(scope["row_level_files_shipped"], 0)
+        self.assertIn("anchors[*].p1_summary",
+                      scope["aggregate_probability_summaries_shipped"])
 
     def test_verifier_rejects_the_superseded_preview(self):
         import importlib.util

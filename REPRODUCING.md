@@ -8,14 +8,15 @@ cache-build entry point, so licensed access alone is not sufficient. L4 is the
 one-shot confirmatory holdout and **cannot** be re-run without violating the
 pre-registration and the one-shot lock.
 
-All commands assume the repository root and `python3` (>= 3.11). CPU only.
+All commands assume the repository root and `python3` (>= 3.12; the pinned
+`numpy==2.5.4` and `scipy==1.18.1` have no cp311 wheels). CPU only.
 
 ## Levels
 
 | Level | Question | Needs | Command | Status in this release |
 |---|---|---|---|---|
 | **L0 — Read** | What do the frozen aggregates say? | Nothing beyond the files | open `results/README.md`, `notebooks/*.ipynb` on the repository page | Available |
-| **L1 — Verify** | Do the shipped bytes, JSON and tests hold? | Python 3.11+, `requirements.txt` | `make doctor && make test && make verify` | Available; no data/GPU |
+| **L1 — Verify** | Do the shipped bytes, JSON and tests hold? | Python 3.12+, `requirements.txt` | `make doctor && make test && make verify` | Available; no data/GPU |
 | **L2 — Re-render** | Can the notebooks be executed from the aggregates? | L1 + `nbclient`/`ipykernel` | `make notebooks` | Available; writes only notebook outputs |
 | **L3 — Restricted regeneration** | Can the aggregate tables be rebuilt? | licensed ICEWS v37, restricted feature and contribution caches, local experiment configuration, row-level holdout predictions for post-processing; no public cache-build entry point | `experiments/*.py` with local inputs | **Not runnable here**; the public Sprint-B scripts are a five-seed preview and do not regenerate the 50-refit tables |
 | **L4 — Confirmatory holdout** | Can the one-shot holdout be re-run? | the burned 2018–22 labels and a new pre-registration | — | **Not reproducible by design**; labels were read once, `run_once.json` locks the run and row-level predictions are excluded |
@@ -44,6 +45,13 @@ python3 -m pip install -e .
 # or, with the notebook tools
 python3 -m pip install -e ".[notebooks]"
 ```
+
+`make dist` builds the release archive **from the committed tree**, not from the
+working directory: it runs `git archive HEAD`, so untracked files are never
+packaged, and it aborts if a tracked file is modified or staged. The archive
+file list is then compared with `git ls-tree -r --name-only HEAD`, scanned for
+forbidden paths, extracted to `build/dist/verify/` and passed through
+`scripts/verify_release.py`.
 
 ## Level 2 — notebooks
 

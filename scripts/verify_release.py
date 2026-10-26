@@ -633,6 +633,35 @@ def check_worldline_notice(root: Path) -> list[str]:
         errors.append("worldline README still advertises the superseded 164 mm preview")
     if "byte-identical" not in lowered:
         errors.append("worldline README does not state that the preview is paper A1")
+    # m01 (R2C3): the two remaining docs that advertised the superseded
+    # 164 mm / 465x380 pt geometry must now state the 150 mm paper-A1 geometry.
+    docs = {}
+    for rel in ("CODE_MAP.md", "notebooks/README.md",
+                "DATA_EXCLUSIONS.md", "results/README.md"):
+        path = root / rel
+        if path.is_file():
+            docs[rel] = path.read_text(encoding="utf-8")
+        else:
+            errors.append(f"{rel} missing")
+    for rel in ("CODE_MAP.md", "notebooks/README.md"):
+        doc = docs.get(rel)
+        if doc is None:
+            continue
+        if "164" in doc:
+            errors.append(f"{rel} still advertises the superseded 164 mm preview")
+        if "465 × 380" in doc or "465x380" in doc:
+            errors.append(f"{rel} still advertises the 465 x 380 pt preview")
+        if "150 mm" not in doc:
+            errors.append(f"{rel} lacks the 150 mm paper-A1 geometry")
+    # m02 (R2C3): the retained aggregate probability distributions must be
+    # named in the inventory, while no per-dyad value may ship.
+    for rel in ("DATA_EXCLUSIONS.md", "results/README.md"):
+        doc = docs.get(rel)
+        if doc is None:
+            continue
+        for token in ("p1_summary", "p2_summary"):
+            if token not in doc:
+                errors.append(f"{rel} does not name the retained {token} aggregate")
     # The shipped preview must be the paper's A1 render, not the old 465x380 pt
     # DejaVu print version (R6 X01).
     base = root / "results/worldline_preview"

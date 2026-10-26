@@ -71,7 +71,7 @@ number remains provisional and must not be written as a confirmatory headline.
 | File | Content |
 |---|---|
 | `worldline_preview/README.md` | Scope, sample rule, figure status and deletion note. |
-| `worldline_preview/worldline_trace.json` | Per-anchor counts, state-path and transition tallies, disclaimers, model provenance and sample rule. No per-row records. |
+| `worldline_preview/worldline_trace.json` | Per-anchor counts, state-path and transition tallies, per-anchor `p1_summary`/`p2_summary` distributions (mean, median, min and max of the step-1/step-2 predicted probability over the 20 sampled, unlabeled dyads; no per-dyad values), disclaimers, model provenance and sample rule. No per-row records. |
 | `worldline_preview/run_manifest.json` | Command, host/packages, input/output hashes, preview scope and the no-row-level rule. |
 | `worldline_preview/worldline_preview.{pdf,png}` | Illustrative preview figure; vector 150 mm print version, byte-identical to paper Figure A1, Arimo/TrueType, no baked key, no accuracy claim. |
 

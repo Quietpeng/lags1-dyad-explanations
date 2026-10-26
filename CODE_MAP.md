@@ -32,7 +32,7 @@ tree; they remain in git history but are not importable or tested here.
 | `make notebooks` | Execute the three read-only notebooks | no |
 | `make stability-check` | Verify shipped stability aggregates, 50-refit scope and hashes | no |
 | `make worldline-check` | Verify the worldline illustration/aggregate boundary (no CSV) | no |
-| `make dist` | Build and verify a `git archive` release tarball | no |
+| `make dist` | Build and verify a `git archive HEAD` release tarball; untracked files never enter the archive and a modified tracked file aborts the build | no |
 | `experiments/sprint_a_prereg.py` | Freeze the holdout pre-registration | ICEWS + cache |
 | `experiments/sprint_a_run.py` | One-shot holdout evaluation (refuses a second completed run) | ICEWS + cache |
 | `experiments/sprint_a_holdout_extras.py` | Post-holdout diagnostics from saved predictions | row-level predictions |
@@ -82,7 +82,7 @@ read-only notebooks 01–03
 |---|---|---|
 | `results/framework_pilot/holdout/` | Frozen, one-shot completed | Aggregates only; `preds/`, `run.log` and the aborted smoke log are **not redistributed**. `manifest.json` records freeze hashes and release annotations; `SHA256SUMS` covers every distributed file. |
 | `results/framework_pilot/stability/` | Provisional, holdout not integrated | Frozen 2026-10-23T06:31:40Z; holdout completed 07:45:19Z; `available_at_audit: false`, `completed_later: true`, `used: false`. The shipped files are the holdout-excluded 50-refit rerun; `SHA256SUMS` covers all 47 distributed files. Actor tables are aggregate attribution/exposure only. The public scripts are a five-seed preview. |
-| `results/worldline_preview/` | Illustrative only | No multi-step accuracy claim; the shipped PDF is the vector 164 mm A1 print version and the PNG is a 300 dpi preview. Only rendered/aggregate outputs ship: the per-row trace CSVs were removed, so no row-level probability file is distributed (`DATA_EXCLUSIONS.md`). |
+| `results/worldline_preview/` | Illustrative only | No multi-step accuracy claim; the shipped PDF is the vector 150 mm (425.197 × 330 pt) A1 print version and the PNG is a 300 dpi preview. Only rendered/aggregate outputs ship: the per-row trace CSVs were removed, so no row-level probability file is distributed (`DATA_EXCLUSIONS.md`). |
 
 ## Removed legacy modules
 

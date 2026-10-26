@@ -43,7 +43,7 @@ label is read. No accuracy is computed.
 | File | Content |
 |---|---|
 | `worldline_preview.png` / `.pdf` | Three-panel print figure: sampled dyad paths for two anchors, induced actor states for 2016-06, and transition tallies over four anchors. |
-| `worldline_trace.json` | Metadata, disclaimers, per-anchor counts, state-path and transition tallies, model provenance, sample rule and the no-row-level rule. No per-row records. |
+| `worldline_trace.json` | Metadata, disclaimers, per-anchor counts, state-path and transition tallies, per-anchor `p1_summary`/`p2_summary` distributions (`mean`, `median`, `min`, `max` of the step-1 and step-2 predicted probabilities over the 20 sampled, unlabeled dyads; no per-dyad value), model provenance, sample rule and the no-row-level rule. No per-row records. |
 | `run_manifest.json` | Command, host/package versions, input/output SHA256, runtime, figure revision, preview scope and the withheld-export list. |
 
 **No CSV is shipped.** The 240-row `worldline_trace.csv` (per-row `state`,

@@ -32,17 +32,28 @@ worldline-check:
 	$(PY) scripts/check_aggregates.py worldline
 
 dist:
-	@rm -rf build/dist
-	@mkdir -p build/dist
-	@tmp=$$(mktemp); \
-	GIT_INDEX_FILE=$$tmp git read-tree HEAD && \
-	GIT_INDEX_FILE=$$tmp git add -A && \
-	tree=$$(GIT_INDEX_FILE=$$tmp git write-tree) && \
-	rm -f $$tmp && \
+	@set -eu; \
+	if [ -n "$$(git status --porcelain --untracked-files=no)" ]; then \
+		echo "ERROR: tracked files are modified or staged; commit before make dist"; \
+		git status --short --untracked-files=no; \
+		exit 1; \
+	fi; \
+	rm -rf build/dist; \
+	mkdir -p build/dist; \
 	git archive --format=tar.gz \
 		--prefix=dyad-explanations-$(VERSION)/ \
-		-o build/dist/dyad-explanations-$(VERSION).tar.gz $$tree
-	@if tar -tzf build/dist/dyad-explanations-$(VERSION).tar.gz \
+		-o build/dist/dyad-explanations-$(VERSION).tar.gz HEAD; \
+	archive=build/dist/dyad-explanations-$(VERSION).tar.gz; \
+	git ls-tree -r --name-only HEAD | LC_ALL=C sort > build/dist/head-files.txt; \
+	tar -tzf "$$archive" \
+		| sed -e 's|^dyad-explanations-$(VERSION)/||' \
+		| grep -v '/$$' | grep -v '^$$' \
+		| LC_ALL=C sort > build/dist/archive-files.txt; \
+	if ! diff -u build/dist/head-files.txt build/dist/archive-files.txt; then \
+		echo "ERROR: archive file list differs from HEAD"; \
+		exit 1; \
+	fi; \
+	if tar -tzf "$$archive" \
 		| grep -E '(^|/)(paper|docs|configs|data|preds|__pycache__|\.git)(/|$$)'; then \
 		echo "ERROR: forbidden path in archive"; exit 1; \
 	fi

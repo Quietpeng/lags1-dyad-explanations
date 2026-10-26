@@ -80,7 +80,7 @@ aggregate summaries remain.
 | Property | Value |
 |---|---|
 | Removed machine-readable rows | `worldline_trace.csv` 240 dyad-step rows (`p_model`, `state`); `node_trace.csv` 249 induced-actor rows (`state_prev`, `active`) |
-| Retained | `worldline_preview.pdf` / `worldline_preview.png` (rendered illustration), `worldline_trace.json` (per-anchor counts, transition tallies, provenance), `README.md`, `run_manifest.json` |
+| Retained | `worldline_preview.pdf` / `worldline_preview.png` (rendered illustration), `worldline_trace.json` (per-anchor counts, transition tallies, per-anchor `p1_summary`/`p2_summary` distribution statistics — `mean`, `median`, `min`, `max` of the predicted probability over the 20 sampled, unlabeled dyads at steps 1 and 2, with no per-dyad value and no identifier — and provenance), `README.md`, `run_manifest.json` |
 | Period | inner validation 2016-01…2017-11; maximum `t_idx` 274 (the 2017-12 embargo row is absent) |
 | Holdout rows | 0 |
 | Sample | 20 sampled dyads per anchor over four anchors (71 distinct across anchors); deliberately selected for visibility, not random |

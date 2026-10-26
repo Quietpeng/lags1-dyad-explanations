@@ -1,5 +1,30 @@
 # Release notes
 
+## Metadata, docs and CI fix (2026-10-27; no data change)
+
+Documentation, metadata, tests and CI only: no result file, figure, notebook
+blob, `SHA256SUMS` entry or frozen number changed.
+
+- **Python floor is now 3.12.** `numpy==2.5.4` and `scipy==1.18.1` publish no
+  cp311 wheels, so `requires-python` and the classifier, `scripts/doctor.py`
+  (`MIN_PYTHON`), `README.md`, `REPRODUCING.md`, `notebooks/README.md` and the
+  CI matrix (`3.12`, `3.13`) agree on `>= 3.12`; the failing 3.11 CI leg is
+  removed.
+- **Stale figure geometry corrected.** `CODE_MAP.md` and `notebooks/README.md`
+  no longer advertise a 164 mm / 465x380 pt preview; they state the shipped
+  150 mm (425.197 x 330 pt) paper-A1 render. `make verify` and the contract
+  tests now guard both documents.
+- **World-line inventory completed.** `results/README.md`,
+  `DATA_EXCLUSIONS.md`, `results/worldline_preview/README.md` and
+  `run_manifest.json` name the retained per-anchor `p1_summary`/`p2_summary`
+  distributions (mean, median, min and max over the 20 sampled dyads; no
+  per-dyad value).
+- **`make dist` archives HEAD only.** The temporary-index `read-tree HEAD` +
+  `add -A` recipe is replaced by `git archive HEAD`, whose file list must equal
+  `git ls-tree -r --name-only HEAD`; untracked files never ship and a modified
+  tracked file aborts the build. The extract-and-verify step is unchanged.
+  `tests/test_metadata_contract.py` pins these contracts.
+
 ## v0.1.1 — public-artifact cleanup (release candidate)
 
 - Install path uses `python3` throughout; `make doctor` checks Python,

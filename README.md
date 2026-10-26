@@ -71,6 +71,9 @@ checks that enforce it.
 
 ## Quick start
 
+Requires **Python 3.12+**: the pinned `numpy==2.5.4` and `scipy==1.18.1`
+releases publish no 3.11 wheels. This artifact was tested on Python 3.13.5.
+
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate

@@ -3,7 +3,7 @@
 
 Checks
 ------
-1. Python >= 3.11.
+1. Python >= 3.12 (the pinned numpy/scipy have no cp311 wheels).
 2. The analysis stack imports and reports its version.
 3. Forbidden directories/files are absent from the working tree.
 
@@ -20,7 +20,7 @@ import importlib
 import sys
 from pathlib import Path
 
-MIN_PYTHON = (3, 11)
+MIN_PYTHON = (3, 12)
 DEPS = (
     ("numpy", "numpy"),
     ("pandas", "pandas"),
