@@ -17,9 +17,13 @@ the authoritative record.
 The shipped stability result is:
 
 - status `provisional_holdout_not_integrated`;
-- a pre-holdout design (`audit_design = pre_holdout_holdout_excluded`), frozen
-  at `2026-10-23T06:31Z`; the confirmatory holdout completed later at
-  `2026-10-23T07:45:19Z` and was not used;
+- `audit_design = frozen_during_confirmatory_run_holdout_rows_excluded`: the
+  grid was frozen at `2026-10-23T06:31:40Z`, i.e. **after** the confirmatory
+  read began at `2026-10-23T05:26:55.031577Z` and **before** it completed at
+  `2026-10-23T07:45:19Z`; the 50-refit rerun ran afterwards, `14:30`–`16:07Z`
+  (`generated_utc 16:07:57Z`). The holdout was not used. This is not a
+  pre-holdout design: the design freeze is mid-run, so the audit is
+  non-confirmatory and post-holdout in execution;
 - **50** dyad-cluster bootstrap refits with **C fixed at 1.0**;
 - computed after excluding all rows of the eventual holdout dyads from fitting
   and aggregation: **5,282 directed dyads / 2,790 unordered pairs**, taken from

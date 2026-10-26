@@ -1,8 +1,9 @@
 # Data exclusions and privacy boundary
 
 **Applies to:** the public artifact `lags1-dyad-explanations`, release candidate
-0.1.1 (`review-r2c2` tree). **Status:** resolves the FATAL F01 and the MAJOR M01
-recorded in the R2C1 panel review.
+0.1.1 (`review-r2c3` tree). **Status:** the earlier row-level leak is closed (the
+contaminated history is quarantined in a private repository and is not reachable
+from this tree).
 
 This file is the authoritative inventory of what the public tree removes or
 redacts, and why. It records file paths, schemas, row counts and reasons only.
@@ -41,8 +42,10 @@ release history rewrite (`review-r2c2`); `git ls-files` and
 ## 2. Redacted actor tables
 
 Thirteen shipped actor tables remain as **aggregate attribution and exposure**
-tables. Four columns were removed from each group. No other column was changed,
-and no value in a retained column was recomputed.
+tables. Four distinct column names were removed in total — three from the six
+actor-month tables, two from the six actor tables and two from the
+all-periods table — and no other column was changed. No value in a retained
+column was recomputed.
 
 | Files | Rows | Removed columns | Retained content |
 |---|---|---|---|

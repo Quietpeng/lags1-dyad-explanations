@@ -1121,7 +1121,7 @@
      0.02834889802780916
     ],
     "p_mean": 0.138,
-    "p_pooled": 0.0,
+    "p_pooled": "<0.001",
     "seeds": [
      {
       "seed": 20261023,
@@ -1191,7 +1191,8 @@
      ],
      "p": 0.468,
      "se": 0.007167114527375942
-    }
+    },
+    "censoring": "two_sided_paired_bootstrap_tail_zero_of_1000"
    },
    "logistic49_S1_temperature__vs__base_global_transition": {
     "n_common": 3310,
@@ -1210,7 +1211,7 @@
      0.02834889802780916
     ],
     "p_mean": 0.138,
-    "p_pooled": 0.0,
+    "p_pooled": "<0.001",
     "seeds": [
      {
       "seed": 20261023,
@@ -1280,7 +1281,8 @@
      ],
      "p": 0.476,
      "se": 0.007237795755308729
-    }
+    },
+    "censoring": "two_sided_paired_bootstrap_tail_zero_of_1000"
    },
    "logistic49_S1_temperature__vs__base_dyad_base_rate": {
     "n_common": 3310,
@@ -1298,8 +1300,8 @@
      0.05660013422871129,
      0.06676442950895237
     ],
-    "p_mean": 0.0,
-    "p_pooled": 0.0,
+    "p_mean": "<0.001",
+    "p_pooled": "<0.001",
     "seeds": [
      {
       "seed": 20261023,
@@ -1369,7 +1371,8 @@
      ],
      "p": 0.0,
      "se": 0.0025114061199307458
-    }
+    },
+    "censoring": "two_sided_paired_bootstrap_tail_zero_of_1000"
    },
    "logistic49_S1_temperature__vs__base_markov_recency": {
     "n_common": 3310,
@@ -1387,8 +1390,8 @@
      0.05129868262403139,
      0.059096284360335455
     ],
-    "p_mean": 0.0,
-    "p_pooled": 0.0,
+    "p_mean": "<0.001",
+    "p_pooled": "<0.001",
     "seeds": [
      {
       "seed": 20261023,
@@ -1458,7 +1461,8 @@
      ],
      "p": 0.0,
      "se": 0.004230086748140829
-    }
+    },
+    "censoring": "two_sided_paired_bootstrap_tail_zero_of_1000"
    },
    "logistic49_S1_temperature__vs__hgb49_none": {
     "n_common": 3310,
@@ -2256,9 +2260,10 @@
   {
    "family": "B_primary_other_metrics",
    "comparison": "d_ap vs per_dyad_markov",
-   "p": 0.0,
-   "q": 0.0,
-   "reject_0.05": true
+   "p": "<1e-300",
+   "q": "<1e-300",
+   "reject_0.05": true,
+   "censoring": "p_normal_tail_below_float64"
   },
   {
    "family": "C_capacity_feature",

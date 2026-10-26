@@ -338,7 +338,8 @@ def main() -> None:
         "attribution lift 0.10-0.20 / 0.06-0.56; post-hoc explanation Spearman "
         "≥0.996 | negative for alerting, positive for post-hoc |\n"
         "| HGB occlusion | occlusion-vs-occlusion Spearman 0.69-0.82; top-10 "
-        "absolute overlap 0.05-0.43 | broad rank agreement |\n"
+        "overlap 0.05-0.43 (log-occlusion) and 0.00-0.33 (absolute "
+        "attribution, actor level) | broad rank agreement |\n"
         "| Fresh holdout | holdout completed after this audit; not used | "
         "provisional |\n")
 
@@ -658,8 +659,10 @@ def main() -> None:
     add("Interpretation: HGB block occlusion reproduces the logistic occlusion "
         "ranking at Spearman 0.69-0.82 (actor level; month-block/actor-bootstrap "
         "CIs exclude 0), and at 0.67-0.74 for actor-month cells. Top-10 "
-        "absolute-importance overlap is only 0.05-0.43, so the agreement is "
-        "broad-ordering, not set-level. HGB selected 150 iterations at the grid "
+        "overlap at actor level is 0.05-0.43 for log-occlusion and 0.00-0.33 "
+        "for absolute attribution (0.00 in actor-month cells, where "
+        "log-occlusion is not computed), so the agreement is broad-ordering, "
+        "not set-level. HGB selected 150 iterations at the grid "
         "edge (select LL still improving); it is a capacity control, not a "
         "tuned competitor. Signed attribution and ΔNLL are not the "
         "same scale: because most rows are zeros, a positive attribution actor "
@@ -740,8 +743,9 @@ def main() -> None:
         ("**HGB occlusion (supported as a rank-agreement diagnostic, not as "
          "exactness).** HGB block occlusion reproduces the logistic occlusion "
          "ranking at Spearman 0.69-0.82 across actors (0.67-0.74 across "
-         "actor-month cells), with top-10 absolute-importance overlap of only "
-         "0.05-0.43; signed attribution and occlusion ΔNLL are not the same "
+         "actor-month cells), with top-10 actor-level set overlap of 0.05-0.43 "
+         "for log-occlusion and only 0.00-0.33 for absolute attribution; signed "
+         "attribution and occlusion ΔNLL are not the same "
          "scale because the evaluation set is zero-dominated.",
          "supported as rank-agreement diagnostic"),
         ("**Confirmatory status (provisional).** All stability results are "

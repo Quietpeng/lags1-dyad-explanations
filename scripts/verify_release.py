@@ -157,6 +157,13 @@ SECRET_PATTERNS = (
 )
 SUM_LINE = re.compile(r"^([0-9a-f]{64})  (.+)$")
 
+# The public world-line preview ships the paper's Figure A1 render itself (R6
+# X01): 150 mm = 425.197 pt wide, Arimo, no baked key.  Digests are of
+# ``paper/figures/figA1_worldline.{pdf,png}``.
+WG_PDF_MEDIABOX = b"/MediaBox [ 0 0 425.1968503937 330 ]"
+WG_PDF_SHA256 = "77081960c20db85ff3748cc06edd3d38ceb9cf69fb93687ff612f5deec8bb3b1"
+WG_PNG_SHA256 = "3b6e0fb29706a5c8af1bf219120d4c125467bc37ecc9ad48f25bd3df046e02d4"
+
 # Row-level / named-rate boundary (see DATA_EXCLUSIONS.md). The world-line
 # preview ships a rendered illustration and aggregate JSON only; these per-row
 # exports were removed and must not reappear.
@@ -474,6 +481,28 @@ def check_stability_docs(root: Path) -> list[str]:
     return errors
 
 
+def check_legacy_stability_label(root: Path) -> list[str]:
+    """Fail if the superseded pre-holdout audit label is still shipped.
+
+    The 50-refit grid was frozen at ``2026-10-23T06:31:40Z``, i.e. 64 minutes
+    after the confirmatory label read began (``05:26:55.031577Z``) and before it
+    completed (``07:45:19Z``).  The truthful literal is
+    ``frozen_during_confirmatory_run_holdout_rows_excluded``; the legacy string
+    is accepted by nothing.
+    """
+    base = root / STABILITY_REL
+    legacy = "pre_holdout_holdout_excluded"
+    errors: list[str] = []
+    for rel in ("report.md", "summary.json", "summary_decompose.json",
+                "summary_hgb.json", "summary_stability.json"):
+        path = base / rel
+        if not path.is_file():
+            continue
+        if legacy in path.read_text(encoding="utf-8"):
+            errors.append(f"stability/{rel} retains the legacy audit label {legacy!r}")
+    return errors
+
+
 def check_stability(root: Path) -> list[str]:
     base = root / STABILITY_REL
     required = ("report.md", "summary.json", "summary_decompose.json",
@@ -492,7 +521,7 @@ def check_stability(root: Path) -> list[str]:
         errors.append(f"unexpected stability status: {summary.get('status')!r}")
     scope = summary.get("scope", {})
     expected_scope = {
-        "audit_design": "pre_holdout_holdout_excluded",
+        "audit_design": "frozen_during_confirmatory_run_holdout_rows_excluded",
         "n_seed_replicates": 50,
         "model_C": 1.0,
         "holdout_excluded_directed_dyads": 5282,
@@ -501,6 +530,9 @@ def check_stability(root: Path) -> list[str]:
     for key, value in expected_scope.items():
         if scope.get(key) != value:
             errors.append(f"stability scope.{key} changed: {scope.get(key)!r}")
+    # The superseded "pre-holdout" label must never come back: the grid was
+    # frozen after the confirmatory read began (see consensus R2C2 M01).
+    errors += check_legacy_stability_label(root)
     holdout = summary.get("holdout", {})
     if holdout.get("available_at_audit") is not False:
         errors.append("stability holdout.available_at_audit must be false")
@@ -510,6 +542,16 @@ def check_stability(root: Path) -> list[str]:
         errors.append("stability holdout.used must be false")
     if holdout.get("completed_utc") != "2026-10-23T07:45:19Z":
         errors.append("stability holdout.completed_utc is stale or missing")
+    if holdout.get("confirmatory_run_start_utc") != "2026-10-23T05:26:55.031577Z":
+        errors.append(
+            "stability holdout.confirmatory_run_start_utc is stale or missing"
+        )
+    if holdout.get("design_frozen_utc") != "2026-10-23T06:31:40Z":
+        errors.append("stability holdout.design_frozen_utc is stale or missing")
+    if holdout.get("audit_design") != expected_scope["audit_design"]:
+        errors.append(
+            "stability holdout.audit_design disagrees with scope.audit_design"
+        )
     for name in ("summary_decompose.json", "summary_hgb.json",
                  "summary_stability.json"):
         sub = strict_load(base / name)
@@ -582,11 +624,37 @@ def check_worldline_notice(root: Path) -> list[str]:
     errors = []
     if "not print-legible" in lowered:
         errors.append("worldline README still calls the shipped figure not print-legible")
-    for phrase in ("print version", "vector", "164", "truetype"):
+    for phrase in ("print version", "vector", "150", "truetype"):
         if phrase not in lowered:
             errors.append(f"worldline README lacks {phrase!r}")
     if "no row-level" not in lowered:
         errors.append("worldline README does not state the no-row-level boundary")
+    if "164" in lowered:
+        errors.append("worldline README still advertises the superseded 164 mm preview")
+    if "byte-identical" not in lowered:
+        errors.append("worldline README does not state that the preview is paper A1")
+    # The shipped preview must be the paper's A1 render, not the old 465x380 pt
+    # DejaVu print version (R6 X01).
+    base = root / "results/worldline_preview"
+    pdf = base / "worldline_preview.pdf"
+    png = base / "worldline_preview.png"
+    if not pdf.is_file():
+        errors.append("worldline_preview.pdf missing")
+    else:
+        blob = pdf.read_bytes()
+        if b"465 380" in blob:
+            errors.append("worldline PDF is the superseded 465 x 380 pt preview")
+        if WG_PDF_MEDIABOX not in blob:
+            errors.append(
+                "worldline PDF is not 425.197 x 330 pt (150 mm) paper-A1 geometry")
+        if hashlib.sha256(blob).hexdigest() != WG_PDF_SHA256:
+            errors.append("worldline PDF is not byte-identical to paper Figure A1")
+        if b"DejaVu" in blob:
+            errors.append("worldline PDF still uses the superseded DejaVu fonts")
+    if not png.is_file():
+        errors.append("worldline_preview.png missing")
+    elif hashlib.sha256(png.read_bytes()).hexdigest() != WG_PNG_SHA256:
+        errors.append("worldline PNG is not the 300 dpi raster of paper Figure A1")
     return errors
 
 

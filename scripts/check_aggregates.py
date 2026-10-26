@@ -36,6 +36,13 @@ RESTRICTED_NOTE = (
     "experiments/ tree is a five-seed preview, not the 50-refit audit."
 )
 
+# The public world-line preview ships the paper's Figure A1 render itself (R6
+# X01): 150 mm = 425.197 pt wide, Arimo, no baked key.  Digests are of
+# ``paper/figures/figA1_worldline.{pdf,png}``.
+WG_PDF_MEDIABOX = b"/MediaBox [ 0 0 425.1968503937 330 ]"
+WG_PDF_SHA256 = "77081960c20db85ff3748cc06edd3d38ceb9cf69fb93687ff612f5deec8bb3b1"
+WG_PNG_SHA256 = "3b6e0fb29706a5c8af1bf219120d4c125467bc37ecc9ad48f25bd3df046e02d4"
+
 
 def strict_load(path: Path) -> dict:
     def reject(token: str):
@@ -146,7 +153,7 @@ def check_stability(root: Path) -> list[str]:
         errors.append(f"unexpected stability status {summary.get('status')!r}")
     scope = summary.get("scope", {})
     expected_scope = {
-        "audit_design": "pre_holdout_holdout_excluded",
+        "audit_design": "frozen_during_confirmatory_run_holdout_rows_excluded",
         "n_seed_replicates": 50,
         "model_C": 1.0,
         "holdout_excluded_directed_dyads": 5282,
@@ -155,6 +162,15 @@ def check_stability(root: Path) -> list[str]:
     for key, value in expected_scope.items():
         if scope.get(key) != value:
             errors.append(f"stability scope.{key} != {value!r}")
+    # The superseded "pre-holdout" label must never come back.
+    legacy_label = "pre_holdout_holdout_excluded"
+    for name in ("report.md", "summary.json", "summary_decompose.json",
+                 "summary_hgb.json", "summary_stability.json"):
+        if legacy_label in (base / name).read_text(encoding="utf-8"):
+            errors.append(
+                f"stability/{name} retains the legacy audit label "
+                f"{legacy_label!r}"
+            )
     holdout = summary.get("holdout", {})
     expected = {
         "available_at_audit": False,
@@ -164,6 +180,10 @@ def check_stability(root: Path) -> list[str]:
     for key, value in expected.items():
         if holdout.get(key) is not value:
             errors.append(f"stability summary holdout.{key} != {value!r}")
+    if holdout.get("confirmatory_run_start_utc") != "2026-10-23T05:26:55.031577Z":
+        errors.append(
+            "stability summary holdout.confirmatory_run_start_utc stale or missing"
+        )
     stability = strict_load(base / "summary_stability.json")
     if stability.get("protocol", {}).get("n_seed_replicates") != 50:
         errors.append("summary_stability.json protocol.n_seed_replicates != 50")
@@ -237,12 +257,32 @@ def check_worldline(root: Path) -> list[str]:
         errors.append("run_manifest preview_scope.holdout_rows != 0")
 
     pdf = (base / "worldline_preview.pdf").read_bytes()
-    if b"465 380" not in pdf[:4096]:
-        errors.append("worldline PDF is not the 465 x 380 pt print version")
+    # The public preview must be the paper's A1 render, not the superseded
+    # 465x380 pt (164 mm) DejaVu print version (R6 X01).
+    if b"465 380" in pdf:
+        errors.append("worldline PDF is the superseded 465 x 380 pt print version")
+    if WG_PDF_MEDIABOX not in pdf:
+        errors.append(
+            "worldline PDF is not 425.197 x 330 pt (150 mm) paper-A1 geometry")
     if b"/Type3" in pdf:
         errors.append("worldline PDF contains Type 3 fonts")
     if b"/FontFile2" not in pdf:
         errors.append("worldline PDF lacks embedded TrueType fonts")
+    if hashlib.sha256(pdf).hexdigest() != WG_PDF_SHA256:
+        errors.append(
+            "worldline PDF is not byte-identical to paper Figure A1 "
+            f"(expected {WG_PDF_SHA256})")
+    png = (base / "worldline_preview.png").read_bytes()
+    if hashlib.sha256(png).hexdigest() != WG_PNG_SHA256:
+        errors.append(
+            "worldline PNG is not the 300 dpi raster of paper Figure A1 "
+            f"(expected {WG_PNG_SHA256})")
+    provenance = manifest.get("figure_provenance") or {}
+    if provenance.get("baked_key") is not False:
+        errors.append("run_manifest figure_provenance.baked_key must be false")
+    if provenance.get("regenerable_from_this_tree") is not False:
+        errors.append(
+            "run_manifest figure_provenance.regenerable_from_this_tree must be false")
     return errors
 
 

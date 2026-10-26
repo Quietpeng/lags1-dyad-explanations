@@ -2,11 +2,13 @@
 
 **Status:** `ILLUSTRATIVE PREVIEW - NOT VALIDATED; NO MULTI-STEP ACCURACY CLAIM.`
 
-> **Print version (2026-10-23).** `worldline_preview.pdf` is the vector,
-> 465 × 380 pt (164 mm) print version with TrueType fonts and ≥7 pt labels. The
-> PNG is a 300 dpi preview. The underlying experiment was not rerun; only the
-> figure layout was rebuilt. The paper's Appendix A1 uses the same data and
-> caption.
+> **Print version (2026-10-26).** `worldline_preview.pdf` is **byte-identical
+> to the paper's Figure A1** (`paper/figures/figA1_worldline.pdf`): vector,
+> 425.2 × 330 pt (150 mm), Arimo, TrueType fonts, no baked-in key. The PNG is
+> the same render at 300 dpi. It was rendered from the restricted per-row trace
+> exports and is **not regenerable from this tree**; `experiments/worldline_preview.py`
+> ships for inspection only. The underlying experiment was not rerun. The
+> superseded DejaVu print version with a baked key is gone; see `CORRECTIONS.md`.
 
 This directory is a **communication and debugging artifact** for the paper's
 Appendix A1, not a main result and not a validated multi-step forecast. It uses

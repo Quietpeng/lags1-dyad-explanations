@@ -13,7 +13,7 @@ All three notebooks are committed **with executed outputs** (aggregate-only). `m
 | Notebook | Purpose | Evidential status |
 |---|---|---|
 | `01_confirmatory_holdout.ipynb` | Rebuild Table 2 Panels A/C, the strict-mean vs pair-weighted within-dyad contrast, the graph/train-statistics LOO result and the baseline forest from the one-shot unit-fresh 20% dyad holdout (2018-01–2022-11). | Confirmatory, but retrospective: unit-fresh, **not** time-fresh. |
-| `02_stability_audit.ipynb` | Display the exactness check, actor-bucket shares, source/target redundancy, variance decomposition, top-k Jaccard, period/window contrasts, decision proxy, and HGB occlusion. | **Provisional**: holdout-excluded 50-refit audit on inner 2016–17 plus burned 2018–22/COVID views; frozen before the holdout completed and not integrated with it. The public `experiments/` tree is a five-seed preview and does not regenerate these aggregates. |
+| `02_stability_audit.ipynb` | Display the exactness check, actor-bucket shares, source/target redundancy, variance decomposition, top-k Jaccard, period/window contrasts, decision proxy, and HGB occlusion. | **Provisional**: holdout-excluded 50-refit audit on inner 2016–17 plus burned 2018–22/COVID views; grid frozen mid-run (after the confirmatory read began, before it completed); the holdout is not integrated with it. The public `experiments/` tree is a five-seed preview and does not regenerate these aggregates. |
 | `03_worldline_preview.ipynb` | Display the two-step illustrative world-line preview, per-anchor and aggregate transition counts, and induced actor states (no row-level trace). | **Illustrative only**; not validated; no multi-step accuracy claim; deletable. |
 
 ## Quick start

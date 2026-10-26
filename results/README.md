@@ -14,8 +14,8 @@ provisional. Read the status table before quoting a number.
 | Artifact | Status | What it supports |
 |---|---|---|
 | `framework_pilot/holdout/` | **Frozen, one-shot, completed** | The pre-registered 49-feature primary, pre-registered 29-feature secondary, baselines, within/between-dyad checks, feature-group LOO and sensitivity tables. |
-| `framework_pilot/stability/` | **Provisional; holdout-excluded 50-refit rerun** | Exactness, source/target aggregation, seed/regime/window stability, top-k and decision proxy, HGB occlusion. The audit design was frozen before the holdout completed; the confirmatory holdout completed later and was not used. The public `experiments/` tree is a five-seed preview, not this audit; see `experiments/STABILITY_VARIANT.md`. |
-| `worldline_preview/` | **Illustrative only** | A two-step communication preview; no multi-step accuracy claim. Ships the vector 164 mm A1 print version and a 300 dpi PNG plus aggregate JSON; no row-level trace file. |
+| `framework_pilot/stability/` | **Provisional; holdout-excluded 50-refit rerun** | Exactness, source/target aggregation, seed/regime/window stability, top-k and decision proxy, HGB occlusion. `audit_design = frozen_during_confirmatory_run_holdout_rows_excluded`: the grid was frozen at 06:31:40Z, after the confirmatory read began at 05:26:55Z and before it completed at 07:45:19Z; the rerun is non-confirmatory and every eventual holdout dyad is excluded at row level. The public `experiments/` tree is a five-seed preview, not this audit; see `experiments/STABILITY_VARIANT.md`. |
+| `worldline_preview/` | **Illustrative only** | A two-step communication preview; no multi-step accuracy claim. Ships the vector 150 mm A1 print version — byte-identical to the paper's Figure A1 — and a 300 dpi PNG plus aggregate JSON; no row-level trace file. |
 
 The stability status is recorded machine-readably in `stability/summary.json`:
 
@@ -24,7 +24,10 @@ The stability status is recorded machine-readably in `stability/summary.json`:
   "available_at_audit": false,
   "completed_later": true,
   "used": false,
-  "completed_utc": "2026-10-23T07:45:19Z"
+  "confirmatory_run_start_utc": "2026-10-23T05:26:55.031577Z",
+  "completed_utc": "2026-10-23T07:45:19Z",
+  "audit_design": "frozen_during_confirmatory_run_holdout_rows_excluded",
+  "design_frozen_utc": "2026-10-23T06:31:40Z"
 }
 ```
 
@@ -55,7 +58,7 @@ number remains provisional and must not be written as a confirmatory headline.
 
 | File | Content |
 |---|---|
-| `stability/report.md` | Audit report with a release banner: frozen before the holdout completed, not integrated. |
+| `stability/report.md` | Audit report with a release banner: grid frozen mid-run, holdout not integrated. |
 | `stability/summary.json` | Machine-readable summary, status and holdout timing flags. |
 | `stability/summary_decompose.json` | Exactness, bucket contract, actor headlines and collinearity. |
 | `stability/summary_stability.json` | Seed/period/window stability, variance decomposition, top-k and decision proxy. |
@@ -70,7 +73,7 @@ number remains provisional and must not be written as a confirmatory headline.
 | `worldline_preview/README.md` | Scope, sample rule, figure status and deletion note. |
 | `worldline_preview/worldline_trace.json` | Per-anchor counts, state-path and transition tallies, disclaimers, model provenance and sample rule. No per-row records. |
 | `worldline_preview/run_manifest.json` | Command, host/packages, input/output hashes, preview scope and the no-row-level rule. |
-| `worldline_preview/worldline_preview.{pdf,png}` | Illustrative preview figure; vector 164 mm print version, TrueType fonts, no accuracy claim. |
+| `worldline_preview/worldline_preview.{pdf,png}` | Illustrative preview figure; vector 150 mm print version, byte-identical to paper Figure A1, Arimo/TrueType, no baked key, no accuracy claim. |
 
 The 240-row `worldline_trace.csv` and 249-row `node_trace.csv` are **not
 shipped**: the per-row exports carry `state`/`p_model` and were removed.

@@ -1,6 +1,6 @@
 # Sprint B — exact additive actor explanations and stability audit
 
-> **Audit status.** The audit design was frozen at 2026-10-23T06:31Z. The confirmatory holdout completed after this audit at 07:45:19Z. The audit was recomputed after excluding all eventual holdout dyads from fitting and aggregation, with C fixed at the primary value 1.0 and 50 dyad-cluster bootstrap refits. The holdout was available_at_audit=false, completed later, and was not integrated or used. This is a pre-holdout design, not a holdout-side stability test.
+> **Audit status.** The audit grid was frozen at 2026-10-23T06:31:40Z — after the confirmatory read began at 2026-10-23T05:26:55.031577Z and before it completed — and the confirmatory holdout completed after this audit at 07:45:19Z. The 50 dyad-cluster bootstrap rerun (C fixed at the primary value 1.0) was executed afterwards, from 14:30 to 16:07Z, after excluding all 5,282 eventual holdout directed dyads (2,790 unordered pairs) at row level from fitting and aggregation. The holdout was available_at_audit=false, completed later, and was not integrated or used. `audit_design = frozen_during_confirmatory_run_holdout_rows_excluded`: the freeze sits mid-run rather than before the read, so the audit is provisional, post-holdout in execution and non-confirmatory — not a holdout-side stability test.
 
 **Status: `provisional_holdout_not_integrated`.** CPU only; no new data; no synthetic or T1 run; no test tuning. The month-block bootstrap uses 50 replicates; the seed axis uses 50 refits.
 

@@ -1,5 +1,91 @@
 # Corrections / errata
 
+## 2026-10-26 — stability audit status relabelled (no number changed)
+
+`stability/summary.json` (`#/scope/audit_design`, `#/holdout/audit_design`) and
+`stability/summary_hgb.json` (`#/holdout/audit_design`) carried
+`pre_holdout_holdout_excluded`. That literal is false. The grid was frozen at
+`2026-10-23T06:31:40Z`, i.e. **after** the confirmatory label read began
+(`2026-10-23T05:26:55.031577Z`) and **before** it completed
+(`2026-10-23T07:45:19Z`); the 50-refit rerun then ran `14:30`–`16:07Z`.
+
+Corrected literal, in both JSONs and every public prose site:
+`frozen_during_confirmatory_run_holdout_rows_excluded`. `#/holdout` now also
+carries `confirmatory_run_start_utc` and a note naming start / freeze /
+completion / rerun. The audit remains non-confirmatory, the holdout remains
+`used=false`, and all 5,282 directed dyads (2,790 unordered pairs) are still
+excluded at row level before fitting and aggregation. No stability estimate,
+interval, CI, refit count, C, seed, CSV cell or table row changed;
+`SHA256SUMS` and the manifest `current_sha256` entries were regenerated for the
+edited files. `make verify` and `make stability-check` now fail if the
+superseded literal reappears. Paper text (`manuscript.md:101`, `:364`) is
+unchanged and remains correct.
+
+## 2026-10-26 — BH family-B (and residual within/between) p-values: zero floor
+
+`tables/bh_families.csv` row `B_primary_other_metrics, d_ap vs per_dyad_markov`
+and `tables/auc_ap_deltas.csv` column `d_ap_multiway_p` carried `0.0`.
+Both cells are two-sided normal tails `2*Phi(-z)` of the stored multiway
+standard errors: `z = 0.35072182017821874 / 0.004128971364976906 = 84.9417`
+(primary) and `z = 0.35060597902021906 / 0.004254887234907397 = 82.4008`
+(29-feature). The true tails are ~1.5e-1569 and ~4e-1477, i.e. below the
+smallest float64 (~4.9e-324), so the stored literal was a numerical artefact,
+not a p-value; a p-value is never exactly zero.
+
+The cells now carry the strict upper bound `<1e-300` and an explicit
+`censoring` column (`p_normal_tail_below_float64` /
+`d_ap_multiway_p_normal_tail_below_float64`). Same treatment for the two
+`summary.json` / `parts/holdout_extras.json` `bh` mirrors.
+
+`tables/within_between_deltas.csv` (and the `summary.json` /
+`holdout_extras.json` `within_between.paired` / `within_deltas` mirrors)
+carried `p_mean`/`p_pooled = 0.0`. Those are two-sided **paired bootstrap**
+tails over 1,000 draws: zero hits on one side means `p < 1/1001`, not
+`p = 0`. They now carry `<0.001` plus the censoring token
+`two_sided_paired_bootstrap_tail_zero_of_1000`.
+
+No refit, bootstrap rerun, label read or new data. Every repaired p-value was
+already the smallest in its family; every family still rejects at 0.05, no
+`d_ap`, `d_pooled`, CI, `se`, ordering or decision changes, and the
+`reject_0.05` column is unchanged. `framework/sprint_a_inference.py` gained
+`p_display` / `boot_p_display` so a re-run reproduces the convention instead of
+reintroducing a literal zero.
+
+## 2026-10-26 — §5.2 top-10 overlap range: absolute attribution is 0.00–0.33
+
+Two public generator/doc sentences quoted "top-10 absolute-importance overlap
+0.05–0.43" — a range that belongs to **log-occlusion**, not to absolute
+attribution. Recomputed from `stability/tables/hgb_occlusion_agreement.csv`
+(`level = actor`, 3 periods × 2 roles):
+
+| metric | min | max |
+|---|---:|---:|
+| `jaccard_logocc_pos@10` | 0.0526 | 0.4286 |
+| `jaccard_abs@10` | **0.0000** | **0.3333** |
+| `jaccard_pos@10` (signed) | 0.0000 | 0.0000 |
+
+At actor-month level `jaccard_abs@10` is 0.0 everywhere and log-occlusion is not
+computed (blank). `experiments/sprint_b_report.py` now prints "0.05-0.43
+(log-occlusion) and 0.00-0.33 (absolute attribution, actor level)". The
+shipped `stability/report.md` already reported the per-cell values (source
+0.053, target 0.333) and needed no change. Arithmetic only: no table cell, no
+conclusion and no caption changed.
+
+## 2026-10-26 — public world-line preview replaced with the paper's A1 render
+
+`results/worldline_preview/worldline_preview.{pdf,png}` were the superseded
+465 × 380 pt (164 mm) DejaVu print version with a baked-in key, which is not the
+figure the paper prints. They are now byte-identical copies of
+`paper/figures/figA1_worldline.pdf` (425.197 × 330 pt = 150 mm, Arimo,
+no baked key; sha256 `77081960…8bb3b1`) and its 300 dpi raster
+(sha256 `3b6e0f…e02d4`). `run_manifest.json` gained a `figure_provenance`
+block and new `outputs` digests; `results/README.md` and the preview README say
+"identical to paper Figure A1; rendered from restricted trace exports; not
+regenerable from this tree". `make worldline-check` and `make verify` now
+assert 425.197 × 330 pt plus both digests and reject the old 465 × 380 pt
+DejaVu file. No CSV was added, no experiment was rerun and no main result
+depends on this directory.
+
 ## 2026-10-26 — BH family D recomputed from the frozen normal-tail p-values
 
 `tables/bh_families.csv` and the `bh` blocks of `summary.json` /

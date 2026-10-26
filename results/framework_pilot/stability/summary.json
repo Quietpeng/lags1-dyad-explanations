@@ -38,7 +38,7 @@
   "n_actors": 196,
   "test_used": true,
   "test_status": "burned retrospective secondary only",
-  "audit_design": "pre_holdout_holdout_excluded",
+  "audit_design": "frozen_during_confirmatory_run_holdout_rows_excluded",
   "holdout_excluded_directed_dyads": 5282,
   "holdout_excluded_unordered_pairs": 2790,
   "model_C": 1.0
@@ -114567,10 +114567,11 @@
   "available_at_audit": false,
   "completed_later": true,
   "used": false,
+  "confirmatory_run_start_utc": "2026-10-23T05:26:55.031577Z",
   "completed_utc": "2026-10-23T07:45:19Z",
-  "audit_design": "pre_holdout_holdout_excluded",
+  "audit_design": "frozen_during_confirmatory_run_holdout_rows_excluded",
   "design_frozen_utc": "2026-10-23T06:31:40Z",
-  "note": "The confirmatory holdout completed after this audit (2026-10-23T07:45:19Z). All eventual holdout dyads were excluded from fitting and aggregation; no holdout label was used."
+  "note": "The audit grid was frozen at 2026-10-23T06:31:40Z, i.e. after the confirmatory read began at 2026-10-23T05:26:55.031577Z and before it completed at 2026-10-23T07:45:19Z; the 50-refit rerun was then executed from 14:30 to 16:07Z (generated_utc 16:07:57Z). All 5,282 eventual holdout directed dyads (2,790 unordered pairs) were excluded at row level from fitting and aggregation; no holdout label was read, the holdout was not integrated, and the audit is non-confirmatory."
  },
  "files": [
   "actor_attribution_all_periods.csv",

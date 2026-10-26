@@ -178,6 +178,61 @@ class TestStabilityStatus(unittest.TestCase):
             summary = strict_load(STABILITY / name)
             self.assertEqual(summary["status"], "provisional_holdout_not_integrated")
 
+    # -- R2C2 M01: the audit status literal must state the true timing --------
+    def test_audit_status_literal_is_truthful(self):
+        """The grid was frozen mid-run, so the label may not claim "pre-holdout"."""
+        literal = "frozen_during_confirmatory_run_holdout_rows_excluded"
+        summary = strict_load(STABILITY / "summary.json")
+        self.assertEqual(summary["scope"]["audit_design"], literal)
+        self.assertEqual(summary["holdout"]["audit_design"], literal)
+        hgb = strict_load(STABILITY / "summary_hgb.json")
+        self.assertEqual(hgb["holdout"]["audit_design"], literal)
+        holdout = summary["holdout"]
+        self.assertEqual(holdout["confirmatory_run_start_utc"],
+                         "2026-10-23T05:26:55.031577Z")
+        self.assertEqual(holdout["design_frozen_utc"],
+                         "2026-10-23T06:31:40Z")
+        self.assertEqual(holdout["completed_utc"], "2026-10-23T07:45:19Z")
+        # Freeze strictly after the read started and before it completed.
+        self.assertLess(holdout["confirmatory_run_start_utc"],
+                        holdout["design_frozen_utc"])
+        self.assertLess(holdout["design_frozen_utc"], holdout["completed_utc"])
+
+    def test_no_shipped_stability_file_uses_the_legacy_label(self):
+        legacy = "pre_holdout_holdout_excluded"
+        for path in sorted(STABILITY.rglob("*")):
+            if path.is_file() and path.suffix in {".json", ".md", ".csv"}:
+                self.assertNotIn(legacy, path.read_text(encoding="utf-8"), path)
+
+    def test_report_says_the_freeze_was_mid_run(self):
+        report = " ".join(
+            (STABILITY / "report.md").read_text(encoding="utf-8").lower().split())
+        self.assertIn("after the confirmatory read began", report)
+        self.assertIn("frozen_during_confirmatory_run_holdout_rows_excluded", report)
+        self.assertNotIn("is a pre-holdout design", report)
+
+    def test_verifier_rejects_the_legacy_label(self):
+        import importlib.util
+        import tempfile
+        spec = importlib.util.spec_from_file_location(
+            "verify_release_legacy", ROOT / "scripts" / "verify_release.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp) / "results" / "framework_pilot" / "stability"
+            base.mkdir(parents=True)
+            (base / "summary.json").write_text(
+                '{"scope": {"audit_design": "pre_holdout_holdout_excluded"}}',
+                encoding="utf-8")
+            errors = module.check_legacy_stability_label(Path(tmp))
+            self.assertTrue(
+                any("legacy audit label" in e for e in errors), errors)
+            (base / "summary.json").write_text(
+                '{"scope": {"audit_design": '
+                '"frozen_during_confirmatory_run_holdout_rows_excluded"}}',
+                encoding="utf-8")
+            self.assertEqual(module.check_legacy_stability_label(Path(tmp)), [])
+
 
 class TestReleaseMetadata(unittest.TestCase):
     def test_results_readme_documents_terms_and_exclusions(self):
@@ -314,6 +369,182 @@ class TestDataExclusions(unittest.TestCase):
         self.assertEqual(actual, set(entries))
         for rel, digest in entries.items():
             self.assertEqual(sha256(ROOT / rel), digest, rel)
+
+
+class TestSetOverlapRange(unittest.TestCase):
+    """R2C2 M02: absolute attribution is 0.00-0.33, log-occlusion 0.05-0.43."""
+
+    def rows(self):
+        with (STABILITY / "tables" / "hgb_occlusion_agreement.csv").open(
+            encoding="utf-8", newline=""
+        ) as handle:
+            return list(csv.DictReader(handle))
+
+    def values(self, level: str, column: str) -> list[float]:
+        out = []
+        for row in self.rows():
+            if row["level"] != level or not row.get(column):
+                continue
+            out.append(float(row[column]))
+        return out
+
+    def test_actor_level_ranges_are_distinct(self):
+        abs_j = self.values("actor", "jaccard_abs@10")
+        logocc = self.values("actor", "jaccard_logocc_pos@10")
+        self.assertEqual(len(abs_j), 6)      # 3 periods x 2 roles
+        self.assertEqual(len(logocc), 6)
+        self.assertAlmostEqual(min(abs_j), 0.0, places=12)
+        self.assertAlmostEqual(max(abs_j), 0.3333, places=4)
+        self.assertAlmostEqual(min(logocc), 0.0526, places=4)
+        self.assertAlmostEqual(max(logocc), 0.4286, places=4)
+
+    def test_actor_month_rows_are_absolute_zero_and_logocc_blank(self):
+        abs_j = self.values("actor_month", "jaccard_abs@10")
+        self.assertEqual(len(abs_j), 6)
+        self.assertTrue(all(value == 0.0 for value in abs_j))
+        self.assertEqual(self.values("actor_month", "jaccard_logocc_pos@10"), [])
+
+    def test_signed_overlap_is_zero(self):
+        signed = self.values("actor", "jaccard_pos@10")
+        self.assertTrue(all(value == 0.0 for value in signed))
+
+    def test_report_generator_does_not_conflate_the_ranges(self):
+        text = (ROOT / "experiments" / "sprint_b_report.py").read_text(
+            encoding="utf-8")
+        flat = " ".join(text.split())
+        self.assertIn("0.00-0.33", flat)
+        # The conflation the paper used to print must be gone.
+        self.assertNotIn("absolute-importance overlap is only 0.05-0.43", flat)
+        self.assertNotIn("top-10 absolute overlap 0.05-0.43", flat)
+        # Every quoted 0.05-0.43 must sit next to a log-occlusion scope.
+        start = 0
+        while True:
+            pos = flat.find("0.05-0.43", start)
+            if pos < 0:
+                break
+            window = flat[max(0, pos - 160):pos + 160]
+            self.assertIn("log-occlusion", window, window)
+            start = pos + 1
+
+
+class TestFamilyBFloors(unittest.TestCase):
+    """R2C2 CL-4: p-values below numerical resolution are bounds, not 0.0."""
+
+    def test_bh_family_b_uses_a_bound_and_a_censoring_field(self):
+        with (HOLDOUT / "tables" / "bh_families.csv").open(
+            encoding="utf-8", newline=""
+        ) as handle:
+            rows = list(csv.DictReader(handle))
+        row = next(r for r in rows
+                   if r["family"] == "B_primary_other_metrics"
+                   and r["comparison"] == "d_ap vs per_dyad_markov")
+        self.assertEqual(row["p"], "<1e-300")
+        self.assertEqual(row["q"], "<1e-300")
+        self.assertEqual(row["censoring"], "p_normal_tail_below_float64")
+        self.assertEqual(row["reject_0.05"], "True")
+        for other in rows:
+            self.assertNotEqual(other["p"], "0.0", other["comparison"])
+
+    def test_auc_ap_delta_p_is_a_bound(self):
+        with (HOLDOUT / "tables" / "auc_ap_deltas.csv").open(
+            encoding="utf-8", newline=""
+        ) as handle:
+            rows = list(csv.DictReader(handle))
+        bounded = [r for r in rows if r["d_ap_multiway_p"] == "<1e-300"]
+        self.assertEqual(len(bounded), 2)
+        for row in bounded:
+            self.assertEqual(row["censoring"],
+                             "d_ap_multiway_p_normal_tail_below_float64")
+        self.assertFalse([r for r in rows if r["d_ap_multiway_p"] == "0.0"])
+
+    def test_within_between_bootstrap_floor_is_a_bound(self):
+        with (HOLDOUT / "tables" / "within_between_deltas.csv").open(
+            encoding="utf-8", newline=""
+        ) as handle:
+            rows = list(csv.DictReader(handle))
+        self.assertFalse([r for r in rows if "0.0" in (r["p_mean"], r["p_pooled"])])
+        bounded = [r for r in rows
+                   if r["censoring"] ==
+                   "two_sided_paired_bootstrap_tail_zero_of_1000"]
+        self.assertEqual(len(bounded), 4)
+        for row in bounded:
+            self.assertEqual(row["p_mean"] if row["p_mean"] == "<0.001"
+                             else row["p_pooled"], "<0.001")
+        # No delta, CI, SE or ordering changed.
+        primary = next(r for r in rows if r["comparison"].endswith(
+            "__vs__base_per_dyad_markov"))
+        self.assertEqual(primary["d_pooled"], "0.024024662485383222")
+        self.assertEqual(primary["d_mean"], "-0.004688250097412408")
+
+    def test_summary_mirrors_the_bounds(self):
+        summary = strict_load(HOLDOUT / "summary.json")
+        row = next(r for r in summary["bh"]
+                   if r["comparison"] == "d_ap vs per_dyad_markov")
+        self.assertEqual(row["p"], "<1e-300")
+        self.assertEqual(row["q"], "<1e-300")
+        self.assertTrue(row["reject_0.05"])
+        paired = summary["within_between"]["paired"][
+            "logistic49_S1_temperature__vs__base_dyad_base_rate"]
+        self.assertEqual(paired["p_mean"], "<0.001")
+        self.assertEqual(paired["p_pooled"], "<0.001")
+
+
+class TestWorldlinePreview(unittest.TestCase):
+    """R6 X01: ship the paper's A1 render, not the superseded 164 mm preview."""
+
+    def base(self) -> Path:
+        return STABILITY.parent.parent / "worldline_preview"
+
+    def test_pdf_is_the_paper_a1_render(self):
+        pdf = (self.base() / "worldline_preview.pdf").read_bytes()
+        self.assertIn(b"/MediaBox [ 0 0 425.1968503937 330 ]", pdf)
+        self.assertNotIn(b"465 380", pdf)
+        self.assertNotIn(b"DejaVu", pdf)
+        self.assertNotIn(b"/Type3", pdf)
+        self.assertIn(b"/FontFile2", pdf)
+        self.assertEqual(sha256(self.base() / "worldline_preview.pdf"),
+                         "77081960c20db85ff3748cc06edd3d38ceb9cf69fb93687ff612f5deec8bb3b1")
+        self.assertEqual(sha256(self.base() / "worldline_preview.png"),
+                         "3b6e0fb29706a5c8af1bf219120d4c125467bc37ecc9ad48f25bd3df046e02d4")
+
+    def test_manifest_records_the_provenance(self):
+        manifest = strict_load(self.base() / "run_manifest.json")
+        provenance = manifest["figure_provenance"]
+        self.assertEqual(provenance["width_mm"], 150.0)
+        self.assertFalse(provenance["baked_key"])
+        self.assertFalse(provenance["regenerable_from_this_tree"])
+        self.assertEqual(provenance["pdf_sha256"],
+                         "77081960c20db85ff3748cc06edd3d38ceb9cf69fb93687ff612f5deec8bb3b1")
+        self.assertNotIn("465x380", manifest["figure_revision"])
+
+    def test_docs_do_not_advertise_the_old_geometry(self):
+        for rel in ("results/README.md", "results/worldline_preview/README.md",
+                    "notebooks/03_worldline_preview.ipynb"):
+            text = (ROOT / rel).read_text(encoding="utf-8")
+            self.assertNotIn("164 mm", text, rel)
+            self.assertIn("150", text, rel)
+
+    def test_verifier_rejects_the_superseded_preview(self):
+        import importlib.util
+        import tempfile
+        spec = importlib.util.spec_from_file_location(
+            "check_aggregates_old_preview", ROOT / "scripts" / "check_aggregates.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "results" / "worldline_preview"
+            target.mkdir(parents=True)
+            for name in ("README.md", "run_manifest.json", "worldline_trace.json",
+                         "worldline_preview.png"):
+                (target / name).write_bytes((self.base() / name).read_bytes())
+            # The superseded 465x380 pt DejaVu print version.
+            (target / "worldline_preview.pdf").write_bytes(
+                b"%PDF-1.4\n/MediaBox [ 0 0 465 380 ]\n/FontName /DejaVuSans\n")
+            errors = module.check_worldline(Path(tmp))
+            joined = " | ".join(errors)
+            self.assertIn("465 x 380", joined)
+            self.assertIn("425.197 x 330", joined)
+            self.assertIn("byte-identical", joined)
 
 
 if __name__ == "__main__":

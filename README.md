@@ -147,8 +147,10 @@ cache, the 20 graph features do not improve held-out log-loss. The train-only
 statistics block is constant on the holdout; removing it is an intercept/
 recalibration effect, not a transfer result. The graph effect reverses when the
 train-statistics block is absent, so this is not a general claim about graph
-features. The stability audit is provisional: it has a pre-holdout design, is
-holdout-excluded and uses 50 refits; it is not a holdout-side stability test.
+features. The stability audit is provisional: its grid was frozen during the
+confirmatory run (after the read began, before it completed), it excludes all
+eventual holdout dyads at row level and uses 50 refits; it is not a
+holdout-side stability test and not a pre-holdout design.
 The public `experiments/` scripts are a five-seed preview and do not reproduce
 those 50-refit estimates. We make no node-level, causal, lifecycle or
 state-of-the-art claim.

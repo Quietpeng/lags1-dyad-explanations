@@ -25,12 +25,31 @@
   "coefs.npz": "fbc5516dec7f65b77a16db66c77caf4126f3f2c9e6ecd2641fbbd6cc6b6eda6c"
  },
  "outputs": {
-  "worldline_preview.png": "26629f48043f45cd7fe7b74fbafa53c55f01e2dad12be3569bb89144769f529b",
-  "worldline_preview.pdf": "d1838c1999cdd253b6c3390dc8dce4acebcd56e6bae3e6cbd52a52c72d612619",
+  "worldline_preview.png": "3b6e0fb29706a5c8af1bf219120d4c125467bc37ecc9ad48f25bd3df046e02d4",
+  "worldline_preview.pdf": "77081960c20db85ff3748cc06edd3d38ceb9cf69fb93687ff612f5deec8bb3b1",
   "worldline_trace.json": "32b77afe20e7c1126f5160e0347df3dd04c580e88b1eca66b226bdcf7a94bfb6"
  },
  "runtime_seconds": 11.48,
- "figure_revision": "2026-10-23: vector 465x380 pt, TrueType, three-panel print version; data unchanged",
+ "figure_revision": "2026-10-26: public preview replaced by a byte-identical copy of the paper's Figure A1 render (425.197x330 pt = 150 mm, Arimo, no baked key); PNG is the same render at 300 dpi; data unchanged",
+ "figure_provenance": {
+  "identical_to": "paper/figures/figA1_worldline.pdf (paper Figure A1)",
+  "pdf_sha256": "77081960c20db85ff3748cc06edd3d38ceb9cf69fb93687ff612f5deec8bb3b1",
+  "png_sha256": "3b6e0fb29706a5c8af1bf219120d4c125467bc37ecc9ad48f25bd3df046e02d4",
+  "geometry_pt": [
+   425.197,
+   330.0
+  ],
+  "width_mm": 150.0,
+  "fonts": [
+   "Arimo",
+   "Arimo-Bold"
+  ],
+  "baked_key": false,
+  "rendered_from": "restricted worldline_trace.csv and node_trace.csv exports (withheld, not redistributed)",
+  "regenerable_from_this_tree": false,
+  "note": "The paper's A1 render was copied byte-for-byte; the earlier 465x380 pt (164 mm) DejaVu preview with a baked key is superseded. experiments/worldline_preview.py ships for inspection only: it needs the licensed ICEWS panel, local feature caches and the two withheld per-row trace exports, so this tree cannot regenerate Figure A1.",
+  "replaced_utc": "2026-10-26"
+ },
  "preview_scope": {
   "period": "inner_validation_2016_17 (2016-01..2017-11; max t_idx 274)",
   "sampled_dyads_per_anchor": 20,

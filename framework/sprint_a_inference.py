@@ -41,6 +41,35 @@ def _norm_p(point: float, se: float) -> float:
     return float(min(1.0, 2.0 * _norm_sf(abs(point) / se)))
 
 
+# A two-sided normal tail underflows float64 once z >~ 38: ``2*Phi(-84.9)`` is
+# ~1.6e-1569, and the smallest float64 is ~4.9e-324.  Storing the underflow as a
+# literal ``0.0`` would claim a p-value of exactly zero; below float64
+# resolution the value is reported as a strict upper bound and the row carries
+# an explicit censoring field.  See ``CORRECTIONS.md`` (2026-10-26).
+P_FLOAT_FLOOR = "<1e-300"
+
+
+def p_display(p: float | None) -> float | str:
+    """Render an underflowed normal-tail p as a bound instead of ``0.0``."""
+    if p is None:
+        return ""
+    return P_FLOAT_FLOOR if p == 0.0 else p
+
+
+def boot_p_display(p: float, reps: int) -> float | str:
+    """Render a two-sided bootstrap tail that hit zero of ``reps`` draws.
+
+    Zero hits on one side of the paired bootstrap means ``p < 1/(reps+1)``,
+    not ``p = 0``.  The bound is rounded *up* to three significant digits so
+    the printed inequality stays true.
+    """
+    if p != 0.0:
+        return p
+    bound = 1.0 / (int(reps) + 1.0)
+    step = 10.0 ** (math.floor(math.log10(bound)) - 2)
+    return f"<{math.ceil(bound / step) * step:g}"
+
+
 def _var(x) -> float:
     x = np.asarray(x, dtype=np.float64)
     x = x[np.isfinite(x)]

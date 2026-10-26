@@ -11,10 +11,11 @@
 - Notebooks are executed headlessly and ship aggregate-only outputs. Notebook
   01 no longer raises on an empty results tree and uses the shared Morandi
   palette.
-- The stability report/summaries carry a release banner: frozen before the
-  holdout completed, holdout completed later, not integrated, numbers
-  provisional. The shipped numbers are the holdout-excluded 50-refit rerun, not
-  a holdout-side test. No stability number was changed.
+- The stability report/summaries carry a release banner: the grid was frozen
+  after the confirmatory read began and before it completed, the holdout was
+  not integrated, and the numbers are provisional. The shipped numbers are the
+  holdout-excluded 50-refit rerun, not a holdout-side test. No stability number
+  was changed.
 - `experiments/` is the earlier five-refit audit code (five seed replicates),
   not the restricted 50-refit variant. `experiments/STABILITY_VARIANT.md`
   publishes the exact five deltas: seed count, holdout-dyad exclusion, fixed C=1.0, bootstrap
@@ -25,9 +26,11 @@
   preview directory.
 - Added `results/framework_pilot/stability/SHA256SUMS` (47 files) and hardened
   `make stability-check` / `make verify`: status, 50 refits, C=1.0,
-  `pre_holdout_holdout_excluded`, 5,282/2,790 exclusions, 50-replicate
-  bootstrap, stability hashes, `STABILITY_VARIANT.md` presence and rejection of
-  the legacy pre-holdout status label and five-seed audit claims.
+  `frozen_during_confirmatory_run_holdout_rows_excluded` (grid frozen
+  06:31:40Z, after the confirmatory read began at 05:26:55Z and before it
+  completed at 07:45:19Z), 5,282/2,790 exclusions, 50-replicate bootstrap,
+  stability hashes, `STABILITY_VARIANT.md` presence and rejection of the
+  superseded pre-holdout status label and five-seed audit claims.
 - Public data exclusion (release gate): removed the 3,450-row
   `dyad_contributions_inner_sample.csv`; dropped `mean_p`/`p_sum`/`y_sum`/
   `mean_y` from the thirteen actor tables and from `summary.json`; de-identified
@@ -50,9 +53,19 @@
   provisional stability audit, code MIT but ICEWS-derived aggregates not MIT.
 - JSON results are strict (`NaN`/`Infinity` replaced by `null` where a value is
   undefined). No metric, prediction or model output changed.
-- The world-line preview is retained as an illustrative artifact. The shipped
-  PDF is the vector, 465 × 380 pt (164 mm) A1 print version with TrueType fonts;
-  the PNG is a 300 dpi preview. The underlying experiment was not rerun.
+- The world-line preview is retained as an illustrative artifact and is now a
+  **byte-identical copy of the paper's Figure A1** (vector, 425.2 × 330 pt /
+  150 mm, Arimo, no baked key); the PNG is the same render at 300 dpi. It is
+  rendered from restricted trace exports and is not regenerable from this tree.
+  The underlying experiment was not rerun.
+- R2C3 artifact-integrity pass (no frozen number changed): the stability
+  `audit_design` literal is
+  `frozen_during_confirmatory_run_holdout_rows_excluded` with the confirmatory
+  start time recorded; family-B / within-between p-values below numerical
+  resolution are reported as bounds (`<1e-300`, `<0.001`) with an explicit
+  `censoring` field instead of `0.0`; the absolute-attribution top-10 overlap
+  range in the report generator is 0.00–0.33 (log-occlusion stays 0.05–0.43).
+  See `results/framework_pilot/holdout/CORRECTIONS.md`.
 - Title, abstract, stability status and world-line figure wording were aligned
   with the final manuscript before this release candidate was frozen. Only
   post-freeze annotations and prose changed; no frozen metric, table, prediction

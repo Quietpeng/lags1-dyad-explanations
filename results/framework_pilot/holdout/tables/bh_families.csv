@@ -1,20 +1,20 @@
-family,comparison,p,q,reject_0.05,p_reported,q_reported
-A_primary_ll,logistic49_temp vs per_dyad_markov,2.0996948391226593e-90,4.199389678245319e-90,True,<1e-12,<1e-12
-A_primary_ll,logistic49_temp vs dyad_base_rate,8.78994569378105e-24,1.1719927591708068e-23,True,<1e-12,<1e-12
-A_primary_ll,logistic49_temp vs markov_recency,1.095476389996116e-10,1.095476389996116e-10,True,1.095e-10,1.095e-10
-A_primary_ll,logistic49_temp vs global_transition,2.0996948391226593e-90,4.199389678245319e-90,True,<1e-12,<1e-12
-B_primary_other_metrics,d_ece vs per_dyad_markov,1.4052053453422457e-07,1.4052053453422457e-07,True,1.405e-07,1.405e-07
-B_primary_other_metrics,d_auc vs per_dyad_markov,1.5958831306693975e-116,2.393824696004096e-116,True,<1e-12,<1e-12
-B_primary_other_metrics,d_ap vs per_dyad_markov,0.0,0.0,True,<0.001,<0.001
-C_capacity_feature,hgb49 vs per_dyad_markov,1.922676868683397e-18,2.884015303025095e-18,True,<1e-12,<1e-12
-C_capacity_feature,logistic29_temp vs per_dyad_markov,1.4316420487277664e-50,4.294926146183299e-50,True,<1e-12,<1e-12
-C_capacity_feature,hgb49 vs logistic49_temperature,0.0010660263580776,0.0010660263580776,True,0.001066,0.001066
-D_group_attribution,calendar,1.6013538914761525e-73,2.8824370046570744e-73,True,<1e-12,<1e-12
-D_group_attribution,dyad_current,4.338466668793257e-26,4.8807750023924143e-26,True,<1e-12,<1e-12
-D_group_attribution,dyad_lags,1.4641052822137934e-48,2.19615792332069e-48,True,<1e-12,<1e-12
-D_group_attribution,dyad_rolling,8.533457703952931e-16,8.533457703952931e-16,True,<1e-12,<1e-12
-D_group_attribution,dyad_history,2.5607933388300152e-185,1.1523570024735068e-184,True,<1e-12,<1e-12
-D_group_attribution,reverse_dyad,4.4465504646000475e-38,5.716993454485775e-38,True,<1e-12,<1e-12
-D_group_attribution,actor_ego,4.207206379547547e-233,3.7864857415927925e-232,True,<1e-12,<1e-12
-D_group_attribution,train_stats,3.337741410105732e-126,1.0013224230317197e-125,True,<1e-12,<1e-12
-D_group_attribution,graph,3.8822407369929605e-117,8.735041658234161e-117,True,<1e-12,<1e-12
+family,comparison,p,q,reject_0.05,p_reported,q_reported,censoring
+A_primary_ll,logistic49_temp vs per_dyad_markov,2.0996948391226593e-90,4.199389678245319e-90,True,<1e-12,<1e-12,
+A_primary_ll,logistic49_temp vs dyad_base_rate,8.78994569378105e-24,1.1719927591708068e-23,True,<1e-12,<1e-12,
+A_primary_ll,logistic49_temp vs markov_recency,1.095476389996116e-10,1.095476389996116e-10,True,1.095e-10,1.095e-10,
+A_primary_ll,logistic49_temp vs global_transition,2.0996948391226593e-90,4.199389678245319e-90,True,<1e-12,<1e-12,
+B_primary_other_metrics,d_ece vs per_dyad_markov,1.4052053453422457e-07,1.4052053453422457e-07,True,1.405e-07,1.405e-07,
+B_primary_other_metrics,d_auc vs per_dyad_markov,1.5958831306693975e-116,2.393824696004096e-116,True,<1e-12,<1e-12,
+B_primary_other_metrics,d_ap vs per_dyad_markov,<1e-300,<1e-300,True,<0.001,<0.001,p_normal_tail_below_float64
+C_capacity_feature,hgb49 vs per_dyad_markov,1.922676868683397e-18,2.884015303025095e-18,True,<1e-12,<1e-12,
+C_capacity_feature,logistic29_temp vs per_dyad_markov,1.4316420487277664e-50,4.294926146183299e-50,True,<1e-12,<1e-12,
+C_capacity_feature,hgb49 vs logistic49_temperature,0.0010660263580776,0.0010660263580776,True,0.001066,0.001066,
+D_group_attribution,calendar,1.6013538914761525e-73,2.8824370046570744e-73,True,<1e-12,<1e-12,
+D_group_attribution,dyad_current,4.338466668793257e-26,4.8807750023924143e-26,True,<1e-12,<1e-12,
+D_group_attribution,dyad_lags,1.4641052822137934e-48,2.19615792332069e-48,True,<1e-12,<1e-12,
+D_group_attribution,dyad_rolling,8.533457703952931e-16,8.533457703952931e-16,True,<1e-12,<1e-12,
+D_group_attribution,dyad_history,2.5607933388300152e-185,1.1523570024735068e-184,True,<1e-12,<1e-12,
+D_group_attribution,reverse_dyad,4.4465504646000475e-38,5.716993454485775e-38,True,<1e-12,<1e-12,
+D_group_attribution,actor_ego,4.207206379547547e-233,3.7864857415927925e-232,True,<1e-12,<1e-12,
+D_group_attribution,train_stats,3.337741410105732e-126,1.0013224230317197e-125,True,<1e-12,<1e-12,
+D_group_attribution,graph,3.8822407369929605e-117,8.735041658234161e-117,True,<1e-12,<1e-12,

@@ -120,6 +120,13 @@ def _norm_p(point: float, se: float) -> float:
     return float(min(1.0, 2.0 * 0.5 * math.erfc(abs(point) / se / math.sqrt(2.0))))
 
 
+def _p_txt(value) -> str:
+    """Format a p/q cell that may be a censoring bound string."""
+    if value is None:
+        return "NA"
+    return value if isinstance(value, str) else f"{value:.4g}"
+
+
 def _boot_ci(draws, lo=2.5, hi=97.5):
     d = np.asarray(draws, dtype=np.float64)
     d = d[np.isfinite(d)]
@@ -353,8 +360,12 @@ def paired_within_delta(y, p_base, p_model, did, reps=REPS, seeds=SEEDS):
           np.maximum(w[idx].sum(axis=1), 1e-12))
     out["d_mean_ci"], out["d_mean_se"] = _boot_ci(dm)
     out["d_pooled_ci"], out["d_pooled_se"] = _boot_ci(dp)
-    out["p_mean"] = float(min(1.0, 2.0 * min((dm <= 0).mean(), (dm >= 0).mean())))
-    out["p_pooled"] = float(min(1.0, 2.0 * min((dp <= 0).mean(), (dp >= 0).mean())))
+    out["p_mean"] = inf.boot_p_display(
+        float(min(1.0, 2.0 * min((dm <= 0).mean(), (dm >= 0).mean()))), int(reps))
+    out["p_pooled"] = inf.boot_p_display(
+        float(min(1.0, 2.0 * min((dp <= 0).mean(), (dp >= 0).mean()))), int(reps))
+    if isinstance(out["p_mean"], str) or isinstance(out["p_pooled"], str):
+        out["censoring"] = "two_sided_paired_bootstrap_tail_zero_of_1000"
     for seed in seeds:
         rr = np.random.default_rng(int(seed))
         idx = rr.integers(0, G, size=(int(min(reps, 500)), G))
@@ -708,12 +719,17 @@ def auc_delta_rows(core):
                      "d_auc_source_ci": a["dims"]["source"]["ci_auc"],
                      "d_auc_target_ci": a["dims"]["target"]["ci_auc"],
                      "d_auc_multiway_ci": a.get("multiway_auc", {}).get("ci"),
-                     "d_auc_multiway_p": a.get("multiway_auc", {}).get("p"),
+                     "d_auc_multiway_p": inf.p_display(
+                         a.get("multiway_auc", {}).get("p")),
                      "d_ap_dyad_ci": a["dims"]["dyad"]["ci_ap"],
                      "d_ap_source_ci": a["dims"]["source"]["ci_ap"],
                      "d_ap_target_ci": a["dims"]["target"]["ci_ap"],
                      "d_ap_multiway_ci": a.get("multiway_ap", {}).get("ci"),
-                     "d_ap_multiway_p": a.get("multiway_ap", {}).get("p")})
+                     "d_ap_multiway_p": inf.p_display(
+                         a.get("multiway_ap", {}).get("p")),
+                     "censoring": (
+                         "d_ap_multiway_p_normal_tail_below_float64"
+                         if a.get("multiway_ap", {}).get("p") == 0.0 else "")})
     return rows
 
 
@@ -754,8 +770,14 @@ def bh_rows(core, loo):
                  for x in items]
         res = inf.bh_fdr(pvals, alpha=0.05)
         for name, p, q, rej in zip(names, res["p"], res["q"], res["reject"]):
-            rows.append({"family": fam, "comparison": name, "p": p, "q": q,
-                         "reject_0.05": bool(rej)})
+            row = {"family": fam, "comparison": name, "p": p, "q": q,
+                   "reject_0.05": bool(rej)}
+            if row["p"] == 0.0:
+                # 2*Phi(-z) underflowed float64; report a bound, never 0.0.
+                row["p"] = inf.P_FLOAT_FLOOR
+                row["q"] = (inf.P_FLOAT_FLOOR if row["q"] == 0.0 else row["q"])
+                row["censoring"] = "p_normal_tail_below_float64"
+            rows.append(row)
     return rows
 
 
@@ -1132,8 +1154,8 @@ def paper_sentences(core, p1_primary, strict_primary, p1_markov, fe_within,
     wm = p1_markov.get("within_auc")
     wf = fe_within["strict"].get("mean")
     wf_p1 = fe_within["p1"].get("within_auc")
-    qtxt = "NA" if q_primary is None else f"{q_primary:.4g}"
-    q29 = "NA" if verdict.get("bh_q_logistic29") is None else f"{verdict['bh_q_logistic29']:.4g}"
+    qtxt = _p_txt(q_primary)
+    q29 = _p_txt(verdict.get("bh_q_logistic29"))
     s = []
     s.append(
         "In a pre-registered unit-fresh 20% unordered-dyad holdout "
@@ -1322,7 +1344,8 @@ def build_report(core, prereg, run_once, summary, rows, within_rows, between_row
         short = short.replace("hgb49__vs__", "hgb49 vs ")
         q = qmap.get((fam, short))
         qtxt = ("NA (secondary)" if (q is None and "warm_" in name)
-                else ("NA" if q is None else f"{q:.4g}"))
+                else ("NA" if q is None
+                      else (q if isinstance(q, str) else f"{q:.4g}")))
         w(f"| `{name}` | {pp['d_log_loss']:.6f} | "
           f"{100*pp['rel_log_loss_gain']:.2f}% | {_ci_str(mm['ci_ll'])} | "
           f"{mm['p_ll']:.4g} | {qtxt} |")
