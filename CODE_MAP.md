@@ -1,8 +1,12 @@
 # Code map
 
-The public package contains the paper path only. Earlier pilot, synthetic/T1,
-graph-encoder, operator and reporting modules were removed from the shipped
-tree; they remain in git history but are not importable or tested here.
+The public package contains the paper path only: the actor-role attribution
+contract and its audit, not a reusable framework and not a new estimator. The
+directory and import name `framework/` are retained for compatibility (tests and
+the installed package import `framework`); they do not imply general-purpose
+abstractions. Earlier pilot, synthetic/T1, graph-encoder, operator and reporting
+modules were removed from the shipped tree; they remain in git history but are
+not importable or tested here.
 
 ## Paper path (`framework/`)
 
@@ -41,7 +45,8 @@ tree; they remain in git history but are not importable or tested here.
 
 The experiment scripts are audit material. They are not invoked by any public
 `make` target, and the public tree does not contain their inputs or local
-configuration. The shipped Sprint-B scripts are a **five-seed preview**: five
+configuration. The code that produced the restricted 50-refit audit is not
+shipped. The shipped Sprint-B scripts are a **five-seed preview**: five
 seed replicates, no holdout-dyad exclusion, `C` re-selected on the selection
 window, 1,000 stability bootstrap replicates and a fixed `rep0`–`rep4` loader.
 They do not regenerate the 50-refit, C=1.0, holdout-excluded aggregates behind

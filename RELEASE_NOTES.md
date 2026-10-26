@@ -1,5 +1,31 @@
 # Release notes
 
+## Public-label alignment (2026-10-27; documentation and metadata only)
+
+Documentation, citation metadata and one module docstring only: no result,
+figure, notebook, manifest hash, `SHA256SUMS` entry or test changed, and no
+frozen number moved.
+
+- **The deliverable is labelled as the manuscript labels it.** `CITATION.cff`,
+  `.zenodo.json` and `README.md` now describe an actor-role **attribution
+  contract plus audit** and an **L0–L2 verification release**; neither they nor
+  the package docstring advertise a framework. All three state that the
+  decomposition is the logistic identity, so it is not a new estimator, and
+  that the release is one paper path rather than reusable abstractions.
+- **Claim boundaries are explicit in the public metadata.** The citation
+  abstract, the Zenodo description and the README state that no general claim
+  is made about graph features, persistence or any corpus beyond this panel;
+  that the restricted 50-refit audit code is not redistributed (the public
+  `experiments/` scripts remain a five-seed preview); and that row-level
+  predictions and labels are withheld.
+- **Package labels follow.** `CODE_MAP.md` and `REPRODUCING.md` state that
+  `framework/` is a retained import path for the one paper path, not a
+  general-purpose framework. The `framework/__init__.py` docstring says the
+  same. The directory name is unchanged, so imports, tests and archives are
+  unaffected.
+- Title, version `0.1.1`, the L0–L2 boundary, the five-seed preview
+  disclosure, and the absence of a `v0.1.1` tag and DOI are unchanged.
+
 ## Metadata, docs and CI fix (2026-10-27; no data change)
 
 Documentation, metadata, tests and CI only: no result file, figure, notebook

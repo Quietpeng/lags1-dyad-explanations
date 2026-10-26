@@ -1,6 +1,8 @@
-"""Public framework for actor-role components of dyadic event forecasts.
+"""Public reference implementation of the actor-role attribution contract.
 
-This package is the artefact accompanying the manuscript. It is deliberately
+This package is the artefact accompanying the manuscript. It implements one
+paper path — an ex ante feature-ownership contract and its audit — not a
+reusable framework and not a new estimator. It is deliberately
 dependency-light and CPU only:
 
 * numpy / pandas / duckdb / scikit-learn / scipy / matplotlib;

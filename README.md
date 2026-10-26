@@ -2,13 +2,21 @@
 
 **Exact attribution and a portability audit.**
 
-Code, tests and aggregate results for a framework for binary dyad-month
-political event prediction, exact additive source- and target-role components,
-and a stability audit. The public artifact supports **L0–L2**: reading the
-frozen aggregates, verifying their hashes and contracts, and re-rendering the
-notebooks. It does not regenerate the restricted experiment pipeline. The
-aggregate results do not redistribute event rows and remain subject to the
-ICEWS terms. The manuscript is not part of this repository.
+Code, tests and aggregate results for the **actor-role attribution contract**
+and **portability audit** of the manuscript: an ex ante ownership rule that
+fixes unit and sign before results, exact additive source- and target-role
+components for binary dyad-month political event forecasts, and a separate
+stability audit. The deliverable is a contract plus audit, not a general-purpose
+framework and not a new estimator: the decomposition is the logistic identity
+and coincides with linear SHAP under a training-mean background.
+
+The public artifact is an **L0–L2 verification release**: reading the frozen
+aggregates, verifying their hashes and contracts, and re-rendering the
+notebooks. It does not regenerate the restricted experiment pipeline: the
+50-refit audit code is restricted and not redistributed, and row-level
+predictions and labels are withheld. The aggregate results do not redistribute
+event rows and remain subject to the ICEWS terms. The manuscript is not part of
+this repository.
 
 **Release status:** v0.1.1 release candidate. The metadata version is `0.1.1`,
 but no `v0.1.1` git tag has been created and no DOI has been minted; until the
@@ -22,9 +30,12 @@ confirmatory holdout completed later and was not used. The shipped
 
 ## What is here
 
-- `framework/` — CPU-only Python library for the dyad-month feature contract,
-  model ladder, calibration, exact additive decomposition, actor views, metrics
-  and cluster-bootstrap inference. The package contains the paper path only.
+- `framework/` — CPU-only Python library implementing the paper path: the
+  dyad-month feature contract, the primary/secondary/capacity model set (a flat
+  comparator list, not a ladder), calibration, exact additive decomposition,
+  actor views, metrics and cluster-bootstrap inference. The package contains
+  the paper path only; the directory and import name are retained for
+  compatibility and do not imply a reusable framework.
 - `experiments/` — scripts for the pre-registered confirmatory holdout, a
   five-seed preview of the stability audit and the illustrative world-line
   preview. They require the licensed ICEWS panel and local caches; post-hoc
@@ -150,10 +161,11 @@ cache, the 20 graph features do not improve held-out log-loss. The train-only
 statistics block is constant on the holdout; removing it is an intercept/
 recalibration effect, not a transfer result. The graph effect reverses when the
 train-statistics block is absent, so this is not a general claim about graph
-features. The stability audit is provisional: its grid was frozen during the
-confirmatory run (after the read began, before it completed), it excludes all
-eventual holdout dyads at row level and uses 50 refits; it is not a
-holdout-side stability test and not a pre-holdout design.
+features; the warm-history comparison is likewise not a general claim about
+persistence beyond this panel. The stability audit is provisional: its grid was
+frozen during the confirmatory run (after the read began, before it completed),
+it excludes all eventual holdout dyads at row level and uses 50 refits; it is
+not a holdout-side stability test and not a pre-holdout design.
 The public `experiments/` scripts are a five-seed preview and do not reproduce
 those 50-refit estimates. We make no node-level, causal, lifecycle or
 state-of-the-art claim.
