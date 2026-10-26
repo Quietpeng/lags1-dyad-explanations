@@ -1,0 +1,27 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+.coverage
+htmlcov/
+
+# Restricted inputs: never commit these even if they exist locally.
+data/
+configs/
+paper/
+docs/
+results/**/preds/
+results/**/cache/
+results/framework_pilot/stability_preview/
+framework/cache/
+*.npz
+*.npy
+*.parquet
+*.log

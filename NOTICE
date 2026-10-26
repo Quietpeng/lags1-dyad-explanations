@@ -1,0 +1,38 @@
+ICEWS DATA AND DERIVED-RESULTS NOTICE
+======================================
+
+This repository contains source code and aggregate results. It does not contain
+an ICEWS event table, a local data directory, row-level predictions or labels.
+
+Source data
+-----------
+The results are derived from the Integrated Crisis Early Warning System (ICEWS)
+event data, doi:10.7910/DVN/28075, version 37.0, published by the Harvard
+Dataverse. ICEWS is made available for research and teaching purposes only.
+Redistribution of the event data is not permitted.
+
+The public tree therefore excludes raw and derived event panels, parquet files,
+feature caches, run logs and row-level predictions/labels. Do not add such files
+to a public repository or mirror.
+
+Derived aggregate results
+-------------------------
+The `results/` tree includes aggregate quantities computed from ICEWS, for
+example model metrics and confidence intervals, actor-level aggregate
+attribution and exposure tables, top-actor lists, transition counts, and a
+rendered world-line illustration with per-anchor aggregate tallies. Actor-level
+predicted probabilities (`mean_p`, `p_sum`) and observed outcome counts/rates
+(`y_sum`, `mean_y`) are not released, and the world-line preview ships no
+row-level trace or per-row probability file. These are small-sample or
+aggregate research outputs; they do not permit reconstruction of the event
+panel and must not be used to attempt re-identification. The exact removed and
+redacted paths are listed in `DATA_EXCLUSIONS.md`.
+
+The source code is released under the MIT license (see `LICENSE`). **The
+derived aggregate results are not MIT-licensed.** They remain subject to the
+ICEWS research-and-teaching terms and are provided only for research and
+teaching. Redistribution outside those terms is not permitted. Cite ICEWS v37
+(doi:10.7910/DVN/28075) alongside this artifact.
+
+No other third-party dataset (for example UNGA votes, ideal points or Wikidata)
+is used by the public paper path or included in this release.

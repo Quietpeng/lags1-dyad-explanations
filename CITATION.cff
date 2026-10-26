@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this framework, please cite the manuscript and the archived release."
+title: "Actor-role components of dyadic event forecasts: exact attribution and a portability audit"
+abstract: >-
+  A reproducible framework and public artifact for actor-role components of
+  binary dyad-month political event forecasts: exact additive attribution into
+  source-role, target-role, dyad and non-actor groups, plus a portability audit.
+  The confirmatory evaluation is a pre-registered, one-shot, unit-fresh 20%
+  dyad holdout; it is retrospective, not time-fresh. The stability audit is
+  provisional, holdout-excluded and based on 50 dyad-cluster bootstrap refits;
+  it is not a holdout-side stability test. The public experiment scripts are a
+  five-seed preview of the audit method and do not regenerate the 50-refit
+  holdout-excluded aggregates. Source code is MIT-licensed; ICEWS-derived
+  aggregate results are not MIT and remain under the ICEWS research-and-teaching
+  terms. This is a v0.1.1 release candidate: the v0.1.1 git tag and the DOI are
+  pending.
+authors:
+  - name: "LAGS-1 authors"
+version: "0.1.1"
+license: MIT
+keywords:
+  - dyadic event forecasting
+  - ICEWS
+  - explainability
+  - stability audit
+  - calibration
+  - reproducibility
+repository-code: "https://github.com/Quietpeng/lags1-dyad-explanations"

@@ -1,0 +1,25 @@
+* text=auto eol=lf
+
+# Binary artifacts.
+*.png binary
+*.pdf binary
+
+# Never export local history or restricted inputs, even if they appear in a
+# developer's tree. The public archive is produced by `make dist`.
+.git export-ignore
+__pycache__/ export-ignore
+*.pyc export-ignore
+*.pyo export-ignore
+data/ export-ignore
+configs/ export-ignore
+paper/ export-ignore
+docs/ export-ignore
+results/**/preds/ export-ignore
+results/**/cache/ export-ignore
+results/framework_pilot/stability_preview/ export-ignore
+framework/cache/ export-ignore
+*.log export-ignore
+build/ export-ignore
+dist/ export-ignore
+.venv/ export-ignore
+.ipynb_checkpoints/ export-ignore

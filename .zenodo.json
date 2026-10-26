@@ -1,0 +1,22 @@
+{
+  "title": "Actor-role components of dyadic event forecasts: exact attribution and a portability audit",
+  "description": "Reproducible framework and public artifact for actor-role components of binary dyad-month political event forecasts: exact additive attribution into source-role, target-role, dyad and non-actor groups, plus a portability audit. Includes the pre-registered one-shot unit-fresh 20% dyad-holdout evaluation (retrospective, not time-fresh), aggregate results, and an illustrative world-line preview. The stability audit is provisional, holdout-excluded and based on 50 dyad-cluster bootstrap refits; the public experiment scripts are a five-seed preview and do not regenerate those aggregates. ICEWS data and row-level predictions are not redistributed. Source code is MIT-licensed; ICEWS-derived aggregate results are not MIT and remain under the ICEWS research-and-teaching terms. This is a v0.1.1 release candidate; the v0.1.1 git tag and DOI are pending.",
+  "creators": [
+    {
+      "name": "LAGS-1 authors"
+    }
+  ],
+  "license": "other-open",
+  "notes": "Source code: MIT. ICEWS-derived aggregate results: research and teaching only, not MIT; see NOTICE and results/README.md. v0.1.1 release candidate: no v0.1.1 git tag and no DOI yet. See experiments/STABILITY_VARIANT.md for the public-preview versus 50-refit audit differences.",
+  "keywords": [
+    "dyadic event forecasting",
+    "ICEWS",
+    "explainability",
+    "stability audit",
+    "calibration",
+    "reproducibility"
+  ],
+  "upload_type": "software",
+  "version": "0.1.1",
+  "access_right": "open"
+}

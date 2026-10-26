@@ -1,0 +1,78 @@
+# Release notes
+
+## v0.1.1 — public-artifact cleanup (release candidate)
+
+- Install path uses `python3` throughout; `make doctor` checks Python,
+  dependencies and forbidden paths.
+- `make test`, `make verify`, `make notebooks`, `make stability-check`,
+  `make worldline-check`, `make dist` and `make clean` replace the old
+  `paper`/`worldline`/`repro` targets. `make dist` uses `git archive` and
+  verifies the archive.
+- Notebooks are executed headlessly and ship aggregate-only outputs. Notebook
+  01 no longer raises on an empty results tree and uses the shared Morandi
+  palette.
+- The stability report/summaries carry a release banner: frozen before the
+  holdout completed, holdout completed later, not integrated, numbers
+  provisional. The shipped numbers are the holdout-excluded 50-refit rerun, not
+  a holdout-side test. No stability number was changed.
+- `experiments/` is the earlier five-refit audit code (five seed replicates),
+  not the restricted 50-refit variant. `experiments/STABILITY_VARIANT.md`
+  publishes the exact five deltas: seed count, holdout-dyad exclusion, fixed C=1.0, bootstrap
+  replicates and cache enumeration. The public scripts cannot reproduce the
+  shipped aggregates exactly and do not claim to. They refuse to write into
+  `results/framework_pilot/stability/` unless `NEUROSIM_ALLOW_OVERWRITE=1` (or
+  `--allow-overwrite`) is set; `NEUROSIM_STABILITY_OUT` redirects output to a
+  preview directory.
+- Added `results/framework_pilot/stability/SHA256SUMS` (47 files) and hardened
+  `make stability-check` / `make verify`: status, 50 refits, C=1.0,
+  `pre_holdout_holdout_excluded`, 5,282/2,790 exclusions, 50-replicate
+  bootstrap, stability hashes, `STABILITY_VARIANT.md` presence and rejection of
+  the legacy pre-holdout status label and five-seed audit claims.
+- Public data exclusion (release gate): removed the 3,450-row
+  `dyad_contributions_inner_sample.csv`; dropped `mean_p`/`p_sum`/`y_sum`/
+  `mean_y` from the thirteen actor tables and from `summary.json`; de-identified
+  the world-line CSV exports. `DATA_EXCLUSIONS.md` records the removed paths,
+  columns and reasons; `make verify` / `make stability-check` /
+  `make worldline-check` and the contract tests now fail if a row-level
+  prediction/label file or a named actor probability/outcome rate reappears.
+  No frozen number changed.
+- Results provenance: `results/README.md`, `holdout/SHA256SUMS`, a repo-relative
+  pre-registration checksum, `redistributed: false` annotations for the four
+  excluded prediction/log files, and `scripts/verify_release.py`.
+- The shipped package contains the paper path only. Legacy audit/graph/
+  interpret/operators/pipeline/reporting/run_pilot/synth/synth_arms/targets/
+  windows modules and the restricted snapshot scripts were removed from the
+  public tree (git history retains them).
+- Added `pyproject.toml`, `requirements.lock`, `CODE_MAP.md`,
+  `REPRODUCING.md`, `.gitattributes`, `.github/workflows/ci.yml` and stricter
+  ignore rules.
+- Metadata: v0.1.1 release candidate; no `v0.1.1` git tag and no DOI yet,
+  provisional stability audit, code MIT but ICEWS-derived aggregates not MIT.
+- JSON results are strict (`NaN`/`Infinity` replaced by `null` where a value is
+  undefined). No metric, prediction or model output changed.
+- The world-line preview is retained as an illustrative artifact. The shipped
+  PDF is the vector, 465 × 380 pt (164 mm) A1 print version with TrueType fonts;
+  the PNG is a 300 dpi preview. The underlying experiment was not rerun.
+- Title, abstract, stability status and world-line figure wording were aligned
+  with the final manuscript before this release candidate was frozen. Only
+  post-freeze annotations and prose changed; no frozen metric, table, prediction
+  or model output was changed.
+- BH family D `p`/`q` were recomputed from the frozen normal-tail `p_normal`
+  column of `feature_group_loo.csv` (Benjamini–Hochberg over nine groups). The
+  old rows were bootstrap tails floored at `p=0.0`; the new rows are the
+  normal-approximation values, all `q < 1e-12`, all rejected. Families A–C and
+  every ΔLL/CI are unchanged.
+- The world-line per-row exports (`worldline_trace.csv`, `node_trace.csv`) were
+  removed. Only the rendered PNG/PDF and the per-anchor/aggregate JSON ship, so
+  the release contains no row-level probability file; `make verify` and
+  `make worldline-check` fail if either CSV reappears.
+
+## v0.1.0 — first curated release
+
+This was a curated public release of the code and non-restricted aggregate
+artifacts. Local absolute paths in copied reports/scripts were replaced with
+`<repo>`; no metric, prediction or model output was changed.
+
+Not included: ICEWS raw/derived data, row-level predictions/labels, the
+manuscript, internal project documents, internal configuration files, and the
+old hierarchy pilot notebooks.

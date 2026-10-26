@@ -1,0 +1,53 @@
+{
+ "script": "experiments/worldline_preview.py",
+ "argv": [
+  "experiments/worldline_preview.py",
+  "--threads",
+  "1"
+ ],
+ "created_utc": "2026-10-23T07:03:05+00:00",
+ "host": {
+  "platform": "Linux-6.12.74+deb13+1-amd64-x86_64-with-glibc2.41",
+  "python": "3.13.5",
+  "numpy": "2.5.4",
+  "pandas": "2.3.3",
+  "duckdb": "1.5.6",
+  "sklearn": "1.9.1",
+  "matplotlib": "3.11.2",
+  "cpu_count": 4
+ },
+ "inputs": {
+  "features_dyad.parquet": "394b005bb22fa51e0c543d835ef73dffc142593e37815b212190ce8916f9e388",
+  "panel_dyad.parquet": "8fb9fa0168093cab751a2a1e736d889be0c27b57c2c28b8d0747bc4470411067",
+  "graph_val.npy": "c74fc8721209b22627e227d2b284f0e585e2519c9a61370636e8b5e2c4a45083",
+  "graph_meta.json": "bc74b056ca193ebfea4a1b69d42a8290e01b67989ea7f02dba09bd4c55d08a58",
+  "actors.parquet": "a934d22dc688ff64ef50c768dea88582cfe49ba8945b26d24b222b994d93af62",
+  "coefs.npz": "fbc5516dec7f65b77a16db66c77caf4126f3f2c9e6ecd2641fbbd6cc6b6eda6c"
+ },
+ "outputs": {
+  "worldline_preview.png": "26629f48043f45cd7fe7b74fbafa53c55f01e2dad12be3569bb89144769f529b",
+  "worldline_preview.pdf": "d1838c1999cdd253b6c3390dc8dce4acebcd56e6bae3e6cbd52a52c72d612619",
+  "worldline_trace.json": "32b77afe20e7c1126f5160e0347df3dd04c580e88b1eca66b226bdcf7a94bfb6"
+ },
+ "runtime_seconds": 11.48,
+ "figure_revision": "2026-10-23: vector 465x380 pt, TrueType, three-panel print version; data unchanged",
+ "preview_scope": {
+  "period": "inner_validation_2016_17 (2016-01..2017-11; max t_idx 274)",
+  "sampled_dyads_per_anchor": 20,
+  "distinct_dyads_across_anchors": 71,
+  "holdout_rows": 0,
+  "row_level_files_shipped": 0,
+  "machine_readable_traces_anonymized": true,
+  "release_rule": "no row-level predictions: the two per-row CSVs (240 and 249 rows) are withheld, not exported; only the rendered illustration and the aggregate JSON summaries ship; no headline number depends on this directory"
+ },
+ "withheld_exports": {
+  "worldline_trace.csv": {
+   "rows": 240,
+   "reason": "row-level state and model probability"
+  },
+  "node_trace.csv": {
+   "rows": 249,
+   "reason": "row-level induced actor state"
+  }
+ }
+}

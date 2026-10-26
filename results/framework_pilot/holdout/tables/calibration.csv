@@ -1,0 +1,6 @@
+spec,temperature_T,select_ll_none,select_ll_temperature,select_ll_isotonic
+logistic49_S1,1.0,0.233956,0.233956,
+logistic29_S1,1.1,0.23655,0.235667,
+logistic49_S2,1.0,0.233956,0.233956,
+logistic29_S2,1.05,0.23635,0.235662,
+hgb49,1.05,0.230933,0.230897,

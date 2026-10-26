@@ -1,0 +1,12 @@
+{
+ "status": "completed",
+ "attempts": 1,
+ "first_started_utc": "2026-10-23T05:26:55.031386+00:00",
+ "rows": 311638,
+ "positives": 32614,
+ "definition_sha256": "776a763e663b845003cd628d0656692d8ff2652aaa5cec18820e078baec62c8e",
+ "blind": false,
+ "quick": false,
+ "runtime_seconds": 8303.36,
+ "completed_utc": "2026-10-23T07:45:19.308367+00:00"
+}

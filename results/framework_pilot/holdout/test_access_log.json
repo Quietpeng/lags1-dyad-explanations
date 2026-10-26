@@ -1,0 +1,49 @@
+{
+ "policy": "one-shot unit-fresh holdout; every 2018-22 read is logged; the confirmatory run is allowed once",
+ "entries": [
+  {
+   "utc": null,
+   "kind": "pre_prereg_support_count",
+   "labels_read": true,
+   "scope": "aggregate over all 26,434 dyads, 2018-01..2022-12",
+   "what": "rows=1,586,040; positives=164,272; used only to size the holdout (the protocol cites ~317k rows / ~5,287 dyads). No holdout-specific labels and no model fit.",
+   "note": "wall time not captured; query ran before the prereg freeze"
+  },
+  {
+   "utc": "2026-10-23T05:04:35.820278+00:00",
+   "kind": "preregistration",
+   "labels_read": false,
+   "what": "holdout definition frozen; definition_sha256=776a763e663b845003cd628d0656692d8ff2652aaa5cec18820e078baec62c8e"
+  },
+  {
+   "utc": "2026-10-23T05:26:55.031577+00:00",
+   "kind": "holdout_eval",
+   "labels_read": true,
+   "one_shot": true,
+   "n_rows_expected": 311638,
+   "note": "one-shot confirmatory read; no re-run permitted"
+  },
+  {
+   "utc": "2026-10-23T08:33:12.653405+00:00",
+   "kind": "holdout_postprocess",
+   "labels_read": false,
+   "what": "post-hoc diagnostics (within/between AUC, dyad FE, LOO CIs) from the saved one-shot predictions; test features re-exported in blind mode (y=0) and labels restored from preds/holdout_preds.npz; no new 2018-22 label read",
+   "inputs": [
+    "results/framework_pilot/holdout/preds/holdout_preds.npz",
+    "results/framework_pilot/holdout/parts/holdout_core.json"
+   ],
+   "note": "post-processing only; the confirmatory read is the preceding holdout_eval entry"
+  }
+ ],
+ "policy_note": "The confirmatory evaluation read the raw test split once. Before the preregistration freeze, an aggregate support count over 2018-22 (1,586,040 rows; 164,272 positives) was taken to size the holdout; it did not identify holdout units, fit a model, or compute a holdout-specific statistic. All post-freeze diagnostics reused the saved prediction file; no new raw event label was read. A blind/quick smoke run was aborted by a broken pipe before the confirmatory run and read no labels.",
+ "timeline": {
+  "pre_freeze_aggregate_support_count": {
+   "utc": null,
+   "labels_read": true
+  },
+  "prereg_freeze": "2026-10-23T05:04:35.820278+00:00",
+  "confirmatory_run_start": "2026-10-23T05:26:55.031577+00:00",
+  "confirmatory_run_complete": "2026-10-23T07:45:19.308367+00:00",
+  "postprocess_from_saved_predictions": "2026-10-23T08:33:12.653405+00:00"
+ }
+}

@@ -1,0 +1,16 @@
+contrast,metric,point,ci_lo,ci_hi,scale
+primary49_vs_warm,log_loss,-0.008146,-0.010958,-0.005331,baseline_minus_model
+primary49_vs_warm,brier,-0.004971,-0.006048,-0.003944,baseline_minus_model
+primary49_vs_warm,auc,0.015979,0.013956,0.018431,model_minus_baseline
+primary49_vs_warm,ap,0.035016,0.030391,0.041203,model_minus_baseline
+primary49_vs_warm,ece,-0.031884,-0.036117,-0.027967,baseline_minus_model
+secondary29_vs_warm,log_loss,0.004510,0.002536,0.006473,baseline_minus_model
+secondary29_vs_warm,brier,0.000044,-0.000611,0.000613,baseline_minus_model
+secondary29_vs_warm,auc,0.014118,0.012227,0.016404,model_minus_baseline
+secondary29_vs_warm,ap,0.034900,0.030294,0.040262,model_minus_baseline
+secondary29_vs_warm,ece,-0.017235,-0.021042,-0.013941,baseline_minus_model
+primary49_vs_per_dyad,log_loss,0.047999,0.045523,0.050010,baseline_minus_model
+primary49_vs_per_dyad,brier,0.009487,0.008613,0.010195,baseline_minus_model
+primary49_vs_per_dyad,auc,0.177879,0.170144,0.185644,model_minus_baseline
+primary49_vs_per_dyad,ap,0.350722,0.342741,0.355676,model_minus_baseline
+primary49_vs_per_dyad,ece,-0.038643,-0.043926,-0.030862,baseline_minus_model

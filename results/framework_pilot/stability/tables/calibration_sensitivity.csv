@@ -1,0 +1,4 @@
+model,period,status,n,positives,T,log_loss_raw,log_loss_temperature,log_loss_isotonic,ece_raw,ece_temperature,ece_isotonic,mean_abs_isotonic_logit_distortion,exact_decomposition_applies_to,isotonic_decomposed
+logistic_full,inner_2016_17,inner_validation,486496,53740,1.0,0.205848,0.205848,0.205304,0.007085,0.007085,0.005857,0.205425,raw log-odds and temperature only,False
+logistic_full,retro_2018_22,burned_retrospective,1247968,128925,1.0,0.197863,0.197863,0.197506,0.006448,0.006448,0.005133,0.203962,raw log-odds and temperature only,False
+logistic_full,covid_2020_21,burned_retrospective,507648,47194,1.0,0.183061,0.183061,0.182913,0.006163,0.006163,0.004932,0.22132,raw log-odds and temperature only,False
