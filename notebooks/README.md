@@ -2,7 +2,7 @@
 
 Read-only, CPU-only companion notebooks for:
 
-> **Actor-role components of dyadic event forecasts: exact attribution and a portability audit.**
+> **Actor-role components of dyadic event forecasts: exact attribution, near-collinearity, and a within-panel stability audit**
 
 The notebooks display frozen aggregate artifacts. They do **not** fit models, read the ICEWS event panel, or load row-level predictions. Some shipped aggregates contain actor-level **aggregate attribution and exposure** (not predicted probabilities or observed outcome rates); those are ICEWS-derived and remain under the ICEWS terms. The world-line preview ships no row-level trace: only the rendered figure and aggregate summaries. See `NOTICE`, `DATA_EXCLUSIONS.md` and `results/README.md`.
 

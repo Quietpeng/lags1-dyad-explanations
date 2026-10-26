@@ -1,5 +1,22 @@
 # Release notes
 
+## Public title alignment (2026-10-27; documentation and metadata only)
+
+No result, figure, notebook, manifest hash, `SHA256SUMS` entry, data file or
+test semantics changed.
+
+- **Public title follows the manuscript.** `CITATION.cff`, `.zenodo.json`,
+  `README.md`, `notebooks/README.md`, `REPRODUCING.md` and the
+  `pyproject.toml` description now carry *Actor-role components of dyadic event
+  forecasts: exact attribution, near-collinearity, and a within-panel stability
+  audit*.
+- **Audit label corrected in public prose.** Public text now names only the
+  within-panel stability audit; `CODE_MAP.md` uses the same label. No numerical
+  claim, scope statement or evidential status changed.
+- Version `0.1.1`, the L0–L2 executable boundary, the five-seed preview
+  disclosure, the restricted 50-refit audit and the withheld row-level data are
+  unchanged. No `v0.1.1` tag and no DOI exist.
+
 ## Public-label alignment (2026-10-27; documentation and metadata only)
 
 Documentation, citation metadata and one module docstring only: no result,

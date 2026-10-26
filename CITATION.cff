@@ -1,28 +1,29 @@
 cff-version: 1.2.0
-message: "If you use this attribution contract or its public artifact, please cite the manuscript and the archived release."
-title: "Actor-role components of dyadic event forecasts: exact attribution and a portability audit"
+message: "If you use this attribution contract, its within-panel stability audit, or its public artifact, please cite the manuscript and the archived release."
+title: "Actor-role components of dyadic event forecasts: exact attribution, near-collinearity, and a within-panel stability audit"
 abstract: >-
-  Public artifact and L0-L2 verification release for the actor-role attribution
-  contract of this manuscript, together with a portability audit. The contract
-  fixes feature ownership, unit and sign before results, so every logistic
-  forecast carries an exact group-additive decomposition into source-role,
-  target-role, dyad and non-actor groups. It is a design convention and audit,
-  not a new estimator: the decomposition is the logistic identity and coincides
-  with linear SHAP under a training-mean background. The release is one paper
-  path, not a reusable framework, and is executable at L0-L2 only (read the
-  frozen aggregates, verify their hashes and contracts, re-render the
-  notebooks). The restricted 50-refit audit code and all ICEWS inputs are not
-  redistributed; row-level predictions and labels are withheld. The
-  confirmatory evaluation is a pre-registered, one-shot, unit-fresh 20% dyad
-  holdout; it is retrospective, not time-fresh. The stability audit is
-  provisional, holdout-excluded and based on 50 dyad-cluster bootstrap refits;
-  it is not a holdout-side stability test. The public experiment scripts are a
+  Public artifact and L0-L2 verification release for the actor-role
+  attribution contract of this manuscript, together with a within-panel
+  stability audit. The contract fixes feature ownership, unit and sign
+  before results, so every logistic forecast carries an exact group-additive
+  decomposition into source-role, target-role, dyad and non-actor groups. It
+  is a design convention and audit, not a new estimator: the decomposition
+  is the logistic identity and coincides with linear SHAP under a
+  training-mean background. The release is one paper path, not a reusable
+  framework, and is executable at L0-L2 only (read the frozen aggregates,
+  verify their hashes and contracts, re-render the notebooks). The
+  restricted 50-refit audit code and all ICEWS inputs are not redistributed;
+  row-level predictions and labels are withheld. The confirmatory evaluation
+  is a pre-registered, one-shot, unit-fresh 20% dyad holdout; it is
+  retrospective, not time-fresh. The stability audit is provisional,
+  holdout-excluded and based on 50 dyad-cluster bootstrap refits; it is not
+  a holdout-side stability test. The public experiment scripts are a
   five-seed preview of the audit method and do not regenerate the 50-refit
-  holdout-excluded aggregates. No general claim is made about graph features,
-  persistence or any corpus beyond this panel. Source code is MIT-licensed;
-  ICEWS-derived aggregate results are not MIT and remain under the ICEWS
-  research-and-teaching terms. This is a v0.1.1 release candidate: the v0.1.1
-  git tag and the DOI are pending.
+  holdout-excluded aggregates. No general claim is made about graph
+  features, persistence or any corpus beyond this panel. Source code is
+  MIT-licensed; ICEWS-derived aggregate results are not MIT and remain under
+  the ICEWS research-and-teaching terms. This is a v0.1.1 release candidate:
+  the v0.1.1 git tag and the DOI are pending.
 authors:
   - name: "LAGS-1 authors"
 version: "0.1.1"

@@ -75,7 +75,7 @@ logistic49 (primary) / logistic29 (secondary) / HGB49 (capacity control)
 frozen holdout aggregates (summary.json, tables/*.csv, report.md)
         │  aggregation.py
         ▼
-exact source/target actor contributions + stability audit (provisional)
+exact source/target actor contributions + within-panel stability audit (provisional)
         │
         ▼
 read-only notebooks 01–03

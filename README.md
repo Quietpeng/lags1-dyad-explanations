@@ -1,14 +1,15 @@
-# Actor-role components of dyadic event forecasts
+# Actor-role components of dyadic event forecasts: exact attribution, near-collinearity, and a within-panel stability audit
 
-**Exact attribution and a portability audit.**
+**Exact attribution, near-collinearity, and a within-panel stability audit.**
 
 Code, tests and aggregate results for the **actor-role attribution contract**
-and **portability audit** of the manuscript: an ex ante ownership rule that
-fixes unit and sign before results, exact additive source- and target-role
-components for binary dyad-month political event forecasts, and a separate
-stability audit. The deliverable is a contract plus audit, not a general-purpose
-framework and not a new estimator: the decomposition is the logistic identity
-and coincides with linear SHAP under a training-mean background.
+and **within-panel stability audit** of the manuscript: an ex ante ownership
+rule that fixes unit and sign before results, exact additive source- and
+target-role components for binary dyad-month political event forecasts, and a
+separate stability audit. The deliverable is a contract plus audit, not a
+general-purpose framework and not a new estimator: the decomposition is the
+logistic identity and coincides with linear SHAP under a training-mean
+background.
 
 The public artifact is an **L0–L2 verification release**: reading the frozen
 aggregates, verifying their hashes and contracts, and re-rendering the

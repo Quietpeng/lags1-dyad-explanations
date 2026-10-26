@@ -12,15 +12,15 @@ All commands assume the repository root and `python3` (>= 3.12; the pinned
 `numpy==2.5.4` and `scipy==1.18.1` have no cp311 wheels). CPU only.
 
 **What this artifact is.** What ships is the manuscript's actor-role
-attribution contract and its portability audit, released for verification: an
-ex ante feature-ownership rule that fixes unit and sign before results, an exact
-group-additive decomposition (the logistic identity, not a new estimator) and a
-separate stability audit. It is one paper path, not a reusable framework, and it
-makes no general claim about graph features, persistence or any corpus beyond
-this panel. The executable surface is L0–L2; L3–L4 are documented for context
-only. The 50-refit audit code is restricted and is not in this tree — the public
-`experiments/` scripts are a five-seed preview — and row-level predictions and
-labels are withheld.
+attribution contract and its within-panel stability audit, released for
+verification: an ex ante feature-ownership rule that fixes unit and sign before
+results, an exact group-additive decomposition (the logistic identity, not a
+new estimator) and a separate stability audit. It is one paper path, not a
+reusable framework, and it makes no general claim about graph features,
+persistence or any corpus beyond this panel. The executable surface is L0–L2;
+L3–L4 are documented for context only. The 50-refit audit code is restricted
+and is not in this tree — the public `experiments/` scripts are a five-seed
+preview — and row-level predictions and labels are withheld.
 
 ## Levels
 
