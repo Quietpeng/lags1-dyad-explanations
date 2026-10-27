@@ -103,7 +103,10 @@ class TestNotebookSuite(unittest.TestCase):
             if path.name in expected_images:
                 self.assertTrue(images, f"{path.name}: no embedded PNG")
             version = nb["metadata"]["language_info"]["version"]
-            self.assertTrue(version.startswith("3.13"), f"{path.name}: {version}")
+            major_minor = tuple(int(part) for part in version.split(".")[:2])
+            self.assertGreaterEqual(
+                major_minor, (3, 12),
+                f"{path.name}: {version} is below the declared 3.12 floor")
 
 
 if __name__ == "__main__":

@@ -30,6 +30,10 @@ jobs:
         run: make test PY=python3
       - name: Release verification
         run: make verify PY=python3
+      - name: Stability and worldline aggregate checks
+        run: |
+          make stability-check PY=python3
+          make worldline-check PY=python3
       - name: Build and verify the release archive
         if: matrix.python-version == '3.13'
         run: make dist PY=python3

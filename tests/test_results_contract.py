@@ -280,6 +280,82 @@ class TestDataExclusions(unittest.TestCase):
         spec.loader.exec_module(module)
         self.assertEqual(module.check_row_level_data(ROOT), [])
 
+    def test_manifest_code_annotations_match_shipped_bytes(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "verify_release_manifest_positive", ROOT / "scripts" / "verify_release.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        self.assertEqual(module.check_manifest_code(ROOT), [])
+        manifest = strict_load(HOLDOUT / "manifest.json")
+        annotations = manifest["release_annotations"]["code_annotations"]
+        self.assertEqual(set(annotations["current_sha256"]), set(manifest["code"]))
+        for rel, digest in annotations["current_sha256"].items():
+            self.assertEqual(sha256(ROOT / rel), digest, rel)
+
+    def test_verifier_rejects_a_tampered_code_hash(self):
+        import importlib.util
+        import tempfile
+        spec = importlib.util.spec_from_file_location(
+            "verify_release_manifest_negative", ROOT / "scripts" / "verify_release.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp) / "results" / "framework_pilot" / "holdout"
+            base.mkdir(parents=True)
+            code = Path(tmp) / "experiments" / "synthetic.py"
+            code.parent.mkdir(parents=True)
+            code.write_text("print('synthetic')\n", encoding="utf-8")
+            shipped = sha256(code)
+            manifest = {
+                "code": {"experiments/synthetic.py": shipped},
+                "release_annotations": {"code_annotations": {
+                    "current_sha256": {"experiments/synthetic.py": shipped},
+                    "changed_since_freeze": {},
+                    "p_display": {"files": ["experiments/synthetic.py"],
+                                  "symbols": []},
+                }},
+            }
+            target = base / "manifest.json"
+            target.write_text(json.dumps(manifest), encoding="utf-8")
+            self.assertEqual(module.check_manifest_code(Path(tmp)), [])
+            # A tampered current hash is caught.
+            manifest["release_annotations"]["code_annotations"][
+                "current_sha256"]["experiments/synthetic.py"] = "0" * 64
+            target.write_text(json.dumps(manifest), encoding="utf-8")
+            errors = module.check_manifest_code(Path(tmp))
+            self.assertTrue(any("current code hash mismatch" in e for e in errors), errors)
+            # A post-freeze change without an annotation is caught.
+            manifest["release_annotations"]["code_annotations"][
+                "current_sha256"]["experiments/synthetic.py"] = shipped
+            manifest["code"]["experiments/synthetic.py"] = "1" * 64
+            target.write_text(json.dumps(manifest), encoding="utf-8")
+            errors = module.check_manifest_code(Path(tmp))
+            self.assertTrue(any("without annotation" in e for e in errors), errors)
+            # The shipped tree itself is clean.
+            self.assertEqual(module.check_manifest_code(ROOT), [])
+
+    def test_verifier_rejects_a_tampered_row_level_column(self):
+        import importlib.util
+        import tempfile
+        spec = importlib.util.spec_from_file_location(
+            "verify_release_row_tamper", ROOT / "scripts" / "verify_release.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        source = (STABILITY / "tables" / "actor_month_source_retro_2018_22.csv")
+        with source.open(encoding="utf-8", newline="") as handle:
+            header = next(csv.reader(handle))
+        self.assertIn("aid", header)
+        with tempfile.TemporaryDirectory() as tmp:
+            results = Path(tmp) / "results" / "x"
+            results.mkdir(parents=True)
+            (results / "tampered.csv").write_text(
+                ",".join(header + ["p"]) + "\n" + ",".join(["0"] * len(header) + ["0.5"]) + "\n",
+                encoding="utf-8")
+            errors = module.check_row_level_data(Path(tmp))
+            self.assertTrue(
+                any("with unit identifiers" in e for e in errors), errors)
+
     def test_verifier_flags_a_synthetic_row_level_file(self):
         import importlib.util
         import tempfile

@@ -19,6 +19,8 @@ Checks
 * the pre-registration checksum uses a repo-relative path and matches;
 * manifest entries for non-redistributed predictions/logs are marked
   ``redistributed: false`` and the files are absent;
+* every ``manifest.code`` entry has a ``code_annotations.current_sha256``
+  digest equal to the shipped bytes, and any post-freeze change is annotated;
 * all three notebooks contain executed, error-free, aggregate-only outputs;
 * no absolute home/temporary path or credential-like string appears in text;
 * no forbidden path is tracked by git (when the verifier runs in a git tree).
@@ -395,6 +397,79 @@ def check_manifest(root: Path) -> list[str]:
     return errors
 
 
+SHA256_HEX = re.compile(r"[0-9a-f]{64}")
+
+
+def check_manifest_code(root: Path) -> list[str]:
+    """Recompute every manifest code hash against the shipped bytes.
+
+    ``manifest.code`` records the digest of the bytes actually run at freeze
+    time.  ``release_annotations.code_annotations.current_sha256`` records the
+    bytes shipped at this release tag.  A file may legitimately differ between
+    the two, but only when the difference is listed in
+    ``code_annotations.changed_since_freeze``; every ``code`` entry must have a
+    current-hash annotation and every annotated value must equal the shipped
+    file.  The ``p_display`` block documents the post-freeze inference-code
+    change and is checked against the file it names.
+    """
+    base = root / HOLDOUT_REL
+    manifest = strict_load(base / "manifest.json")
+    code = manifest.get("code") or {}
+    annotations = (
+        manifest.get("release_annotations", {}).get("code_annotations") or {}
+    )
+    current = annotations.get("current_sha256") or {}
+    changed = annotations.get("changed_since_freeze") or {}
+    errors: list[str] = []
+    if not code:
+        return ["manifest code block is missing or empty"]
+    if not current:
+        return ["manifest code_annotations.current_sha256 is missing or empty"]
+    for rel, freeze_digest in sorted(code.items()):
+        if not SHA256_HEX.fullmatch(str(freeze_digest)):
+            errors.append(f"manifest code hash is not a sha256 digest: {rel}")
+            continue
+        path = root / rel
+        if not path.is_file():
+            errors.append(f"manifest code file missing: {rel}")
+            continue
+        shipped = sha256_file(path)
+        if rel not in current:
+            errors.append(
+                f"manifest code entry has no current_sha256 annotation: {rel}")
+            continue
+        if current[rel] != shipped:
+            errors.append(f"manifest current code hash mismatch: {rel}")
+        if freeze_digest != shipped and rel not in changed:
+            errors.append(
+                f"manifest code changed since freeze without annotation: {rel}")
+    for rel in sorted(set(current) - set(code)):
+        errors.append(
+            f"manifest code_annotations entry has no code hash: {rel}")
+    p_display = annotations.get("p_display")
+    if not isinstance(p_display, dict):
+        errors.append("manifest code_annotations.p_display is missing")
+    else:
+        files = p_display.get("files") or []
+        if not files:
+            errors.append("manifest code_annotations.p_display has no files")
+        for rel in files:
+            if rel not in code:
+                errors.append(
+                    f"manifest p_display file is not a code entry: {rel}")
+        for symbol in p_display.get("symbols") or []:
+            found = False
+            for rel in files:
+                path = root / rel
+                if path.is_file() and f"def {symbol}(" in path.read_text(
+                        encoding="utf-8"):
+                    found = True
+            if not found:
+                errors.append(
+                    f"manifest p_display symbol is not defined: {symbol}")
+    return errors
+
+
 def check_text(root: Path) -> list[str]:
     errors = []
     for path in sorted(root.rglob("*")):
@@ -723,6 +798,7 @@ def main(argv: list[str] | None = None) -> int:
         ("stability checksums", check_tree_sums(root, STABILITY_REL, "stability")),
         ("pre-registration checksum", check_prereg_checksum(root)),
         ("manifest exclusions", check_manifest(root)),
+        ("manifest code hashes", check_manifest_code(root)),
         ("text hygiene", check_text(root)),
         ("notebooks", check_notebooks(root)),
         ("stability status", check_stability(root)),

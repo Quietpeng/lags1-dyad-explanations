@@ -286,6 +286,23 @@ def check_worldline(root: Path) -> list[str]:
     return errors
 
 
+def check_code_manifest(root: Path) -> list[str]:
+    """Check ``manifest.code`` and ``code_annotations`` against shipped bytes.
+
+    The canonical implementation lives in ``verify_release.py`` (a shipped
+    script); loading it here keeps the two targets on one rule set instead of
+    duplicating the hash logic.
+    """
+    import importlib.util
+
+    path = Path(__file__).resolve().parents[1] / "scripts" / "verify_release.py"
+    spec = importlib.util.spec_from_file_location(
+        "verify_release_manifest_code", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.check_manifest_code(root)
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("group", choices=("stability", "worldline"))
@@ -298,6 +315,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.group == "stability"
         else check_worldline(root)
     )
+    errors = list(errors) + check_code_manifest(root)
     print(RESTRICTED_NOTE)
     if errors:
         for error in errors:

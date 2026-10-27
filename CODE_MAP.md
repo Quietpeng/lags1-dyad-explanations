@@ -5,8 +5,9 @@ contract and its audit, not a reusable framework and not a new estimator. The
 directory and import name `framework/` are retained for compatibility (tests and
 the installed package import `framework`); they do not imply general-purpose
 abstractions. Earlier pilot, synthetic/T1, graph-encoder, operator and reporting
-modules were removed from the shipped tree; they remain in git history but are
-not importable or tested here.
+modules were removed from the shipped tree; the quarantined history that
+contains them is not part of this public release, and they are not importable
+or tested here.
 
 ## Paper path (`framework/`)
 
@@ -25,6 +26,12 @@ not importable or tested here.
 | `aggregation.py` | Exact additive attribution, six ownership buckets, actor-month views, top-k/Jaccard stability and window helpers. |
 | `regions.py` | ISO3 macro-region mapping used by the panel build. |
 | `utils.py` | Logging/tee, JSON, hashing, host/package metadata, timing. |
+
+The contract suite exercises these modules with synthetic arrays and shipped
+aggregates only. `framework/data.py` needs the restricted ICEWS panel, so only
+its `tail_mask` helper is unit-tested; `bootstrap.py`, `sprint_a.py`,
+`sprint_a_inference.py` and `regions.py` have focused unit tests that read no
+data, configuration or predictions.
 
 ## Entry points
 

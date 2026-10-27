@@ -1,7 +1,7 @@
 # Data exclusions and privacy boundary
 
 **Applies to:** the public artifact `lags1-dyad-explanations`, release candidate
-0.1.1 (`review-r2c3` tree). **Status:** the earlier row-level leak is closed (the
+0.1.1 (`review-r2c6` tree). **Status:** the earlier row-level leak is closed (the
 contaminated history is quarantined in a private repository and is not reachable
 from this tree).
 

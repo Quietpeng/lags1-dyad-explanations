@@ -1,5 +1,25 @@
 # Release notes
 
+## Manifest provenance repair (2026-10-27; metadata, tests and documentation)
+
+No result, figure, notebook output, data file or row-level policy changed.
+
+- `holdout/manifest.json:release_annotations.code_annotations` now records the
+  shipped SHA-256 of all six `manifest.code` files (the freeze-time digests stay
+  in `code`), names the three post-freeze files under `changed_since_freeze`,
+  and adds the `p_display` entry for the censored-p inference code.
+- `scripts/verify_release.py` gained a `manifest code hashes` check (14 → 15
+  checks), and `scripts/check_aggregates.py` applies the same rule in both
+  `stability-check` and `worldline-check`. Contract tests cover a tampered code
+  hash and a tampered row-level column.
+- Documentation corrections: notebook 01 cites Figure 4
+  (`fig4_holdout.pdf`), `DATA_EXCLUSIONS.md` names the current review tree,
+  `CODE_MAP.md` and these notes no longer claim the quarantined history is
+  public, the nested stability-summary wording is explicit, and the freeze
+  `figures_manifest` normalization is documented in `results/README.md`.
+- CI runs `make stability-check` and `make worldline-check`; the notebook
+  metadata test asserts the declared 3.12 floor instead of a fixed interpreter.
+
 ## Public title alignment (2026-10-27; documentation and metadata only)
 
 No result, figure, notebook, manifest hash, `SHA256SUMS` entry, data file or
@@ -113,7 +133,8 @@ blob, `SHA256SUMS` entry or frozen number changed.
 - The shipped package contains the paper path only. Legacy audit/graph/
   interpret/operators/pipeline/reporting/run_pilot/synth/synth_arms/targets/
   windows modules and the restricted snapshot scripts were removed from the
-  public tree (git history retains them).
+  public tree; the quarantined history that contains them is not part of this
+  public release.
 - Added `pyproject.toml`, `requirements.lock`, `CODE_MAP.md`,
   `REPRODUCING.md`, `.gitattributes`, `.github/workflows/ci.yml` and stricter
   ignore rules.
@@ -148,7 +169,10 @@ blob, `SHA256SUMS` entry or frozen number changed.
   the release contains no row-level probability file; `make verify` and
   `make worldline-check` fail if either CSV reappears.
 
-## v0.1.0 — first curated release
+## v0.1.0 — first curated release (no git tag)
+
+This milestone is recorded in these notes only: no `v0.1.0` tag exists in the
+public repository, and the tag inventory is `review-r2c2` … `review-r2c6`.
 
 This was a curated public release of the code and non-restricted aggregate
 artifacts. Local absolute paths in copied reports/scripts were replaced with

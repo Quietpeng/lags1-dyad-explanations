@@ -3,6 +3,14 @@
 #   .venv/bin/pip install "nbclient>=0.11" "nbformat>=5.11" "ipykernel>=7.0"
 #   .venv/bin/pip list --format=freeze
 # Python 3.13.5; CPU only. Direct pins also live in requirements.txt.
+#
+# Scope: this is a tested snapshot, not an enforced lock. The enforced contract
+# is the direct pin set in requirements.txt (also checked by the metadata
+# tests); a later clean install may resolve newer transitive patch releases
+# without changing the analysis stack. Reported drift after the R2C5 review:
+# python-dateutil 3.0.0, platformdirs 4.13.6 and wcwidth 0.9.4 resolve where
+# this snapshot records 2.9.0.post0, 4.13.5 and 0.9.3. None of the three is
+# imported by framework/, experiments/, scripts/ or the tests.
 asttokens==3.0.2
 attrs==26.1.0
 cloudpickle==3.1.2

@@ -177,6 +177,32 @@ changing any metric, prediction or model output. For those files,
 `manifest.json:release_annotations.current_sha256` plus `SHA256SUMS` record the
 shipped hash.
 
+`holdout/manifest.json` also records the six code files that produced the
+holdout aggregates. `manifest.code` is the freeze-time digest of the bytes
+actually run; `release_annotations.code_annotations.current_sha256` is the
+digest of the bytes shipped at this tag for every entry, and
+`changed_since_freeze` names each file that moved with the reason. `make verify`
+and `make stability-check` recompute both sides and fail on a missing
+annotation or a mismatched digest.
+
+The freeze bundle's `hashes.figures_manifest` is a **normalized** digest, not
+the SHA-256 of the `figures.sha256` wrapper file. It is the SHA-256 of the 16
+sorted lines produced by removing the leading `repo/` from each wrapper path
+(so each line is `<digest>  paper/figures/<name>`), newline-terminated:
+
+```bash
+sed 's|  repo/|  |' figures.sha256 | sha256sum
+```
+
+Both forms describe the same 16 figure files, and
+`sha256sum -c figures.sha256` verifies the wrapper. The published aggregate tree
+does not ship either file; this note only explains the freeze identity.
+
+All four stability summaries — including the nested `summary_stability.json`
+and `summary_hgb.json` — carry `provisional_holdout_not_integrated`. The
+superseded pre-holdout status label appears in no shipped file; the artifact
+uses only the current status and the holdout-excluded audit literal.
+
 ## Glossary
 
 | Internal label | Public meaning |

@@ -308,10 +308,32 @@
    "results/framework_pilot/holdout/tables/within_between_deltas.csv": "48fdd94a78ef2e3727ff71d85575c2f8143c47cbd6ee750fb60626f9c7e83bfd"
   },
   "code_annotations": {
-   "note": "Two shipped experiment scripts differ from their run-time bytes only in usage/command text and post-freeze claim wording; the freeze-time hashes remain in `code`.",
+   "note": "`code` is the freeze-time digest of the bytes actually run. `current_sha256` is the digest of the bytes shipped at this release tag for every `code` entry; scripts/verify_release.py and scripts/check_aggregates.py recompute both directions and fail on an unannotated change. Files that differ from freeze time are listed in `changed_since_freeze` with their reason.",
    "current_sha256": {
     "experiments/sprint_a_run.py": "975864d43c6539ff9ebbca28662c2afe217a5621101ffbf074226a3c3611ab8b",
-    "experiments/sprint_a_holdout_extras.py": "ccbd6b97a12e04b51b100de26fefecc1325dda96634644fca0a4253c0107c19b"
+    "experiments/sprint_a_holdout_extras.py": "60e63ada2d10be481783b1a12ce9a12a4d7422e51927daedef336798102e1302",
+    "framework/sprint_a.py": "14d51b8e699325ef249dad302a914e5bf52f8ae944cacae4b8a9c0d027d53358",
+    "framework/sprint_a_inference.py": "a63008ee818247ce1bb73bbe2c810f58d59dd8b367a0d791856192bbfdc08cad",
+    "framework/models.py": "86ec8abb0ef9ddf13083aa4526080a2688883bea7c64db61cdb0de46a028f10f",
+    "framework/metrics.py": "7a4229e78fe2d7e3ea591c5a9a0dc4580e142a9e6f3afca622bce2c92d093ac9"
+   },
+   "changed_since_freeze": {
+    "experiments/sprint_a_run.py": "usage/command text and post-freeze claim wording only; no model, metric or prediction logic",
+    "experiments/sprint_a_holdout_extras.py": "usage/command text and post-freeze claim wording only; the frozen aggregates are the same",
+    "framework/sprint_a_inference.py": "added p_display/boot_p_display for the 2026-10-26 censored-p convention; no frozen metric, prediction or conclusion changed"
+   },
+   "p_display": {
+    "utc": "2026-10-26T00:00:00Z",
+    "files": [
+     "framework/sprint_a_inference.py"
+    ],
+    "symbols": [
+     "p_display",
+     "boot_p_display"
+    ],
+    "reason": "Post-freeze code annotation for the censored-p convention: normal tails below float64 resolution and two-sided bootstrap tails with zero hits are rendered as strict bounds instead of a literal 0.0. The arithmetic is documented in results/framework_pilot/holdout/CORRECTIONS.md (2026-10-26).",
+    "frozen_metrics_changed": false,
+    "conclusions_changed": false
    }
   },
   "bh_d_recomputation": {
