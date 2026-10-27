@@ -101,8 +101,8 @@
  },
  "outputs": {
   "results/framework_pilot/holdout/report.md": {
-   "sha256": "d2bafcfd5acd2ef2bba8fb1371f1d512ac71a16d573228b05f65542ad32bba75",
-   "bytes": 14345,
+   "sha256": "01bee9323e032abcc6ddbe1538ad6fb3f0a16fc671584a571064478853dba13c",
+   "bytes": 14907,
    "redistributed": true
   },
   "results/framework_pilot/holdout/summary.json": {
@@ -262,7 +262,7 @@
  "release_annotations": {
   "release": "0.1.1",
   "numbers_changed": false,
-  "note": "Post-freeze release annotations only: per-output redistribution flags, excluded projection/log annotations, the final wording sync (within-dyad/calendar/sign labels) and a release note. The `outputs` sha256 values track the shipped annotated bytes; freeze-time run hashes remain in `post_run_corrections`. No metric, prediction or model output was changed.",
+  "note": "Post-freeze release annotations only: per-output redistribution flags, excluded projection/log annotations, the final wording sync (within-dyad/calendar/sign labels, information-advantaged warm-history comparator) and a release note. The `outputs` sha256 values track the shipped annotated bytes; freeze-time run hashes remain in `post_run_corrections`. No metric, prediction or model output was changed.",
   "excluded": {
    "results/framework_pilot/holdout/preds/holdout_preds.npz": {
     "redistributed": false,
@@ -282,7 +282,7 @@
    }
   },
   "current_sha256": {
-   "results/framework_pilot/holdout/report.md": "d2bafcfd5acd2ef2bba8fb1371f1d512ac71a16d573228b05f65542ad32bba75",
+   "results/framework_pilot/holdout/report.md": "01bee9323e032abcc6ddbe1538ad6fb3f0a16fc671584a571064478853dba13c",
    "results/framework_pilot/holdout/summary.json": "f60df77dbca703b7573a4491906608bb767970cb2247a17af02eab996f3e5d7c",
    "results/framework_pilot/holdout/parts/holdout_extras.json": "4415d28f775b6d367b9669ede2065dfe00ad47bafb8dcb787b141632d6b99f95",
    "results/framework_pilot/holdout/test_access_log.json": "634fb56b22b455ef8becc8ecb0ae553c54d36f4f170c2013985bb561c6a42b21",
@@ -311,7 +311,7 @@
    "note": "`code` is the freeze-time digest of the bytes actually run. `current_sha256` is the digest of the bytes shipped at this release tag for every `code` entry; scripts/verify_release.py and scripts/check_aggregates.py recompute both directions and fail on an unannotated change. Files that differ from freeze time are listed in `changed_since_freeze` with their reason.",
    "current_sha256": {
     "experiments/sprint_a_run.py": "975864d43c6539ff9ebbca28662c2afe217a5621101ffbf074226a3c3611ab8b",
-    "experiments/sprint_a_holdout_extras.py": "60e63ada2d10be481783b1a12ce9a12a4d7422e51927daedef336798102e1302",
+    "experiments/sprint_a_holdout_extras.py": "31b491d5dc59159b5a5ec9655e918bfce692b957323a19c39f6a01f7d0026925",
     "framework/sprint_a.py": "14d51b8e699325ef249dad302a914e5bf52f8ae944cacae4b8a9c0d027d53358",
     "framework/sprint_a_inference.py": "a63008ee818247ce1bb73bbe2c810f58d59dd8b367a0d791856192bbfdc08cad",
     "framework/models.py": "86ec8abb0ef9ddf13083aa4526080a2688883bea7c64db61cdb0de46a028f10f",
@@ -319,7 +319,7 @@
    },
    "changed_since_freeze": {
     "experiments/sprint_a_run.py": "usage/command text and post-freeze claim wording only; no model, metric or prediction logic",
-    "experiments/sprint_a_holdout_extras.py": "usage/command text and post-freeze claim wording only; the frozen aggregates are the same",
+    "experiments/sprint_a_holdout_extras.py": "usage/command text, warm-history comparator-label and post-freeze claim wording only; the frozen aggregates are the same",
     "framework/sprint_a_inference.py": "added p_display/boot_p_display for the 2026-10-26 censored-p convention; no frozen metric, prediction or conclusion changed"
    },
    "p_display": {
@@ -371,20 +371,20 @@
  },
  "post_run_corrections": {
   "utc": "2026-10-23T22:20:00Z",
-  "reason": "Metadata/wording corrections after the one-shot run: within-dyad claim strings, calendar wording, calibration comparator and sign labels, censored p/q display, access-log policy note, and the final public-release wording sync. No frozen metric, label, prediction or model coefficient was changed.",
+  "reason": "Metadata/wording corrections after the one-shot run: within-dyad claim strings, calendar wording, calibration comparator and sign labels, censored p/q display, access-log policy note, the final public-release wording sync, and the information-advantaged warm-history comparator label. Current-hash entries are reconciled to the shipped bytes. No frozen metric, label, prediction or model coefficient was changed.",
   "numbers_changed": false,
   "files": {
    "results/framework_pilot/holdout/report.md": {
     "run_sha256": "d6e60f3c4d2e4c843d39f9c7af4e1db25d3d9af5af44a0adf2b544d77656a5e0",
-    "current_sha256": "d2bafcfd5acd2ef2bba8fb1371f1d512ac71a16d573228b05f65542ad32bba75"
+    "current_sha256": "01bee9323e032abcc6ddbe1538ad6fb3f0a16fc671584a571064478853dba13c"
    },
    "results/framework_pilot/holdout/summary.json": {
     "run_sha256": "be9e4bb50b4d029a02e64bac90241c3a5ae5378273d424f8b0a2a7e4a0efbeb7",
-    "current_sha256": "b6d0e8cddad8fe24f21568d52834f505f747f916d876a41ad0415818a3e91839"
+    "current_sha256": "f60df77dbca703b7573a4491906608bb767970cb2247a17af02eab996f3e5d7c"
    },
    "results/framework_pilot/holdout/parts/holdout_extras.json": {
     "run_sha256": "4d479d4650ae909d97bcf663ef969bdf1a73366ecf9178d52af45605fa4de81c",
-    "current_sha256": "ce7c9346fb81863d4c767b01ce300c7c6888e45e8af86ea7988db617ad4a4e89"
+    "current_sha256": "4415d28f775b6d367b9669ede2065dfe00ad47bafb8dcb787b141632d6b99f95"
    },
    "results/framework_pilot/holdout/test_access_log.json": {
     "run_sha256": "8b0915f9f9b2995191b3df5602475a800c3548c6e61dce9de679c7aa10a61417",
@@ -392,11 +392,11 @@
    },
    "results/framework_pilot/holdout/tables/bh_families.csv": {
     "run_sha256": "7e137d775f49a127c52df5fdcf9bd0b3460a99d118fab4ee0fb7f0c0e0e724c3",
-    "current_sha256": "59107a307809f9e7f2404b4ac53037bf970236eeba8635bf8ee3a8e6e44efa76"
+    "current_sha256": "1cbbd04cc5fb3274aae1ef79578d8ad1f34fcd6da7f680a74b9a80ea19b376aa"
    },
    "results/framework_pilot/holdout/CORRECTIONS.md": {
     "run_sha256": "c74d1b21bc8e11fd6759c22602658ecb79c36bd499e99bb21d6827f78bb4886a",
-    "current_sha256": "c7acb7eae06420f5f050a9edd24ded2bfdd75ffe8efe9c20dc0d7c9166539dcb"
+    "current_sha256": "61d0b38acd1fc0821c46b96945ad300d47a55f0b064c0bda79d5d8235877bc16"
    }
   }
  },

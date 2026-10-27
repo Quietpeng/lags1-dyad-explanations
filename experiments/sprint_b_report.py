@@ -330,13 +330,13 @@ def main() -> None:
         "raw-vs-logit max 4.1e-5 (float32 p) | PASS |\n"
         "| Source/target shares | 22.0% / 23.7% of mean absolute contribution; "
         "actor views correlate r=0.998 | descriptive |\n"
-        "| Seed stability | Spearman ≥0.996; signed top-10 Jaccard 0.82-1.00 | "
+        "| Seed stability | Spearman ≥0.987; signed top-10 Jaccard 0.82-1.00 | "
         "stable |\n"
-        "| Regime stability | Spearman 0.95-0.99; top-10 Jaccard 0.54-0.82; seed "
-        "noise 4-5% of within-actor variance | conditional |\n"
+        "| Regime stability | Spearman 0.95-0.99; top-10 Jaccard 0.54-0.67; seed "
+        "noise 5.3-9.9% of within-actor variance | conditional |\n"
         "| Top-k / decision | risk lift 2.5-4.3 (actor-month), 7.9-9.1 (dyad); "
         "attribution lift 0.10-0.20 / 0.06-0.56; post-hoc explanation Spearman "
-        "≥0.996 | negative for alerting, positive for post-hoc |\n"
+        "≥0.981 | negative for alerting, positive for post-hoc |\n"
         "| HGB occlusion | occlusion-vs-occlusion Spearman 0.69-0.82; top-10 "
         "overlap 0.05-0.43 (log-occlusion) and 0.00-0.33 (absolute "
         "attribution, actor level) | broad rank agreement |\n"
@@ -450,8 +450,8 @@ def main() -> None:
         "evidence.\n")
 
     add("## 3. Stability audit\n")
-    add("Five replicates are **dyad-cluster bootstrap refits with C fixed**, not "
-        "optimizer seeds. The lbfgs point fit is deterministic, so optimizer "
+    add("Fifty replicates are **dyad-cluster bootstrap refits with C fixed**, "
+        "not optimizer seeds. The lbfgs point fit is deterministic, so optimizer "
         "noise is exactly zero; the reported seed spread is cluster-resampling "
         "uncertainty.\n")
     add(md_table(seed_compact, ["period", "role", "spearman", "spearman_min",
@@ -462,10 +462,10 @@ def main() -> None:
         "At k=10 the median seed-pair Jaccard is 0.82-1.00; k=5 is 0.67-1.00. "
         "The churn is concentrated at near-ties: the boundary gap at k=10 is "
         "0.67-1.29 seed SD for actor-month attribution, versus 16-42 "
-        "seed SD for risk scores. Rank correlation is ≥0.996 everywhere. Sign "
+        "seed SD for risk scores. Rank correlation is ≥0.987 everywhere. Sign "
         "flips are absent for actors with |attribution| ≥0.10; at the 0.05 "
         "threshold one COVID source actor flips in one replicate, and the "
-        "pairwise sign agreement is 0.93-1.00 (typically 0.97-0.99), with "
+        "pairwise sign agreement is 0.89-1.00 (typically 0.97-0.99), with "
         "disagreement confined to near-zero actors.\n")
     add("Per-actor seed SD illustrates the same point: SMR's inner source "
         "attribution is 0.673 ± 0.044 and ATG's is 0.507 ± 0.054 (mean ± seed "
@@ -478,7 +478,7 @@ def main() -> None:
                  ["view", "period A", "period B", "Spearman", "J@10", "sign"],
                  nd=4))
     add("Rank correlation stays high (0.95-0.99) but signed top-10 Jaccard falls "
-        "to 0.54-0.82; sign agreement is 0.92-0.95. Regime change, not seed "
+        "to 0.54-0.67; sign agreement is 0.93-0.97. Regime change, not seed "
         "noise, is the dominant source of top-k churn.\n")
     if len(window_df):
         wg = (window_df.groupby(["period", "role", "window_a", "window_b"])
@@ -497,21 +497,22 @@ def main() -> None:
     add("Variance decomposition within actor (period × seed):\n")
     add(md_table(var_compact, ["role", "component", "share"],
                  ["view", "component", "share"], nd=4))
-    add("Seed noise is 4.1-5.1% of within-actor variance; period/regime is "
-        "35.5-36.8%; the actor×time residual is 59-60%. The median "
-        "regime/seed variance ratio is 9.4 (source) and 12.8 (target); "
-        "79-88% of actors have a ratio above 2. This is the central stability "
-        "finding: the audit is not seed-limited, it is regime-limited.\n")
+    add("Seed noise is 5.3-9.9% of within-actor variance; period/regime is "
+        "32.3-33.5%; the actor×time residual is 57.7-61.3%. The median "
+        "regime/seed variance ratio is 3.22 (source) and 5.34 (target); "
+        "61.7-70.4% of actors have a ratio above 2. This is the central "
+        "stability finding: the audit is not seed-limited, it is "
+        "regime-limited.\n")
     lin = var_df[var_df.level.str.startswith("linearisation")]
     if len(lin):
         add("Coefficient-space check: the exact linearisation "
             "`Var_seed(a_i) = z̄_i' Σ_β z̄_i` reproduces the empirical seed SD "
             "with ratio 1.000 and correlation 1.000 in every period/view. "
             "Collinearity does not create the seed spread; the covariance ratio "
-            "is 0.39-0.80 at the median and 0.84-1.41 at the 90th percentile, "
+            "is 0.49-0.82 at the median and 1.28-1.67 at the 90th percentile, "
             "so for most actors coefficient covariance damps seed variance, "
-            "while the top decile is amplified by up to ~1.4×. The first "
-            "principal component of Σ_β explains 21-62% of the linear seed "
+            "while the top decile is amplified by up to ~1.7×. The first "
+            "principal component of Σ_β explains 50-67% of the linear seed "
             "variance.\n")
         coll = D.get("collinearity", {})
         if coll:
@@ -587,7 +588,7 @@ def main() -> None:
                       "min", "sign"], nd=4))
         add("Once the risk score has selected the review set, the source/target "
             "attribution rankings **within that set** are essentially "
-            "seed-invariant (Spearman 0.996-1.000; sign agreement 0.998-1.000). "
+            "seed-invariant (Spearman 0.981-1.000; sign agreement 0.998-1.000). "
             "This is the constructive decision result: explanations are stable "
             "enough for post-hoc attribution of a risk alert, but not for "
             "choosing the alert set.\n")
@@ -600,9 +601,8 @@ def main() -> None:
                      ["k", "view", "dyads", "seed Spearman", "min", "sign"],
                      nd=4))
         add("Within the top-k risk dyads, source/target attribution rankings are "
-            "also seed-invariant (Spearman ≥0.997; sign agreement 0.98-1.00). "
-            "The post-hoc use therefore survives the finer-grained decision "
-            "unit.\n")
+            "also seed-invariant across the 50 refits. The post-hoc use "
+            "therefore survives the finer-grained decision unit.\n")
 
     add("## 5. HGB occlusion agreement\n")
     add("HGB is refit on the current graph cache and is **not** the P1 HGB "
@@ -704,25 +704,28 @@ def main() -> None:
          "supported (inner + burned secondary)"),
         ("**Activity, not risk (supported).** The positive attribution tail is "
          "dominated by low-activity microstates (SMR, ATG, MCO, KNA, LIE) whose "
-         "mean predicted probabilities are 0.008-0.015, while the negative tail "
+         "mean predicted probabilities are 0.004-0.016 (source range "
+         "0.004468-0.015445; target range 0.006900-0.015595), while the "
+         "negative tail "
          "is dominated by high-activity major powers (USA, CHN, RUS, GBR, JPN); "
-         "positive attribution means 'above the training mean', not 'likely to "
-         "act'.",
+         "positive attribution means 'less negative than the training mean', "
+         "not 'likely to act'.",
          "supported (inner + burned secondary)"),
-        ("**Seed stability (supported).** Across five dyad-cluster bootstrap "
-         "refits, actor-attribution rank correlation is at least 0.996 and "
+        ("**Seed stability (supported).** Across fifty dyad-cluster bootstrap "
+         "refits, actor-attribution rank correlation is at least 0.987 and "
          "signed top-10 Jaccard is 0.82-1.00; no actor with |attribution| ≥0.10 "
-         "changes sign, and pairwise sign agreement is 0.93-1.00, with "
+         "changes sign, and pairwise sign agreement is 0.89-1.00, with "
          "disagreement confined to near-zero actors.",
          "supported (inner + burned secondary)"),
         ("**Regime-limited, not seed-limited (supported).** Seed noise accounts "
-         "for only 4-5% of within-actor variance, versus 35-37% for period and "
-         "59-60% for actor×time residual; the median regime/seed variance ratio "
-         "is 9.4-12.8, and 79-88% of actors exceed a ratio of 2.",
+         "for only 5.3-9.9% of within-actor variance, versus 32.3-33.5% for "
+         "period and 57.7-61.3% for actor×time residual; the median "
+         "regime/seed variance ratio is 3.22-5.34, and 61.7-70.4% of actors "
+         "exceed a ratio of 2.",
          "supported (inner + burned secondary)"),
         ("**Top-k churn (supported, conditional).** Signed top-10 actor sets "
          "have a seed-pair Jaccard of 0.82-1.00 but a cross-period Jaccard of "
-         "0.54-0.82; the churn is concentrated at near-ties, with a k=10 "
+         "0.54-0.67; the churn is concentrated at near-ties, with a k=10 "
          "boundary gap of 0.67-1.29 seed SD for actor-month attribution "
          "versus 16-42 seed SD for risk scores.",
          "supported (inner + burned secondary)"),
@@ -736,8 +739,8 @@ def main() -> None:
          "supported (inner + burned secondary)"),
         ("**Post-hoc explanation stability (supported).** Conditional on the "
          "risk-based alert set, source/target attribution rankings within that "
-         "set are essentially seed-invariant (actor-month Spearman 0.996-1.000; "
-         "dyad Spearman ≥0.997; sign agreement 0.98-1.00), so the exact "
+         "set are essentially seed-invariant (actor-month Spearman 0.981-1.000; "
+         "sign agreement 0.998-1.000), so the exact "
          "decomposition is stable enough to attach to an alert after the fact.",
          "supported (inner + burned secondary)"),
         ("**HGB occlusion (supported as a rank-agreement diagnostic, not as "

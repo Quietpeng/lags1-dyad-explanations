@@ -1,8 +1,9 @@
 > **Release annotation (v0.1.1).** This public copy excludes the four
 > row-level prediction/log files; the manifest marks each as
 > `redistributed: false`. The metric and model numbers are unchanged.
-> The within-dyad/calendar wording was corrected to match the manuscript;
-> no frozen number changed.
+> The within-dyad/calendar wording was corrected to match the manuscript, and
+> the warm-history comparator is now labelled information-advantaged (with the
+> two-direction asymmetry and graph-cache limitation); no frozen number changed.
 
 # Sprint-A confirmatory unit-fresh dyad holdout
 
@@ -39,7 +40,7 @@ Period: 2018-01–2022-11 (retrospective; unit-fresh, not time-fresh).
 
 Primary vs per-dyad Markov (table convention: comparator − model, positive = primary better): ΔLL = **+0.047999** (+18.05% relative), 95% multiway CI [0.043333, 0.052665]; ΔECE = **-0.038642** (95% multiway CI [-0.053028, -0.024256]). Dyad-only CI [0.046280, 0.049732]; source CI [0.044708, 0.052009]; target CI [0.044731, 0.051589].
 
-**Baseline caveat.** The train-only per-dyad Markov baseline collapses to the global transition for unit-fresh dyads (identical LL 0.265874); the warm-history Markov baseline (pre-2018 observed history only) is the fair strong comparator and is reported as a secondary row below. Against the warm-history baseline the primary model **loses on LL and ECE** but **wins on AUC/AP**; see Section 3 and the exact sentences in Section 9.
+**Baseline caveat.** The train-only per-dyad Markov baseline collapses to the global transition for unit-fresh dyads (identical LL 0.265874); the warm-history Markov baseline (pre-2018 observed history only) is the information-advantaged strong comparator and is reported as a secondary row below. The comparison is unequal in two directions: warm history has 35 additional months of outcomes (through 2017-11) while the primary's features observe within-period history through t; separately, the confirmatory evaluation zeroes every held-out dyad's graph edges whereas the stability audit uses the frozen P1 cache, so that cache difference limits the primary's evaluation and is not a baseline advantage. Against the warm-history baseline the primary model **loses on LL and ECE** but **wins on AUC/AP**; see Section 3 and the exact sentences in Section 9.
 
 ## 3. Primary comparisons and multiplicity
 

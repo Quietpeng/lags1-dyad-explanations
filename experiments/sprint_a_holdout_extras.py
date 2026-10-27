@@ -1313,7 +1313,13 @@ def build_report(core, prereg, run_once, summary, rows, within_rows, between_row
     w("**Baseline caveat.** The train-only per-dyad Markov baseline collapses "
       "to the global transition for unit-fresh dyads (identical LL 0.265874); "
       "the warm-history Markov baseline (pre-2018 observed history only) is the "
-      "fair strong comparator and is reported as a secondary row below. Against "
+      "information-advantaged strong comparator and is reported as a secondary "
+      "row below. The comparison is unequal in two directions: warm history has "
+      "35 additional months of outcomes (through 2017-11) while the primary's "
+      "features observe within-period history through t; separately, the "
+      "confirmatory evaluation zeroes every held-out dyad's graph edges whereas "
+      "the stability audit uses the frozen P1 cache, so that cache difference "
+      "limits the primary's evaluation and is not a baseline advantage. Against "
       "the warm-history baseline the primary model **loses on LL and ECE** but "
       "**wins on AUC/AP**; see Section 3 and the exact sentences in Section 9.")
     w("")
