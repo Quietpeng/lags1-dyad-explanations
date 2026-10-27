@@ -28,7 +28,7 @@ preview — and row-level predictions and labels are withheld.
 |---|---|---|---|---|
 | **L0 — Read** | What do the frozen aggregates say? | Nothing beyond the files | open `results/README.md`, `notebooks/*.ipynb` on the repository page | Available |
 | **L1 — Verify** | Do the shipped bytes, JSON and tests hold? | Python 3.12+, `requirements.txt` | `make doctor && make test && make verify` | Available; no data/GPU |
-| **L2 — Re-render** | Can the notebooks be executed from the aggregates? | L1 + `nbclient`/`ipykernel` | `make notebooks` | Available; writes only notebook outputs |
+| **L2 — Re-render** | Can the notebooks be executed from the aggregates? | L1 + `nbclient`/`ipykernel` | `make notebooks` | Available; rewrites notebook outputs in place, byte-stable from a cold cache |
 | **L3 — Restricted regeneration** | Can the aggregate tables be rebuilt? | licensed ICEWS v37, restricted feature and contribution caches, local experiment configuration, row-level holdout predictions for post-processing; no public cache-build entry point | `experiments/*.py` with local inputs | **Not runnable here**; the public Sprint-B scripts are a five-seed preview and do not regenerate the 50-refit tables |
 | **L4 — Confirmatory holdout** | Can the one-shot holdout be re-run? | the burned 2018–22 labels and a new pre-registration | — | **Not reproducible by design**; labels were read once, `run_once.json` locks the run and row-level predictions are excluded |
 
@@ -73,8 +73,12 @@ make notebooks
 The executor starts each kernel in the repository root, runs all cells
 top-to-bottom with `MPLBACKEND=Agg`, writes the outputs back into the notebook
 JSON, and fails on an execution error, an absolute path or a credential-like
-string. Notebook 01 degrades gracefully (prints `[missing] ...`) when the
-`results/` tree is absent; it does not raise a `KeyError`.
+string. It warms the matplotlib font cache before the kernel starts (honouring
+`MPLCONFIGDIR` if set, otherwise `build/mplconfig`) and absorbs the known
+one-time font-cache stream, so a run from an empty cache leaves the tracked
+notebooks unchanged and `git status` clean. Notebook 01 degrades gracefully
+(prints `[missing] ...`) when the `results/` tree is absent; it does not raise a
+`KeyError`.
 
 ## Level 3 — restricted regeneration (documented, not executable)
 
@@ -121,7 +125,11 @@ shipped aggregates.
 
 The confirmatory holdout is a **one-shot** design: `experiments/sprint_a_run.py`
 refuses a second confirmatory run once `run_once.json` says `completed`, and
-`test_access_log.json` records every 2018–22 read. The lock file is part of the
+`test_access_log.json` records every post-freeze 2018–22 holdout read; the
+post-freeze stability audit logs its own burned-retrospective read in
+`results/framework_pilot/stability/summary_decompose.json`. Reads that predate
+the freeze, and the three earlier exploratory passes (G2, D2, B), are outside
+its scope and are disclosed in the manuscript. The lock file is part of the
 shipped holdout tree and there is no public unlock path. The labels were read
 once on 2026-10-23. Re-running the holdout, re-reading labels, or fitting to
 the holdout would invalidate the pre-registration. The public release therefore

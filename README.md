@@ -63,10 +63,12 @@ confirmatory holdout completed later and was not used. The shipped
   aggregate attribution/exposure only; no predicted probabilities or observed
   outcome rates are shipped.
 - `results/worldline_preview/` — illustrative two-step preview; not a validated
-  multi-step forecast. The shipped PDF is the vector Appendix A1 print version;
-  the PNG is a 300 dpi preview. Only the rendered figure and aggregate JSON
-  summaries ship: the per-row trace CSVs were removed, so the directory carries
-  no row-level probability file (see `DATA_EXCLUSIONS.md`).
+  multi-step forecast. It is a standalone, repo-only illustration, not a
+  manuscript exhibit: no paper figure or appendix is derived from it. The
+  shipped PDF is a 150 mm vector render (Arimo/TrueType); the PNG is a 300 dpi
+  preview. Only the rendered figure and aggregate JSON summaries ship: the
+  per-row trace CSVs were removed, so the directory carries no row-level
+  probability file (see `DATA_EXCLUSIONS.md`).
 - `scripts/` — release verifier, aggregate checker, notebook executor and
   preflight doctor. `CODE_MAP.md` maps modules to the paper path;
   `REPRODUCING.md` gives the L0–L4 reproduction matrix.
@@ -121,6 +123,9 @@ make notebooks
 
 The notebooks are read-only with respect to the frozen artifacts: execution
 re-renders the shipped aggregates and does not re-fit or re-score anything.
+`make notebooks` also leaves the tracked notebook JSON unchanged — the executor
+warms the matplotlib font cache first — so `make notebooks && make dist` works
+in one checkout on a cold machine.
 
 ## Reproduction boundary
 
@@ -154,7 +159,7 @@ baseline (log-loss 0.265874), log-loss was lower by 0.047999 (Δ = −0.047999;
 stronger warm-history Markov baseline (log-loss 0.209729; ECE 0.010228), the
 primary improved AUC by 0.015979 and AP by 0.035016, but its log-loss was worse
 by 0.008146 (Δ = +0.008146; 95% CI +0.002334 to +0.013958; positive = worse) and
-its ECE was worse by 0.031883 (0.042112 vs 0.010228). That contrast is
+its ECE was worse by 0.031884 (0.042112 vs 0.010228). That contrast is
 **unequal in two directions**: warm history has 35 additional months of outcomes
 (through 2017-11) that the model does not see, while the model carries the
 49-feature actor-role and graph block that the baseline does not see; neither

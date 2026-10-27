@@ -1,5 +1,39 @@
 # Release notes
 
+## Public-artifact revision (R2C8; documentation, code-reproducibility and tests)
+
+Documentation, verifier, notebook-executor, CI and lock-note changes only; no
+analysis, no refit, no label read and no aggregate value changed. Freeze hashes
+stay in `manifest.json#/post_run_corrections`; shipped bytes are tracked by
+`outputs`/`current_sha256` and both `SHA256SUMS` trees.
+
+- **World-line preview is repo-only.** Every public mention that presented
+  `results/worldline_preview/` as a manuscript exhibit is retired: the preview
+  is a standalone, illustrative repository illustration, not a manuscript
+  exhibit. Its PDF/PNG bytes and digests are unchanged, and `make verify` /
+  `make worldline-check` still pin them; those checks now fail if a document
+  re-asserts paper-exhibit membership. No preview file was added or deleted.
+- **Access log scoped.** `holdout/test_access_log.json#/policy` now claims
+  coverage only for post-freeze holdout reads, names the three earlier
+  exploratory passes (G2, D2, B) as out of scope and disclosed in the
+  manuscript, points at the stability audit's separate ledger, and annotates
+  the post-process `labels_read` flag (no raw label read; labels restored from
+  the saved predictions). No timestamp, count, entry order or
+  `definition_sha256` changed.
+- **Cold-cache notebooks.** `scripts/execute_notebooks.py` warms the matplotlib
+  font cache before a kernel starts and absorbs the known one-time font-cache
+  stream, so `make notebooks` leaves the tracked notebooks byte-identical from
+  an empty `MPLCONFIGDIR`. Notebook 01 keeps its nine outputs and its figure.
+  CI runs `make notebooks` and `make dist` in the same checkout.
+- **Numeric and inventory corrections.** `README.md` prints the correctly
+  rounded ECE difference 0.031884; `results/README.md` gives the 14-entry figure
+  manifest and marks the `repo/` normalisation as historical.
+- **Verifier honesty.** An absent `.git` now prints
+  `[SKIP] git index (not a git tree)` instead of `[OK]`.
+- **Lock drift documented.** `requirements.lock` lists every transitive drift a
+  clean install produces (python-dateutil, platformdirs, wcwidth, narwhals,
+  fonttools); no package is re-pinned.
+
 ## Public-text revision (R2C7; metadata, tests and documentation)
 
 Text, metadata and tests only; no analysis, refit, holdout rerun or number
@@ -110,8 +144,8 @@ blob, `SHA256SUMS` entry or frozen number changed.
   CI matrix (`3.12`, `3.13`) agree on `>= 3.12`; the failing 3.11 CI leg is
   removed.
 - **Stale figure geometry corrected.** `CODE_MAP.md` and `notebooks/README.md`
-  no longer advertise a 164 mm / 465x380 pt preview; they state the shipped
-  150 mm (425.197 x 330 pt) paper-A1 render. `make verify` and the contract
+  no longer advertise a 164 mm / 465x380 pt preview; they state the pinned
+  150 mm (425.197 x 330 pt) preview geometry. `make verify` and the contract
   tests now guard both documents.
 - **World-line inventory completed.** `results/README.md`,
   `DATA_EXCLUSIONS.md`, `results/worldline_preview/README.md` and
@@ -178,11 +212,12 @@ blob, `SHA256SUMS` entry or frozen number changed.
   provisional stability audit, code MIT but ICEWS-derived aggregates not MIT.
 - JSON results are strict (`NaN`/`Infinity` replaced by `null` where a value is
   undefined). No metric, prediction or model output changed.
-- The world-line preview is retained as an illustrative artifact and is now a
-  **byte-identical copy of the paper's Figure A1** (vector, 425.2 × 330 pt /
-  150 mm, Arimo, no baked key); the PNG is the same render at 300 dpi. It is
-  rendered from restricted trace exports and is not regenerable from this tree.
-  The underlying experiment was not rerun.
+- The world-line preview is retained as an illustrative, repo-only artifact and
+  is now a **standalone 150 mm vector render** (425.2 × 330 pt, Arimo, no baked
+  key); the PNG is the same render at 300 dpi. It is not a manuscript exhibit:
+  no paper figure or appendix is derived from it. It is rendered from restricted
+  trace exports and is not regenerable from this tree. The underlying experiment
+  was not rerun.
 - R2C3 artifact-integrity pass (no frozen number changed): the stability
   `audit_design` literal is
   `frozen_during_confirmatory_run_holdout_rows_excluded` with the confirmatory

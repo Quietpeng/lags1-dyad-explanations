@@ -162,12 +162,20 @@ SECRET_PATTERNS = (
 )
 SUM_LINE = re.compile(r"^([0-9a-f]{64})  (.+)$")
 
-# The public world-line preview ships the paper's Figure A1 render itself (R6
-# X01): 150 mm = 425.197 pt wide, Arimo, no baked key.  Digests are of
-# ``paper/figures/figA1_worldline.{pdf,png}``.
+# The public world-line preview is a standalone, repo-only illustration: its
+# digests and geometry are pinned so a replaced or superseded render fails, but
+# the check makes no claim that the preview is a manuscript exhibit (S01).
+# 150 mm = 425.197 pt wide, Arimo, no baked key.
 WG_PDF_MEDIABOX = b"/MediaBox [ 0 0 425.1968503937 330 ]"
 WG_PDF_SHA256 = "77081960c20db85ff3748cc06edd3d38ceb9cf69fb93687ff612f5deec8bb3b1"
 WG_PNG_SHA256 = "3b6e0fb29706a5c8af1bf219120d4c125467bc37ecc9ad48f25bd3df046e02d4"
+# S01: the preview is repo-only. These phrases would re-assert that it is a
+# manuscript exhibit, which the paper does not contain.
+PAPER_EXHIBIT_ASSERTIONS = (
+    "paper's Figure A1", "paper Figure A1",
+    "paper's Appendix A1", "paper Appendix A1",
+    "figA1_worldline", "A1 print version", "A1 render",
+)
 
 # Row-level / named-rate boundary (see DATA_EXCLUSIONS.md). The world-line
 # preview ships a rendered illustration and aggregate JSON only; these per-row
@@ -966,8 +974,9 @@ def check_worldline_notice(root: Path) -> list[str]:
         errors.append("worldline README does not state the no-row-level boundary")
     if "164" in lowered:
         errors.append("worldline README still advertises the superseded 164 mm preview")
-    if "byte-identical" not in lowered:
-        errors.append("worldline README does not state that the preview is paper A1")
+    if "not a manuscript exhibit" not in lowered:
+        errors.append(
+            "worldline README does not state that the preview is not a manuscript exhibit")
     # m01 (R2C3): the two remaining docs that advertised the superseded
     # 164 mm / 465x380 pt geometry must now state the 150 mm paper-A1 geometry.
     docs = {}
@@ -997,8 +1006,19 @@ def check_worldline_notice(root: Path) -> list[str]:
         for token in ("p1_summary", "p2_summary"):
             if token not in doc:
                 errors.append(f"{rel} does not name the retained {token} aggregate")
-    # The shipped preview must be the paper's A1 render, not the old 465x380 pt
-    # DejaVu print version (R6 X01).
+    # The shipped preview must be a standalone 150 mm render: keep the digest
+    # pin, but assert no manuscript membership (S01).
+    for rel in ("results/worldline_preview/README.md", "results/README.md",
+                "DATA_EXCLUSIONS.md", "notebooks/README.md", "CODE_MAP.md",
+                "results/framework_pilot/holdout/CORRECTIONS.md"):
+        doc = root / rel
+        if not doc.is_file():
+            continue
+        body = doc.read_text(encoding="utf-8")
+        for phrase in PAPER_EXHIBIT_ASSERTIONS:
+            if phrase in body:
+                errors.append(
+                    f"{rel} still asserts paper-exhibit membership: {phrase!r}")
     base = root / "results/worldline_preview"
     pdf = base / "worldline_preview.pdf"
     png = base / "worldline_preview.png"
@@ -1010,21 +1030,26 @@ def check_worldline_notice(root: Path) -> list[str]:
             errors.append("worldline PDF is the superseded 465 x 380 pt preview")
         if WG_PDF_MEDIABOX not in blob:
             errors.append(
-                "worldline PDF is not 425.197 x 330 pt (150 mm) paper-A1 geometry")
+                "worldline PDF is not 425.197 x 330 pt (150 mm) pinned preview geometry")
         if hashlib.sha256(blob).hexdigest() != WG_PDF_SHA256:
-            errors.append("worldline PDF is not byte-identical to paper Figure A1")
+            errors.append("worldline PDF does not match the pinned preview digest")
         if b"DejaVu" in blob:
             errors.append("worldline PDF still uses the superseded DejaVu fonts")
     if not png.is_file():
         errors.append("worldline_preview.png missing")
     elif hashlib.sha256(png.read_bytes()).hexdigest() != WG_PNG_SHA256:
-        errors.append("worldline PNG is not the 300 dpi raster of paper Figure A1")
+        errors.append("worldline PNG does not match the pinned 300 dpi preview digest")
     return errors
 
 
-def check_git(root: Path) -> list[str]:
+def check_git(root: Path) -> list[str] | None:
+    """Return errors for a git tree, ``None`` when the check is not applicable.
+
+    A ``None`` is reported as ``[SKIP] git index (not a git tree)``: an absent
+    ``.git`` must not print ``[OK]`` for a check that did not run (m30).
+    """
     if not (root / ".git").exists():
-        return []
+        return None
     try:
         tracked = subprocess.run(
             ["git", "-C", str(root), "ls-files", "-z"],
@@ -1068,6 +1093,9 @@ def main(argv: list[str] | None = None) -> int:
     ]
     failures = 0
     for name, errors in checks:
+        if errors is None:
+            print(f"[SKIP] {name} (not a git tree)")
+            continue
         if errors:
             failures += len(errors)
             print(f"[FAIL] {name}")

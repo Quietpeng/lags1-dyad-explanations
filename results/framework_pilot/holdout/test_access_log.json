@@ -1,5 +1,27 @@
 {
- "policy": "one-shot unit-fresh holdout; every 2018-22 read is logged; the confirmatory run is allowed once",
+ "policy": "one-shot unit-fresh holdout; every post-freeze 2018-22 read for the holdout is logged; three earlier exploratory passes (G2, D2, B) predate this log, are outside its scope and are disclosed in the manuscript; the confirmatory run is allowed once",
+ "out_of_scope": {
+  "scope": "reads that predate the 2026-10-23 preregistration freeze, and the three earlier exploratory passes disclosed in the manuscript (G2, D2, B)",
+  "related_logs": {
+   "results/framework_pilot/stability/summary_decompose.json": "the post-freeze stability audit logs its own burned-retrospective 2018-22 read there (2026-10-23T14:57:50Z; confirmatory=false); it is a separate ledger, not a holdout read"
+  },
+  "prior_passes": [
+   {
+    "label": "G2",
+    "status": "pre-freeze exploratory pass on 2018-22; predates this log"
+   },
+   {
+    "label": "D2",
+    "status": "pre-freeze exploratory pass on 2018-22; predates this log"
+   },
+   {
+    "label": "B",
+    "status": "pre-freeze exploratory pass on 2018-22; predates this log"
+   }
+  ],
+  "disclosure": "The manuscript discloses these passes as burned exploration. Only post-freeze reads plus the single pre-freeze aggregate support count that sized the holdout are recorded here.",
+  "no_invented_entries": "No dated entry is added for the prior passes: no timestamp, count or access record was kept for them, and inventing one would misstate the ledger."
+ },
  "entries": [
   {
    "utc": null,
@@ -27,6 +49,7 @@
    "utc": "2026-10-23T08:33:12.653405+00:00",
    "kind": "holdout_postprocess",
    "labels_read": false,
+   "labels_read_note": "labels_read=false means no raw 2018-22 label was newly read in this step; the labels behind the diagnostics were restored from the saved one-shot predictions",
    "what": "post-hoc diagnostics (within/between AUC, dyad FE, LOO CIs) from the saved one-shot predictions; test features re-exported in blind mode (y=0) and labels restored from preds/holdout_preds.npz; no new 2018-22 label read",
    "inputs": [
     "results/framework_pilot/holdout/preds/holdout_preds.npz",
@@ -35,7 +58,7 @@
    "note": "post-processing only; the confirmatory read is the preceding holdout_eval entry"
   }
  ],
- "policy_note": "The confirmatory evaluation read the raw test split once. Before the preregistration freeze, an aggregate support count over 2018-22 (1,586,040 rows; 164,272 positives) was taken to size the holdout; it did not identify holdout units, fit a model, or compute a holdout-specific statistic. All post-freeze diagnostics reused the saved prediction file; no new raw event label was read. A blind/quick smoke run was aborted by a broken pipe before the confirmatory run and read no labels.",
+ "policy_note": "The confirmatory evaluation read the raw test split once. Before the preregistration freeze, an aggregate support count over 2018-22 (1,586,040 rows; 164,272 positives) was taken to size the holdout; it did not identify holdout units, fit a model, or compute a holdout-specific statistic. All post-freeze diagnostics reused the saved prediction file; no new raw event label was read. `labels_read` records whether a step read raw event labels: the post-process flag is false because that step restored labels from the saved predictions instead of reading raw data. Reads that predate the freeze and the three earlier exploratory passes (G2, D2, B) are out of this log's scope and are disclosed in the manuscript; see `out_of_scope`. The post-freeze stability audit logs its own burned-retrospective 2018-22 read in `results/framework_pilot/stability/summary_decompose.json`. A blind/quick smoke run was aborted by a broken pipe before the confirmatory run and read no labels.",
  "timeline": {
   "pre_freeze_aggregate_support_count": {
    "utc": null,

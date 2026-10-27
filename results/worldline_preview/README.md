@@ -2,18 +2,21 @@
 
 **Status:** `ILLUSTRATIVE PREVIEW - NOT VALIDATED; NO MULTI-STEP ACCURACY CLAIM.`
 
-> **Print version (2026-10-26).** `worldline_preview.pdf` is **byte-identical
-> to the paper's Figure A1** (`paper/figures/figA1_worldline.pdf`): vector,
-> 425.2 × 330 pt (150 mm), Arimo, TrueType fonts, no baked-in key. The PNG is
-> the same render at 300 dpi. It was rendered from the restricted per-row trace
-> exports and is **not regenerable from this tree**; `experiments/worldline_preview.py`
-> ships for inspection only. The underlying experiment was not rerun. The
-> superseded DejaVu print version with a baked key is gone; see `CORRECTIONS.md`.
+> **Print version (2026-10-26).** `worldline_preview.pdf` is a standalone,
+> repo-only vector render: 425.2 × 330 pt (150 mm), Arimo, TrueType fonts, no
+> baked-in key. It is **not a manuscript exhibit** — the repository ships it as
+> an illustration only and no manuscript figure or appendix is derived from it.
+> The PNG is the same render at 300 dpi. It was rendered from the restricted
+> per-row trace exports and is **not regenerable from this tree**;
+> `experiments/worldline_preview.py` ships for inspection only. The underlying
+> experiment was not rerun. The superseded DejaVu print version with a baked key
+> is gone; see `CORRECTIONS.md`.
 
-This directory is a **communication and debugging artifact** for the paper's
-Appendix A1, not a main result and not a validated multi-step forecast. It uses
-only the frozen inner-validation period (2016-01..2017-11); no 2018–22 test
-label is read. No accuracy is computed.
+This directory is a **communication and debugging artifact** for this
+repository: an illustrative, repo-only preview, not a manuscript exhibit, not a
+main result and not a validated multi-step forecast. It uses only the frozen
+inner-validation period (2016-01..2017-11); no 2018–22 test label is read. No
+accuracy is computed.
 
 ## What is shown
 

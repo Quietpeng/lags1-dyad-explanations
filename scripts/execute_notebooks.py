@@ -25,6 +25,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
+FONT_CACHE_DIR = Path("build") / "mplconfig"
+FONT_CACHE_NOTICE = "Matplotlib is building the font cache"
+
 ABS_PATHS = ("/" + "home/", "/" + "tmp/", "/" + "Users/", "C:" + "\\Users")
 SECRET_PATTERNS = (
     re.compile(r"AKIA[0-9A-Z]{16}"),
@@ -48,6 +51,58 @@ def scan(text: str, where: str) -> list[str]:
     return problems
 
 
+def warm_font_cache(root: Path) -> None:
+    """Build the matplotlib font list once, before any kernel starts (S02).
+
+    On a cold cache matplotlib writes ``Matplotlib is building the font cache``
+    to the stderr *of the first process that renders text*.  Inside a kernel
+    that stream becomes a notebook output, so the tracked notebook changes and
+    the next ``make dist`` aborts.  Rendering one text artist here, in the
+    driver process and in the directory the kernel will reuse, leaves the kernel
+    a warm cache and no stream output.  ``MPLCONFIGDIR`` is kept if the caller
+    set it, so a deliberately empty directory is warmed in place.
+    """
+    configured = os.environ.get("MPLCONFIGDIR")
+    cache = Path(configured) if configured else root / FONT_CACHE_DIR
+    try:
+        cache.mkdir(parents=True, exist_ok=True)
+        os.environ["MPLCONFIGDIR"] = str(cache)
+        import matplotlib
+
+        matplotlib.use("Agg", force=True)
+        from matplotlib.backends.backend_agg import FigureCanvasAgg
+        from matplotlib.figure import Figure
+
+        figure = Figure(figsize=(2.0, 2.0))
+        FigureCanvasAgg(figure)
+        figure.text(0.5, 0.5, "font cache warm-up")
+        figure.canvas.draw()
+    except Exception as exc:  # pragma: no cover - environment dependent
+        print(f"[note] matplotlib font-cache warm-up skipped: {exc}",
+              file=sys.stderr)
+
+
+def absorb_font_cache_notice(nb) -> int:
+    """Drop a one-time matplotlib font-cache stderr stream if one appeared.
+
+    Belt and braces: the warm-up above normally prevents it, but the executor
+    also absorbs the known notice so a cold cache cannot dirty the tree.  A
+    cell's last output is never removed; every code cell must keep an output.
+    """
+    absorbed = 0
+    for cell in nb.cells:
+        if cell.cell_type != "code":
+            continue
+        outputs = cell.get("outputs") or []
+        kept = [output for output in outputs
+                if not (output.get("output_type") == "stream"
+                        and FONT_CACHE_NOTICE in str(output.get("text", "")))]
+        if kept and len(kept) != len(outputs):
+            cell["outputs"] = kept
+            absorbed += len(outputs) - len(kept)
+    return absorbed
+
+
 def execute(path: Path, check_only: bool, root: Path) -> list[str]:
     import nbformat
     from nbclient import NotebookClient
@@ -64,6 +119,10 @@ def execute(path: Path, check_only: bool, root: Path) -> list[str]:
 
     nb.metadata.setdefault("language_info", {})["version"] = platform.python_version()
     nb.metadata.pop("execution", None)
+    absorbed = absorb_font_cache_notice(nb)
+    if absorbed:
+        print(f"[note] {path.name}: absorbed {absorbed} matplotlib font-cache"
+              " stream output", file=sys.stderr)
     for cell in nb.cells:
         cell.metadata.pop("execution", None)
         if cell.cell_type != "code":
@@ -96,6 +155,7 @@ def main(argv: list[str] | None = None) -> int:
     root = args.root.resolve()
     os.environ.setdefault("MPLBACKEND", "Agg")
     os.environ.setdefault("PYTHONDONTWRITEBYTECODE", "1")
+    warm_font_cache(root)
 
     paths = sorted((root / "notebooks").glob("*.ipynb"))
     if len(paths) != 3:

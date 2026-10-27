@@ -79,7 +79,10 @@ alone:
   change on a rerun even with the same inputs and code.
 - Row-level predictions and run logs are excluded.
 - The confirmatory holdout is closed by a one-shot lock: `run_once.json` records
-  completion and `test_access_log.json` records every 2018–22 read. Re-running
+  completion and `test_access_log.json` records every post-freeze 2018–22
+  holdout read (the three earlier exploratory passes G2, D2 and B predate the
+  log and are out of its scope; this audit's own burned-retrospective read is
+  logged in `summary_decompose.json`). Re-running
   it would invalidate the pre-registration and is outside this artifact's
   contract.
 

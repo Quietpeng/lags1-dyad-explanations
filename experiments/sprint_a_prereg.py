@@ -197,8 +197,38 @@ def main() -> int:
         log = jload(ACCESS)
     else:
         log = {
-            "policy": ("one-shot unit-fresh holdout; every 2018-22 read is "
-                       "logged; the confirmatory run is allowed once"),
+            "policy": ("one-shot unit-fresh holdout; every post-freeze 2018-22 "
+                       "read for the holdout is logged; three earlier "
+                       "exploratory passes (G2, D2, B) predate this log, are "
+                       "outside its scope and are disclosed in the manuscript; "
+                       "the confirmatory run is allowed once"),
+            "out_of_scope": {
+                "scope": ("reads that predate the 2026-10-23 preregistration "
+                          "freeze, and the three earlier exploratory passes "
+                          "disclosed in the manuscript (G2, D2, B)"),
+                "related_logs": {
+                    "results/framework_pilot/stability/summary_decompose.json":
+                        ("the post-freeze stability audit logs its own "
+                         "burned-retrospective 2018-22 read there "
+                         "(2026-10-23T14:57:50Z; confirmatory=false); it is a "
+                         "separate ledger, not a holdout read"),
+                },
+                "prior_passes": [
+                    {"label": label,
+                     "status": ("pre-freeze exploratory pass on 2018-22; "
+                                "predates this log")}
+                    for label in ("G2", "D2", "B")
+                ],
+                "disclosure": ("The manuscript discloses these passes as "
+                               "burned exploration. Only post-freeze reads plus "
+                               "the single pre-freeze aggregate support count "
+                               "that sized the holdout are recorded here."),
+                "no_invented_entries": ("No dated entry is added for the prior "
+                                        "passes: no timestamp, count or access "
+                                        "record was kept for them, and "
+                                        "inventing one would misstate the "
+                                        "ledger."),
+            },
             "entries": [],
         }
     log.setdefault("entries", [])

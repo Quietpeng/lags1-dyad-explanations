@@ -30,9 +30,10 @@
   "worldline_trace.json": "32b77afe20e7c1126f5160e0347df3dd04c580e88b1eca66b226bdcf7a94bfb6"
  },
  "runtime_seconds": 11.48,
- "figure_revision": "2026-10-26: public preview replaced by a byte-identical copy of the paper's Figure A1 render (425.197x330 pt = 150 mm, Arimo, no baked key); PNG is the same render at 300 dpi; data unchanged",
+ "figure_revision": "2026-10-26: public preview re-rendered at 150 mm (425.197x330 pt, Arimo, no baked key); standalone repo-only illustration, not a manuscript exhibit; PNG is the same render at 300 dpi; data unchanged",
  "figure_provenance": {
-  "identical_to": "paper/figures/figA1_worldline.pdf (paper Figure A1)",
+  "standalone_repo_illustration": true,
+  "not_a_manuscript_exhibit": true,
   "pdf_sha256": "77081960c20db85ff3748cc06edd3d38ceb9cf69fb93687ff612f5deec8bb3b1",
   "png_sha256": "3b6e0fb29706a5c8af1bf219120d4c125467bc37ecc9ad48f25bd3df046e02d4",
   "geometry_pt": [
@@ -47,7 +48,7 @@
   "baked_key": false,
   "rendered_from": "restricted worldline_trace.csv and node_trace.csv exports (withheld, not redistributed)",
   "regenerable_from_this_tree": false,
-  "note": "The paper's A1 render was copied byte-for-byte; the earlier 465x380 pt (164 mm) DejaVu preview with a baked key is superseded. experiments/worldline_preview.py ships for inspection only: it needs the licensed ICEWS panel, local feature caches and the two withheld per-row trace exports, so this tree cannot regenerate Figure A1.",
+  "note": "The preview is a standalone 150 mm vector render; the earlier 465x380 pt (164 mm) DejaVu preview with a baked key is superseded. It is a repository illustration only: no manuscript figure or appendix is derived from it. experiments/worldline_preview.py ships for inspection only: it needs the licensed ICEWS panel, local feature caches and the two withheld per-row trace exports, so this tree cannot regenerate the preview.",
   "replaced_utc": "2026-10-26"
  },
  "preview_scope": {

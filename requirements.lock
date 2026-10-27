@@ -7,10 +7,12 @@
 # Scope: this is a tested snapshot, not an enforced lock. The enforced contract
 # is the direct pin set in requirements.txt (also checked by the metadata
 # tests); a later clean install may resolve newer transitive patch releases
-# without changing the analysis stack. Reported drift after the R2C5 review:
-# python-dateutil 3.0.0, platformdirs 4.13.6 and wcwidth 0.9.4 resolve where
-# this snapshot records 2.9.0.post0, 4.13.5 and 0.9.3. None of the three is
-# imported by framework/, experiments/, scripts/ or the tests.
+# without changing the analysis stack. Drift observed after the R2C5 review:
+# python-dateutil 3.0.0, platformdirs 4.13.6, wcwidth 0.9.4, narwhals 2.28.0 and
+# fonttools 4.68.0 resolve where this snapshot records 2.9.0.post0, 4.13.5,
+# 0.9.3, 2.27.1 and 4.67.0. None of them is imported by framework/,
+# experiments/, scripts/ or the tests, and further transitive patch releases
+# may move in a later clean install.
 asttokens==3.0.2
 attrs==26.1.0
 cloudpickle==3.1.2

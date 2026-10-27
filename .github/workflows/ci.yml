@@ -55,3 +55,11 @@ jobs:
         run: make notebooks PY=python3
       - name: Verify committed outputs and release
         run: make verify PY=python3
+      - name: Cold-cache notebooks must not dirty the checkout, then build the release
+        env:
+          MPLCONFIGDIR: ${{ runner.temp }}/empty-mplconfig
+        run: |
+          rm -rf "$MPLCONFIGDIR"
+          make notebooks PY=python3
+          git diff --exit-code
+          make dist PY=python3

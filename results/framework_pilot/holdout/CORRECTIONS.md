@@ -91,20 +91,20 @@ shipped `stability/report.md` already reported the per-cell values (source
 0.053, target 0.333) and needed no change. Arithmetic only: no table cell, no
 conclusion and no caption changed.
 
-## 2026-10-26 — public world-line preview replaced with the paper's A1 render
+## 2026-10-26 — public world-line preview re-rendered at 150 mm
 
 `results/worldline_preview/worldline_preview.{pdf,png}` were the superseded
-465 × 380 pt (164 mm) DejaVu print version with a baked-in key, which is not the
-figure the paper prints. They are now byte-identical copies of
-`paper/figures/figA1_worldline.pdf` (425.197 × 330 pt = 150 mm, Arimo,
-no baked key; sha256 `77081960…8bb3b1`) and its 300 dpi raster
-(sha256 `3b6e0f…e02d4`). `run_manifest.json` gained a `figure_provenance`
-block and new `outputs` digests; `results/README.md` and the preview README say
-"identical to paper Figure A1; rendered from restricted trace exports; not
-regenerable from this tree". `make worldline-check` and `make verify` now
-assert 425.197 × 330 pt plus both digests and reject the old 465 × 380 pt
-DejaVu file. No CSV was added, no experiment was rerun and no main result
-depends on this directory.
+465 × 380 pt (164 mm) DejaVu print version with a baked-in key. They were
+replaced by a standalone 150 mm vector render (425.197 × 330 pt, Arimo, no baked
+key; sha256 `77081960…8bb3b1`) and its 300 dpi raster (sha256 `3b6e0f…e02d4`).
+The preview is an illustration only: it is not a manuscript exhibit, and no
+manuscript figure or appendix is derived from it. `run_manifest.json` gained a
+`figure_provenance` block and new `outputs` digests; `results/README.md` and the
+preview README say "standalone repo-only illustration; rendered from restricted
+trace exports; not regenerable from this tree". `make worldline-check` and
+`make verify` now assert 425.197 × 330 pt plus both digests and reject the old
+465 × 380 pt DejaVu file. No CSV was added, no experiment was rerun and no main
+result depends on this directory.
 
 ## 2026-10-26 — BH family D recomputed from the frozen normal-tail p-values
 

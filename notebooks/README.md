@@ -69,7 +69,7 @@ They do not read the ICEWS event panel and do not load row-level predictions. Th
 
 - **Notebook 01** corresponds to the confirmatory holdout section, Table 2 Panels A/C, and Figure 4 (`paper/figures/fig4_holdout.pdf`). The manuscript figure is **not** redistributed because `paper/` is excluded. Panel (a)'s primary contrasts are reconstructed as a forest from `tables/primary_comparisons.csv`; the graph/train-statistics part of panel (b) comes from the LOO table; panel (c) from the within-dyad table. The forest uses the shared Morandi palette (slate `#35525F`, terracotta `#A2664F`, sage `#84957A`, ochre `#C2A05F`) with distinct markers.
 - **Notebook 02** corresponds to the stability audit, Table 3, and Figure 2. Figure 2 is not redistributed; the notebook displays the underlying variance, churn, decision, and occlusion tables instead.
-- **Notebook 03** corresponds to Appendix A1 / Figure A1. Its PDF and PNG live under `results/worldline_preview/`, so they are included in the public release. The shipped PDF is the vector, 425.197 × 330 pt (150 mm) print version with TrueType fonts; the PNG is a 300 dpi preview. The paper's Appendix A1 uses the same data and caption.
+- **Notebook 03** re-displays the standalone, repo-only world-line preview. Its PDF and PNG live under `results/worldline_preview/`, so they are included in the public release. The shipped PDF is a vector 425.197 × 330 pt (150 mm) print version with TrueType fonts; the PNG is a 300 dpi preview. The preview is an illustration only: it is not a manuscript exhibit and no paper figure or appendix is derived from it.
 
 The notebooks do not regenerate the manuscript PDF or any LaTeX artifact.
 

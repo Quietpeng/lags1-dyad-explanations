@@ -1712,6 +1712,10 @@ def main() -> int:
             "utc": _utc(),
             "kind": "holdout_postprocess",
             "labels_read": False,
+            "labels_read_note": ("labels_read=false means no raw 2018-22 label "
+                                 "was newly read in this step; the labels "
+                                 "behind the diagnostics were restored from "
+                                 "the saved one-shot predictions"),
             "what": ("post-hoc diagnostics (within/between AUC, dyad FE, LOO CIs) "
                      "from the saved one-shot predictions; test features "
                      "re-exported in blind mode (y=0) and labels restored from "

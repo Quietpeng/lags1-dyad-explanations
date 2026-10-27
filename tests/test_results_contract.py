@@ -566,12 +566,13 @@ class TestFamilyBFloors(unittest.TestCase):
 
 
 class TestWorldlinePreview(unittest.TestCase):
-    """R6 X01: ship the paper's A1 render, not the superseded 164 mm preview."""
+    """S01/R6 X01: ship the pinned standalone preview render, not the
+    superseded 164 mm preview, and assert no paper-exhibit membership."""
 
     def base(self) -> Path:
         return STABILITY.parent.parent / "worldline_preview"
 
-    def test_pdf_is_the_paper_a1_render(self):
+    def test_pdf_is_the_pinned_preview_render(self):
         pdf = (self.base() / "worldline_preview.pdf").read_bytes()
         self.assertIn(b"/MediaBox [ 0 0 425.1968503937 330 ]", pdf)
         self.assertNotIn(b"465 380", pdf)
@@ -646,7 +647,25 @@ class TestWorldlinePreview(unittest.TestCase):
             joined = " | ".join(errors)
             self.assertIn("465 x 380", joined)
             self.assertIn("425.197 x 330", joined)
-            self.assertIn("byte-identical", joined)
+            self.assertIn("pinned preview", joined)
+
+    def test_docs_do_not_assert_paper_exhibit_membership(self):
+        # S01: the preview is repo-only. No shipped document may claim that it
+        # is a manuscript figure or appendix, and the retired tokens must be
+        # gone from the public tree.
+        rels = (
+            "README.md", "results/README.md", "DATA_EXCLUSIONS.md",
+            "RELEASE_NOTES.md", "notebooks/README.md", "CODE_MAP.md",
+            "notebooks/03_worldline_preview.ipynb",
+            "results/worldline_preview/README.md",
+            "results/worldline_preview/run_manifest.json",
+            "results/framework_pilot/holdout/CORRECTIONS.md",
+        )
+        for rel in rels:
+            text = (ROOT / rel).read_text(encoding="utf-8")
+            for phrase in ("Figure A1", "Appendix A1", "figA1", "A1 print",
+                           "A1 render"):
+                self.assertNotIn(phrase, text, f"{rel}: {phrase}")
 
 
 class TestR2C7EvidenceFlags(unittest.TestCase):

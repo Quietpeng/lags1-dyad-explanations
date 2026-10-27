@@ -15,7 +15,7 @@ provisional. Read the status table before quoting a number.
 |---|---|---|
 | `framework_pilot/holdout/` | **Frozen, one-shot, completed** | The pre-registered 49-feature primary, pre-registered 29-feature secondary, baselines, within/between-dyad checks, feature-group LOO and sensitivity tables. |
 | `framework_pilot/stability/` | **Provisional; holdout-excluded 50-refit rerun** | Exactness, source/target aggregation, seed/regime/window stability, top-k and decision proxy, HGB occlusion. `audit_design = frozen_during_confirmatory_run_holdout_rows_excluded`: the grid was frozen at 06:31:40Z, after the confirmatory read began at 05:26:55Z and before it completed at 07:45:19Z; the rerun is non-confirmatory and every eventual holdout dyad is excluded at row level. The public `experiments/` tree is a five-seed preview, not this audit; see `experiments/STABILITY_VARIANT.md`. |
-| `worldline_preview/` | **Illustrative only** | A two-step communication preview; no multi-step accuracy claim. Ships the vector 150 mm A1 print version — byte-identical to the paper's Figure A1 — and a 300 dpi PNG plus aggregate JSON; no row-level trace file. |
+| `worldline_preview/` | **Illustrative only** | A two-step communication preview; no multi-step accuracy claim. Ships a standalone 150 mm vector illustration (Arimo/TrueType; a repo-only render, not a manuscript exhibit) and a 300 dpi PNG plus aggregate JSON; no row-level trace file. |
 
 The stability status is recorded machine-readably in `stability/summary.json`:
 
@@ -49,7 +49,7 @@ number remains provisional and must not be written as a confirmatory headline.
 | `holdout/preregistration.json` | Frozen pre-registration: definition, endpoints, feature sets, stopping rules and claim boundary. |
 | `holdout/preregistration.json.sha256` | Repo-relative SHA-256 of the pre-registration file. |
 | `holdout/run_once.json` | One-shot lock record: status, attempts, counts, timestamps. |
-| `holdout/test_access_log.json` | Every 2018–22 read, including the pre-registration aggregate support count and the single holdout evaluation. |
+| `holdout/test_access_log.json` | Post-freeze 2018–22 holdout reads, including the pre-registration aggregate support count and the single holdout evaluation; the three earlier exploratory passes (G2, D2, B) predate the log and are out of scope, and the stability audit logs its own burned-retrospective read in `stability/summary_decompose.json`. |
 | `holdout/manifest.json` | Freeze manifest: host, packages, inputs, code and output hashes, plus post-freeze release annotations. |
 | `holdout/SHA256SUMS` | `sha256sum -c` compatible checksums for every distributed file in this directory. |
 | `holdout/CORRECTIONS.md` | Errata notes: the 29-feature sign-convention and pair-weighted-label clarification, a misattributed BH q in the 29-feature sentence, and the BH family D `p`/`q` recomputation from the frozen `p_normal` column (all nine still `<1e-12`). |
@@ -82,7 +82,7 @@ and `manifest.json#/counts` carry the filtered counts.
 | `worldline_preview/README.md` | Scope, sample rule, figure status and deletion note. |
 | `worldline_preview/worldline_trace.json` | Per-anchor counts, state-path and transition tallies, per-anchor `p1_summary`/`p2_summary` distributions (mean, median, min and max of the step-1/step-2 predicted probability over the 20 sampled, unlabeled dyads; no per-dyad values), disclaimers, model provenance and sample rule. No per-row records. |
 | `worldline_preview/run_manifest.json` | Command, host/packages, input/output hashes, preview scope and the no-row-level rule. |
-| `worldline_preview/worldline_preview.{pdf,png}` | Illustrative preview figure; vector 150 mm print version, byte-identical to paper Figure A1, Arimo/TrueType, no baked key, no accuracy claim. |
+| `worldline_preview/worldline_preview.{pdf,png}` | Illustrative, repo-only preview figure; standalone 150 mm vector print version (no manuscript figure or appendix is derived from it), Arimo/TrueType, no baked key, no accuracy claim. |
 
 The 240-row `worldline_trace.csv` and 249-row `node_trace.csv` are **not
 shipped**: the per-row exports carry `state`/`p_model` and were removed.
@@ -200,7 +200,7 @@ and `make stability-check` recompute both sides and fail on a missing
 annotation or a mismatched digest.
 
 The freeze bundle's `hashes.figures_manifest` is a **normalized** digest, not
-the SHA-256 of the `figures.sha256` wrapper file. It is the SHA-256 of the 16
+the SHA-256 of the `figures.sha256` wrapper file. It is the SHA-256 of the 14
 sorted lines produced by removing the leading `repo/` from each wrapper path
 (so each line is `<digest>  paper/figures/<name>`), newline-terminated:
 
@@ -208,9 +208,11 @@ sorted lines produced by removing the leading `repo/` from each wrapper path
 sed 's|  repo/|  |' figures.sha256 | sha256sum
 ```
 
-Both forms describe the same 16 figure files, and
-`sha256sum -c figures.sha256` verifies the wrapper. The published aggregate tree
-does not ship either file; this note only explains the freeze identity.
+Both forms describe the same 14 figure files, and
+`sha256sum -c figures.sha256` verifies the wrapper. The `repo/`-prefix
+normalisation is historical: in this freeze the wrapper paths already carry
+`paper/figures/`, so the `sed` substitution is a no-op. The published aggregate
+tree does not ship either file; this note only explains the freeze identity.
 
 All four stability summaries — including the nested `summary_stability.json`
 and `summary_hgb.json` — carry `provisional_holdout_not_integrated`. The

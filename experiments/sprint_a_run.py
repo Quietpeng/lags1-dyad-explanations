@@ -50,7 +50,10 @@ def append_access(entry: dict) -> None:
     if os.path.exists(ACCESS):
         doc = jload(ACCESS)
     else:
-        doc = {"policy": "one-shot holdout; every 2018-22 read is logged",
+        doc = {"policy": ("one-shot holdout; every post-freeze 2018-22 read for "
+                          "the holdout is logged; three earlier exploratory "
+                          "passes (G2, D2, B) predate this log, are outside its "
+                          "scope and are disclosed in the manuscript"),
                "entries": []}
     doc.setdefault("entries", []).append(entry)
     jdump(ACCESS, doc)

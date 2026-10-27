@@ -85,7 +85,7 @@ aggregate summaries remain.
 | Holdout rows | 0 |
 | Sample | 20 sampled dyads per anchor over four anchors (71 distinct across anchors); deliberately selected for visibility, not random |
 | Labels | the PNG/PDF keeps ISO3 labels for readability; those labels are not join keys and no probability is exported. Local debug runs (`--emit-row-traces`) may still write anonymized `dyad_XX` / `actor_XX` CSVs, but they must not be committed |
-| Rationale | the frozen paper's Appendix A1 figure is rendered from this preview; the figure is marked `ILLUSTRATIVE PREVIEW - NOT VALIDATED`, no accuracy is computed, `labels_used_for_scoring=false`, and deleting the preview changes no main result |
+| Rationale | the preview is an illustrative, repo-only rendering of a restricted per-row trace export (not redistributed); it is not a manuscript exhibit and no manuscript figure or appendix is derived from it; the figure is marked `ILLUSTRATIVE PREVIEW - NOT VALIDATED`, no accuracy is computed, `labels_used_for_scoring=false`, and deleting the preview changes no main result |
 | Machine enforcement | `scripts/verify_release.py` fails if either per-row CSV reappears under `results/worldline_preview/`; `make worldline-check` asserts the directory ships no CSV, the aggregate JSON is present, the inner-period bound holds and the manifest covers only the rendered/aggregate outputs |
 
 The boundary is bounded and enforced: restoring a per-row export, adding

@@ -36,9 +36,10 @@ RESTRICTED_NOTE = (
     "experiments/ tree is a five-seed preview, not the 50-refit audit."
 )
 
-# The public world-line preview ships the paper's Figure A1 render itself (R6
-# X01): 150 mm = 425.197 pt wide, Arimo, no baked key.  Digests are of
-# ``paper/figures/figA1_worldline.{pdf,png}``.
+# The public world-line preview is a standalone, repo-only illustration. Its
+# geometry and digests are pinned (150 mm = 425.197 pt wide, Arimo, no baked
+# key) so a replaced or superseded render fails; the check asserts no paper
+# membership (S01).
 WG_PDF_MEDIABOX = b"/MediaBox [ 0 0 425.1968503937 330 ]"
 WG_PDF_SHA256 = "77081960c20db85ff3748cc06edd3d38ceb9cf69fb93687ff612f5deec8bb3b1"
 WG_PNG_SHA256 = "3b6e0fb29706a5c8af1bf219120d4c125467bc37ecc9ad48f25bd3df046e02d4"
@@ -257,25 +258,25 @@ def check_worldline(root: Path) -> list[str]:
         errors.append("run_manifest preview_scope.holdout_rows != 0")
 
     pdf = (base / "worldline_preview.pdf").read_bytes()
-    # The public preview must be the paper's A1 render, not the superseded
-    # 465x380 pt (164 mm) DejaVu print version (R6 X01).
+    # The preview must be the pinned standalone 150 mm render, not the
+    # superseded 465x380 pt (164 mm) DejaVu print version.
     if b"465 380" in pdf:
         errors.append("worldline PDF is the superseded 465 x 380 pt print version")
     if WG_PDF_MEDIABOX not in pdf:
         errors.append(
-            "worldline PDF is not 425.197 x 330 pt (150 mm) paper-A1 geometry")
+            "worldline PDF is not 425.197 x 330 pt (150 mm) pinned preview geometry")
     if b"/Type3" in pdf:
         errors.append("worldline PDF contains Type 3 fonts")
     if b"/FontFile2" not in pdf:
         errors.append("worldline PDF lacks embedded TrueType fonts")
     if hashlib.sha256(pdf).hexdigest() != WG_PDF_SHA256:
         errors.append(
-            "worldline PDF is not byte-identical to paper Figure A1 "
+            "worldline PDF is not byte-identical to the pinned preview render "
             f"(expected {WG_PDF_SHA256})")
     png = (base / "worldline_preview.png").read_bytes()
     if hashlib.sha256(png).hexdigest() != WG_PNG_SHA256:
         errors.append(
-            "worldline PNG is not the 300 dpi raster of paper Figure A1 "
+            "worldline PNG is not the pinned 300 dpi preview render "
             f"(expected {WG_PNG_SHA256})")
     provenance = manifest.get("figure_provenance") or {}
     if provenance.get("baked_key") is not False:
