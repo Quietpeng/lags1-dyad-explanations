@@ -2,7 +2,7 @@
 
 Read-only, CPU-only companion notebooks for:
 
-> **Actor-role components of dyadic event forecasts: exact attribution, near-collinearity, and a within-panel stability audit**
+> **Actor-role components of dyadic event forecasts: one actor signal, near-collinearity, and a within-panel stability audit**
 
 The notebooks display frozen aggregate artifacts. They do **not** fit models, read the ICEWS event panel, or load row-level predictions. Some shipped aggregates contain actor-level **aggregate attribution and exposure** (not predicted probabilities or observed outcome rates); those are ICEWS-derived and remain under the ICEWS terms. The world-line preview ships no row-level trace: only the rendered figure and aggregate summaries. See `NOTICE`, `DATA_EXCLUSIONS.md` and `results/README.md`.
 
@@ -98,4 +98,4 @@ for path in sorted(Path("notebooks").glob("*.ipynb")):
 PY
 ```
 
-Run `make notebooks` for a full headless execution. `make verify` additionally checks that the committed outputs are present, error-free and path-clean (executed code cells, no error output, no absolute home/temporary path, embedded PNGs where expected). It does not assert an aggregate-only property; that boundary is enforced by the shipped file list, the row-level scanners and `DATA_EXCLUSIONS.md`.
+Run `make notebooks` for a full headless execution. `make verify` additionally checks that the committed outputs are present, error-free and path-clean (executed code cells, no error output, no absolute home/temporary path, embedded PNGs where expected). It does not assert an aggregate-only property; that boundary is enforced by the shipped file list, the row-level verifier checks and `DATA_EXCLUSIONS.md`.

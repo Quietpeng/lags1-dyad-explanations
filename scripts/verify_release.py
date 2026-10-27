@@ -7,8 +7,9 @@ predictions, and it fails if any of those appear in the tree.
 
 Checks
 ------
-* required public files exist, with matching CFF/Zenodo/pyproject licence and
-  title metadata, pending author metadata, and the required test modules/floor;
+* required public files exist, with a split CFF/Zenodo/pyproject licence
+  contract, matching title metadata, pending author metadata, and the required
+  test modules/floor;
 * no ``paper/``, ``docs/``, ``configs/``, ``data/``, ``preds/``, caches or logs;
 * every ``results/**/*.json`` is strict JSON (no ``NaN``/``Infinity``);
 * ``results/framework_pilot/holdout/SHA256SUMS`` and
@@ -221,9 +222,13 @@ def check_required(root: Path) -> list[str]:
 # Citation / licence / test-suite contract (no PyYAML dependency)
 # ---------------------------------------------------------------------------
 RELEASE_TITLE = (
-    "Actor-role components of dyadic event forecasts: exact attribution, "
+    "Actor-role components of dyadic event forecasts: one actor signal, "
     "near-collinearity, and a within-panel stability audit"
 )
+# The frozen plan is byte-pinned to the paper's Appendix B hash. Reader-facing
+# surfaces are qualified, but the plan file itself is never rewritten: a drift
+# here invalidates the one-shot provenance chain.
+PLAN_FILE_SHA256 = "41bda0e3eaf8bb32e398c260169b85715e8c82e04569a50a185ae49d0783704c"
 MIN_TEST_COUNT = 123
 ORCID_RE = re.compile(r"\b\d{4}-\d{4}-\d{4}-\d{3}[\dX]\b")
 DOI_RE = re.compile(r"\b10\.\d{4,9}/[^\s\"']+")
@@ -343,13 +348,14 @@ def _count_tests(root: Path) -> int:
 
 
 def check_metadata_contract(root: Path) -> list[str]:
-    """CFF/Zenodo/pyproject/licence agreement and the test-suite floor.
+    """Split code/deposit licences, title, claim wording and the test floor.
 
-    The deposit licence is ``other-open`` because the tree mixes MIT code with
-    ICEWS-derived aggregates that are not MIT; ``pyproject.toml`` and ``LICENSE``
-    keep the explicit code-only MIT grant, the public title must match the
-    manuscript, author metadata stays marked pending, and the test suite keeps
-    its required modules and floor.
+    ``CITATION.cff`` carries the SPDX code licence ``MIT`` (code only, with the
+    ICEWS carve-out in the abstract/message); ``.zenodo.json`` keeps the mixed
+    deposit licence ``other-open`` with a deposit-level note. ``pyproject.toml``
+    and ``LICENSE`` keep the explicit code-only MIT grant, the public title must
+    match the manuscript, author metadata stays marked pending, the plan-status
+    vocabulary stays qualified, and the test suite keeps its modules and floor.
     """
     try:
         import tomllib
@@ -372,20 +378,35 @@ def check_metadata_contract(root: Path) -> list[str]:
 
     cff_license = cff.get("license")
     zen_license = zenodo.get("license")
-    if cff_license != zen_license:
+    if cff_license != "MIT":
         errors.append(
-            f"CITATION.cff license {cff_license!r} != Zenodo license {zen_license!r}"
+            "CITATION.cff license must be the SPDX code licence 'MIT' "
+            f"(code only), got {cff_license!r}"
         )
-    if cff_license != "other-open":
+    if zen_license != "other-open":
         errors.append(
-            f"CITATION.cff license must be 'other-open' for the mixed deposit, got {cff_license!r}"
+            f".zenodo.json deposit license must stay 'other-open', got {zen_license!r}"
         )
+    if zen_license == "MIT":
+        errors.append(".zenodo.json must not license the mixed deposit as MIT")
     project = pyproject.get("project", {})
     code_license = project.get("license")
     if isinstance(code_license, dict):
         code_license = code_license.get("text")
     if code_license != "MIT":
         errors.append(f"pyproject.toml license must stay MIT, got {code_license!r}")
+
+    cff_abstract = " ".join((cff.get("abstract") or "").split()).lower()
+    cff_message = " ".join((cff.get("message") or "").split()).lower()
+    zen_notes = " ".join((zenodo.get("notes") or "").split()).lower()
+    if "not mit" not in cff_abstract:
+        errors.append("CITATION.cff abstract lacks the code-only carve-out")
+    if "code only" not in cff_message:
+        errors.append("CITATION.cff message lacks the code-only carve-out")
+    if "not mit" not in zen_notes:
+        errors.append(".zenodo.json notes lack the code-only carve-out")
+    if "other-open" not in zen_notes:
+        errors.append(".zenodo.json notes do not explain the deposit licence")
 
     license_text = (root / "LICENSE").read_text(encoding="utf-8")
     if "MIT License" not in license_text:
@@ -410,18 +431,22 @@ def check_metadata_contract(root: Path) -> list[str]:
             f"pyproject.toml description is not the manuscript title: {project.get('description')!r}"
         )
     old_framing = "portability " + "audit"
+    old_subtitle = "exact attribution, " + "near-collinearity"
     for name in ("README.md", "CITATION.cff", ".zenodo.json", "pyproject.toml",
                  "notebooks/README.md"):
         path = root / name
         if not path.is_file():
             errors.append(f"{name} is missing")
             continue
-        if old_framing in path.read_text(encoding="utf-8").lower():
+        text = path.read_text(encoding="utf-8").lower()
+        if old_framing in text:
             errors.append(f"{name} retains the superseded title framing")
+        if old_subtitle in text:
+            errors.append(f"{name} retains the superseded subtitle")
 
     readme = (root / "README.md").read_text(encoding="utf-8")
     readme_flat = " ".join(readme.lower().split())
-    if "near-collinearity, and a within-panel stability audit" not in readme_flat:
+    if "one actor signal, near-collinearity, and a within-panel stability audit" not in readme_flat:
         errors.append("README.md subtitle does not carry the current title framing")
     versions = {
         "CITATION.cff": cff.get("version"),
@@ -454,6 +479,51 @@ def check_metadata_contract(root: Path) -> list[str]:
             errors.append(f"{name} contains an ORCID; author metadata is pending")
         if DOI_RE.search(payload):
             errors.append(f"{name} contains a DOI; no DOI has been minted")
+
+    # U-M2: the plan is internally hash-timestamped; only the split carries an
+    # independently written pre-run timestamp. No reader-facing surface may
+    # restore an unqualified registration status. The frozen plan file itself is
+    # excluded here because it is byte-pinned to PLAN_FILE_SHA256 and must not be
+    # rewritten; its S1/S2 labels are plan-internal, not reader-facing.
+    claim_surfaces = (
+        "README.md", "REPRODUCING.md", "CODE_MAP.md", "DATA_EXCLUSIONS.md",
+        "results/README.md", "results/framework_pilot/holdout/report.md",
+        "results/framework_pilot/holdout/summary.json",
+        "results/framework_pilot/holdout/parts/holdout_extras.json",
+        "results/framework_pilot/holdout/CORRECTIONS.md",
+        "experiments/STABILITY_VARIANT.md", "notebooks/README.md",
+        "notebooks/01_confirmatory_holdout.ipynb",
+        "notebooks/02_stability_audit.ipynb",
+        "CITATION.cff", ".zenodo.json",
+    )
+    unqualified_status = (
+        "pre-" + "registered primary", "pre-" + "registered secondary",
+        "pre-" + "registered confirmatory", "pre-" + "registered one-shot",
+        "pre-" + "registered holdout",
+    )
+    for rel in claim_surfaces:
+        path = root / rel
+        if not path.is_file():
+            errors.append(f"{rel} is missing")
+            continue
+        text = path.read_text(encoding="utf-8").lower()
+        for phrase in unqualified_status:
+            if phrase in text:
+                errors.append(f"{rel} keeps an unqualified status phrase: {phrase!r}")
+    results_readme_path = root / "results" / "README.md"
+    if not results_readme_path.is_file():
+        errors.append("results/README.md is missing")
+        results_readme = ""
+    else:
+        results_readme = " ".join(
+            results_readme_path.read_text(encoding="utf-8").lower().split()
+        )
+    if "internally hash-timestamped" not in results_readme:
+        errors.append("results/README.md lacks the hash-timestamped-plan qualifier")
+    if "only the split has an independently written pre-run timestamp" not in results_readme:
+        errors.append("results/README.md lacks the split-timestamp qualifier")
+    if "plan-declared primary" not in results_readme:
+        errors.append("results/README.md does not call the primary plan-declared")
 
     expected_modules = sorted(rel for rel in REQUIRED if rel.startswith("tests/"))
     present = sorted(
@@ -617,6 +687,11 @@ def check_prereg_checksum(root: Path) -> list[str]:
         return [f"preregistration checksum target missing: {rel}"]
     if sha256_file(target) != digest:
         return ["preregistration checksum mismatch"]
+    if digest != PLAN_FILE_SHA256:
+        return [
+            "preregistration.json bytes differ from the frozen plan hash "
+            f"{PLAN_FILE_SHA256}"
+        ]
     summary = strict_load(base / "summary.json")
     recorded = summary.get("holdout", {}).get("prereg_file_sha256")
     if recorded and recorded != digest:

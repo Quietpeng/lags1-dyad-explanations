@@ -44,7 +44,7 @@ data, configuration or predictions.
 | `make stability-check` | Verify shipped stability aggregates, 50-refit scope and hashes | no |
 | `make worldline-check` | Verify the worldline illustration/aggregate boundary (no CSV) | no |
 | `make dist` | Build and verify a `git archive HEAD` release tarball; untracked files never enter the archive and a modified tracked file aborts the build | no |
-| `experiments/sprint_a_prereg.py` | Freeze the holdout pre-registration | ICEWS + cache |
+| `experiments/sprint_a_prereg.py` | Freeze the holdout plan (`preregistration.json`) | ICEWS + cache |
 | `experiments/sprint_a_run.py` | One-shot holdout evaluation (refuses a second completed run) | ICEWS + cache |
 | `experiments/sprint_a_holdout_extras.py` | Post-holdout diagnostics from saved predictions | row-level predictions |
 | `experiments/sprint_b_*.py` | Five-seed preview of exactness, stability, HGB occlusion and report generation; not the 50-refit audit runner | ICEWS + cache + (post-hoc) row-level predictions |

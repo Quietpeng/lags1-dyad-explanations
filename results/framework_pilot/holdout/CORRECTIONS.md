@@ -1,5 +1,29 @@
 # Corrections / errata
 
+## 2026-10-28 — reader-facing status wording qualified (no number or plan-hash change)
+
+Reader-facing surfaces (the two `paper_sentences`, their mirrors in `report.md`,
+and the public README/Zenodo/CFF/notebook/reproduction documents) used a status
+adjective that the design cannot establish. They now use the paper's
+vocabulary: the plan is plan-declared and internally hash-timestamped, the split
+is pre-specified, the holdout is one-shot, and only the split carries an
+independently written pre-run timestamp.
+
+The frozen plan file `preregistration.json` is **byte-identical** to its R2C8
+state, SHA-256
+`41bda0e3eaf8bb32e398c260169b85715e8c82e04569a50a185ae49d0783704c`. Its
+internal `S1_primary`/`S2_sensitivity` self-descriptions were not edited, and
+`preregistration.json.sha256` keeps the same digest and repo-relative path.
+There is **no plan-hash drift**: `summary.json#/holdout/prereg_file_sha256`,
+the `holdout_extras.json` summary mirror, `report.md`
+(`Pre-registration file SHA-256`), `manifest.json#/prereg.file_sha256`,
+`manifest.json#/inputs` and `SHA256SUMS` all still carry `41bda0e3…`.
+
+No definition, split, endpoint, feature set, number, count or timestamp
+changed. Only the reader-facing prose files (`report.md`, `summary.json`,
+`holdout_extras.json` and the public documents) moved; their shipped hashes and
+the corresponding `current_sha256` entries were reconciled as usual.
+
 ## 2026-10-27 — public wording and sign-convention clarification (no number changed)
 
 The public holdout report prints the 29-feature versus warm-history contrast as
@@ -124,8 +148,8 @@ unchanged (the CSV rows are byte-identical).
 
 ## 2026-10-23 — misattributed BH q in the 29-feature vs warm-history sentence
 
-`report.md` and `summary.json` (`paper_sentences`) stated that the pre-registered
-secondary 29-feature model beat the warm-history Markov baseline with
+`report.md` and `summary.json` (`paper_sentences`) attributed the secondary
+29-feature model's win over the warm-history Markov baseline to
 `BH q=4.295e-50`. That q value belongs to the **29-feature vs per-dyad Markov**
 comparison (BH family C). The **29-feature vs warm-history Markov** comparison is
 secondary and is not in a BH family.

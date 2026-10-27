@@ -24,9 +24,12 @@ audit grid was frozen at 2026-10-23T06:31:40Z, i.e. *after* the confirmatory
 read began (2026-10-23T05:26:55.031577Z) and *before* it completed
 (2026-10-23T07:45:19Z); the 50-refit rerun was executed afterwards
 (14:30-16:07Z). All 5,282 eventual holdout directed dyads (2,790 unordered
-pairs) are removed at row level before fitting and aggregation, so no holdout
-label enters the audit. The audit is non-confirmatory and supports no stability
-claim about the confirmatory holdout. It is **not** a pre-holdout design.
+pairs) are removed at row level before fitting and aggregation, so holdout rows
+enter neither fitting nor aggregation. The P1 graph cache retains edges incident
+to eventual holdout dyads at every month, so burned-period attributions are
+conditional on those edges and the audit is not a holdout performance estimate.
+The audit is non-confirmatory and supports no stability claim about the
+confirmatory holdout. It is **not** a pre-holdout design.
 """
 
 from __future__ import annotations

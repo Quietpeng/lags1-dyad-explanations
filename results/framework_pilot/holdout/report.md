@@ -59,7 +59,7 @@ Primary vs per-dyad Markov (table convention: comparator − model, positive = p
 | `hgb49__vs__per_dyad_markov` | 0.040051 | 15.06% | [0.031092, 0.049010] | 1.923e-18 | 2.884e-18 |
 | `hgb49__vs__logistic49_temperature` | -0.007948 | -3.65% | [-0.012708, -0.003188] | 0.001066 | 0.001066 |
 
-BH families (pre-registered): A primary LL (4), B primary ECE/AUC/AP (3), C capacity/feature (3), D group attribution (9 LOO). See `tables/bh_families.csv`.
+BH families (plan-declared): A primary LL (4), B primary ECE/AUC/AP (3), C capacity/feature (3), D group attribution (9 LOO). See `tables/bh_families.csv`.
 
 Full dyad, source-actor, target-actor, and multiway intervals for ECE, Brier, AUC, and AP are in `tables/primary_comparisons.csv` and `tables/auc_ap_deltas.csv`.
 
@@ -161,13 +161,13 @@ The five seeds vary only the bootstrap weights; the fitted models are determinis
 
 ## 9. Exact sentences the paper can use
 
-> In a pre-registered unit-fresh 20% unordered-dyad holdout (311,638 dyad-months; 32,614 positives; 5,282 directed dyads; 2018-01-–2022-11), the frozen temperature-calibrated 49-feature logistic model achieved log-loss 0.21788, Brier 0.06401, ECE 0.04211, AUC 0.9102, and AP 0.6719.
+> In a plan-declared, internally hash-timestamped, one-shot unit-fresh 20% unordered-dyad holdout (311,638 dyad-months; 32,614 positives; 5,282 directed dyads; 2018-01-–2022-11), the frozen temperature-calibrated 49-feature logistic model achieved log-loss 0.21788, Brier 0.06401, ECE 0.04211, AUC 0.9102, and AP 0.6719.
 
 > Against the train-only per-dyad Markov baseline (log-loss 0.26587, which equals the global transition on unit-fresh dyads), the primary model reduced log-loss by 0.04800 (18.05% relative; 95% multiway CI [0.04333, 0.05267]; BH q<1e-12 (normal-approximation tail; 1,000 reps)), increased AUC by 0.17788 and AP by 0.35072, but its ECE was worse by 0.03864 (95% multiway CI [-0.05303, -0.02426]).
 
 > Against the warm-history Markov baseline with 35 extra months of dyad history (log-loss 0.20973, ECE 0.01023), the primary model log-loss was worse by 0.00815 (model − comparator; 95% multiway CI [0.00233, 0.01396]) and its ECE was worse by 0.03188 (95% CI [0.02293, 0.04084]); its AUC was higher by 0.01598 and AP by 0.03502. The comparison is unequal in two directions: warm history has 35 additional months of outcomes, the model carries the 49-feature set; neither side is dominated.
 
-> The pre-registered secondary 29-feature model (log-loss 0.20522, ECE 0.02746, AUC 0.9083, AP 0.6717) had a nominal log-loss improvement over warm history (Δ = −0.00451, model − comparator; 95% multiway CI [−0.00760, −0.00142]; Brier null; exploratory, not multiplicity-controlled). Its strict-mean within-dyad AUC is 0.4716, below chance. It is a dyad-level ranking candidate, not a new primary.
+> The plan-declared secondary 29-feature model (log-loss 0.20522, ECE 0.02746, AUC 0.9083, AP 0.6717) had a nominal log-loss improvement over warm history (Δ = −0.00451, model − comparator; 95% multiway CI [−0.00760, −0.00142]; Brier null; exploratory, not multiplicity-controlled). Its strict-mean within-dyad AUC is 0.4716, below chance. It is a dyad-level ranking candidate, not a new primary.
 
 > A 29-feature year-fixed-effects anchor achieved log-loss 0.20063 and Brier 0.05717, better than the primary; it is a plan-declared descriptive anchor; its promotion and warm-history contrast are post-hoc, C-confounded and uncorrected; it is not a prospective model, and linear calendar extrapolation is a limitation.
 

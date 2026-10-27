@@ -24,6 +24,12 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install -r requirements.txt
+      - name: Install citation tooling and the package
+        run: |
+          python3 -m pip install "cffconvert==2.0.0"
+          python3 -m pip install -e .
+      - name: Validate the citation metadata
+        run: cffconvert --validate -i CITATION.cff
       - name: Preflight
         run: make doctor PY=python3
       - name: Unit and contract tests

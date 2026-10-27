@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "lags1-dyad-explanations"
 version = "0.1.1"
-description = "Actor-role components of dyadic event forecasts: exact attribution, near-collinearity, and a within-panel stability audit"
+description = "Actor-role components of dyadic event forecasts: one actor signal, near-collinearity, and a within-panel stability audit"
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }

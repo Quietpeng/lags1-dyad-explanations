@@ -75,7 +75,7 @@ class TestNotebookSuite(unittest.TestCase):
 
     def test_notebook_01_explains_the_secondary_model(self):
         source = sources(load(NOTEBOOKS / "01_confirmatory_holdout.ipynb")).lower()
-        self.assertIn("pre-registered secondary", source)
+        self.assertIn("plan-declared secondary", source)
         self.assertIn("post-hoc", source)
         self.assertIn("not a new confirmatory test", source)
 

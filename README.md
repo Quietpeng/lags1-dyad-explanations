@@ -1,6 +1,6 @@
-# Actor-role components of dyadic event forecasts: exact attribution, near-collinearity, and a within-panel stability audit
+# Actor-role components of dyadic event forecasts: one actor signal, near-collinearity, and a within-panel stability audit
 
-**Exact attribution, near-collinearity, and a within-panel stability audit.**
+**one actor signal, near-collinearity, and a within-panel stability audit.**
 
 Code, tests and aggregate results for the **actor-role attribution contract**
 and **within-panel stability audit** of the manuscript: an ex ante ownership
@@ -39,11 +39,12 @@ confirmatory holdout completed later and was not used. The shipped
   actor views, metrics and cluster-bootstrap inference. The package contains
   the paper path only; the directory and import name are retained for
   compatibility and do not imply a reusable framework.
-- `experiments/` — scripts for the pre-registered confirmatory holdout, a
-  five-seed preview of the stability audit and the illustrative world-line
-  preview. They require the licensed ICEWS panel and local caches; post-hoc
-  holdout diagnostics additionally need row-level predictions. None of those
-  inputs is redistributed. The Sprint-B preview does not regenerate the shipped
+- `experiments/` — scripts for the plan-declared, internally hash-timestamped
+  one-shot confirmatory holdout, a five-seed preview of the stability audit and
+  the illustrative world-line preview. They require the licensed ICEWS panel and
+  local caches; post-hoc holdout diagnostics additionally need row-level
+  predictions. None of those inputs is redistributed. The Sprint-B preview does
+  not regenerate the shipped
   50-refit, holdout-excluded aggregates: `experiments/STABILITY_VARIANT.md`
   lists the exact five differences. The preview refuses to write into
   `results/framework_pilot/stability/` unless `NEUROSIM_ALLOW_OVERWRITE=1` (or
@@ -55,7 +56,8 @@ confirmatory holdout completed later and was not used. The shipped
   aggregate artifacts. They do not fit models, read the ICEWS event panel or
   load row-level predictions.
 - `results/framework_pilot/holdout/` — one-shot unit-fresh 20% dyad-holdout
-  report, summary, tables, pre-registration, manifest and access log. Row-level
+  report, summary, tables, the frozen plan (`preregistration.json`), manifest
+  and access log. Row-level
   predictions and run logs are not redistributed.
 - `results/framework_pilot/stability/` — **provisional** stability audit on
   inner-validation and burned-retrospective periods, with a `SHA256SUMS`
@@ -100,7 +102,9 @@ make test
 
 `make test` runs the public suite. `make verify` checks hashes, strict JSON,
 notebook outputs, forbidden paths, absolute paths and credential-like strings.
-No restricted input is required by either target.
+No restricted input is required by either target. The CFF is schema-validated in
+CI with `cffconvert --validate -i CITATION.cff`; it carries the MIT code licence
+and keeps the ICEWS aggregate carve-out.
 
 To read the frozen results without installing Jupyter:
 
@@ -137,7 +141,8 @@ contribution caches, the local experiment configuration, and for post-holdout
 diagnostics the excluded row-level predictions. The public tree has **no
 cache-build entry point**, so licensed access alone is not sufficient. The
 confirmatory holdout (L4) is closed by a one-shot lock (`run_once.json` plus
-`test_access_log.json`); re-running it would invalidate the pre-registration.
+`test_access_log.json`); re-running it would violate the one-shot lock and the
+plan's split commitment.
 See `REPRODUCING.md` for the L0–L4 matrix.
 
 ## Sign convention
@@ -150,9 +155,11 @@ explicitly where a signed Δ is reported. See `results/README.md`.
 
 ## Frozen evidence in one paragraph
 
-The pre-registered primary is a 49-feature logistic model evaluated on a
+The plan-declared primary is a 49-feature logistic model evaluated on a
 one-shot, unit-fresh 20% dyad holdout (311,638 dyad-months; 32,614 positives;
-5,282 directed dyads; 2018-01–2022-11; not time-fresh). It achieved log-loss
+5,282 directed dyads; 2018-01–2022-11; not time-fresh). The plan is internally
+hash-timestamped; only the split carries an independently written pre-run
+timestamp. It achieved log-loss
 0.217875, AUC 0.910152 and AP 0.671863. Against the train-only per-dyad Markov
 baseline (log-loss 0.265874), log-loss was lower by 0.047999 (Δ = −0.047999;
 18.05%; 95% multiway CI −0.052665 to −0.043333; negative = better). Against the
@@ -163,12 +170,12 @@ its ECE was worse by 0.031884 (0.042112 vs 0.010228). That contrast is
 **unequal in two directions**: warm history has 35 additional months of outcomes
 (through 2017-11) that the model does not see, while the model carries the
 49-feature actor-role and graph block that the baseline does not see; neither
-side is dominated. The pre-registered
+side is dominated. The plan-declared
 29-feature secondary (log-loss 0.205219, ECE 0.027463, AUC 0.908290, AP 0.671747)
 beat the warm-history baseline on log-loss by 0.004510 (Δ = −0.004510; 95% CI
 −0.007597 to −0.001423; secondary, not in a BH family); its use for dyad-level
 probability ranking is **post-hoc**, not a new confirmatory test and not a
-primary swap. In the pre-registered 49-feature contract, under the
+primary swap. In the plan-declared 49-feature contract, under the
 **holdout-zeroed** graph cache, the 20 graph features do not improve held-out
 log-loss. The confirmatory evaluation and the stability audit use distinct cache
 policies: the confirmatory numbers are **holdout-zeroed** (held-out edges zeroed

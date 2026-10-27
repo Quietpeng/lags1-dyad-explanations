@@ -86,7 +86,7 @@ class TestFrozenHeadlines(unittest.TestCase):
 
     def test_readme_keeps_the_secondary_boundary(self):
         readme = " ".join((ROOT / "README.md").read_text(encoding="utf-8").lower().split())
-        self.assertIn("pre-registered 29-feature secondary", readme)
+        self.assertIn("plan-declared 29-feature secondary", readme)
         self.assertIn("post-hoc", readme)
         self.assertIn("not a new confirmatory test", readme)
 
@@ -716,7 +716,7 @@ class TestR2C7EvidenceFlags(unittest.TestCase):
         self.assertIn("plan-declared", sentence)
         self.assertIn("post-hoc, C-confounded and uncorrected", sentence)
         self.assertIn("not a prospective model", sentence)
-        self.assertNotIn("pre-registered " + "descriptive", sentence)
+        self.assertNotIn("pre-" + "registered descriptive", sentence)
         report = (HOLDOUT / "report.md").read_text(encoding="utf-8")
         self.assertIn(sentence, report)
 

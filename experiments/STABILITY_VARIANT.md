@@ -35,15 +35,15 @@ Predicted probabilities (`mean_p`, `p_sum`) and observed counts/rates
 (`y_sum`, `mean_y`) are not shipped; see `DATA_EXCLUSIONS.md` and
 `results/README.md`.
 
-The exclusion is a feature-use exclusion based on the public pre-registration's
-dyad ids. It is not a label read.
+The exclusion is a feature-use exclusion based on the dyad ids in the public
+plan (`preregistration.json`). It is not a label read.
 
 ## The five deltas
 
 | # | Public preview (`experiments/`) | Restricted audit variant | Anchor |
 |---|---|---|---|
 | 1 | `N_SEEDS = 5` | `N_SEEDS = 50` | `sprint_b_common.py` |
-| 2 | No holdout-dyad exclusion | `_holdout_dids()` reads the public pre-registration and removes all rows of the 5,282 holdout dyads (2,790 unordered pairs) from train/select/test/panel before fitting and aggregation | `sprint_b_common.py` (`_holdout_dids`, `_subset_did`, `load_splits`) |
+| 2 | No holdout-dyad exclusion | `_holdout_dids()` reads the public plan and removes all rows of the 5,282 holdout dyads (2,790 unordered pairs) from train/select/test/panel before fitting and aggregation | `sprint_b_common.py` (`_holdout_dids`, `_subset_did`, `load_splits`) |
 | 3 | `C` selected automatically on the 2015 selection window (`fit_logistic` default `C_grid`) | `C_grid=[1.0]` in the point fit; seed refits inherit the point-fit `C` | `sprint_b_common.py` (`fit_point`) |
 | 4 | `N_BOOT = 1000` in the stability bootstrap | `N_BOOT = 50` in the stability bootstrap | `sprint_b_stability.py` |
 | 5 | Loader hard-codes `("point", "rep0", …, "rep4")` | Loader enumerates `["point"] + [f"rep{s}" for s in range(C.N_SEEDS)]` | `sprint_b_stability.py` (`main`) |
@@ -83,8 +83,8 @@ alone:
   holdout read (the three earlier exploratory passes G2, D2 and B predate the
   log and are out of its scope; this audit's own burned-retrospective read is
   logged in `summary_decompose.json`). Re-running
-  it would invalidate the pre-registration and is outside this artifact's
-  contract.
+  it would violate the one-shot lock and the plan's split commitment and is
+  outside this artifact's contract.
 
 The frozen aggregates, not a regenerated run, are what the public verifier
 checks.

@@ -1158,7 +1158,8 @@ def paper_sentences(core, p1_primary, strict_primary, p1_markov, fe_within,
     q29 = _p_txt(verdict.get("bh_q_logistic29"))
     s = []
     s.append(
-        "In a pre-registered unit-fresh 20% unordered-dyad holdout "
+        "In a plan-declared, internally hash-timestamped, one-shot unit-fresh "
+        "20% unordered-dyad holdout "
         f"({core['holdout']['rows']:,} dyad-months; {core['holdout']['positives']:,} "
         f"positives; {core['holdout']['directed_dyads']:,} directed dyads; "
         "2018-01-–2022-11), the frozen temperature-calibrated 49-feature "
@@ -1200,7 +1201,7 @@ def paper_sentences(core, p1_primary, strict_primary, p1_markov, fe_within,
         p29 = m[LOGIT29]
         w29pt, w29mw = warm29["point"], warm29["multiway"]
         s.append(
-            f"The pre-registered secondary 29-feature logistic model "
+            f"The plan-declared secondary 29-feature logistic model "
             f"(log-loss {p29['log_loss']:.5f}, ECE {p29['ece']:.5f}, "
             f"AUC {p29['auc']:.4f}, AP {p29['ap']:.4f}) beat the warm-history "
             f"Markov baseline on log-loss by {w29pt['d_log_loss']:.5f} "
@@ -1359,7 +1360,7 @@ def build_report(core, prereg, run_once, summary, rows, within_rows, between_row
           f"{100*pp['rel_log_loss_gain']:.2f}% | {_ci_str(mm['ci_ll'])} | "
           f"{mm['p_ll']:.4g} | {qtxt} |")
     w("")
-    w("BH families (pre-registered): A primary LL (4), B primary ECE/AUC/AP (3), "
+    w("BH families (plan-declared): A primary LL (4), B primary ECE/AUC/AP (3), "
       "C capacity/feature (3), D group attribution (9 LOO). See "
       "`tables/bh_families.csv`.")
     w("")

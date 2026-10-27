@@ -24,7 +24,8 @@
   "definition_sha256": "776a763e663b845003cd628d0656692d8ff2652aaa5cec18820e078baec62c8e",
   "pairs_sha256": "9d3e2752c4f01ef3ab02388717b0a429069ca5b67292863c3e33ad5fc23a39b3",
   "dids_sha256": "1c2d3f0b6356cf617100bd2df9afe6091403c641c0a8d7d7618b5de5fe7c991a",
-  "unchanged": true
+  "unchanged": true,
+  "freeze_file_sha256": "41bda0e3eaf8bb32e398c260169b85715e8c82e04569a50a185ae49d0783704c"
  },
  "run_once": {
   "status": "completed",
@@ -262,7 +263,7 @@
  "release_annotations": {
   "release": "0.1.1",
   "numbers_changed": false,
-  "note": "Post-freeze release annotations only: per-output redistribution flags, excluded projection/log annotations, the final wording sync (within-dyad/calendar/sign labels, two-direction comparator wording) and a release note. The R2C7 public-text revision adds the strict pair-weighted label, the comparator sign convention, holdout-zeroed versus holdout-row-excluded cache wording, the raw-support footnote, the non-converged FE flags, the plan-declared/post-hoc year-FE status and the current title metadata. The `outputs` sha256 values track the shipped annotated bytes; freeze-time run hashes remain in `post_run_corrections`. No metric, prediction, label or model output was changed. The R2C8 public-artifact revision scopes the access-log policy to post-freeze holdout reads, names the three earlier exploratory passes (G2, D2, B) as out of scope, annotates the post-process labels_read semantics and retires the preview's paper-exhibit wording; no timestamp, count, entry order, metric, prediction or label changed.",
+  "note": "Post-freeze release annotations only: per-output redistribution flags, excluded projection/log annotations, the final wording sync (within-dyad/calendar/sign labels, two-direction comparator wording) and a release note. The R2C7 public-text revision adds the strict pair-weighted label, the comparator sign convention, holdout-zeroed versus holdout-row-excluded cache wording, the raw-support footnote, the non-converged FE flags, the plan-declared/post-hoc year-FE status and the current title metadata. The `outputs` sha256 values track the shipped annotated bytes; freeze-time run hashes remain in `post_run_corrections`. No metric, prediction, label or model output was changed. The R2C8 public-artifact revision scopes the access-log policy to post-freeze holdout reads, names the three earlier exploratory passes (G2, D2, B) as out of scope, annotates the post-process labels_read semantics and retires the preview's paper-exhibit wording; no timestamp, count, entry order, metric, prediction or label changed. The R2C9 public-artifact revision qualifies the reader-facing plan-status vocabulary (plan-declared, internally hash-timestamped, pre-specified split) in the two paper_sentences, their report mirrors and the reader-facing documents. The frozen plan file preregistration.json is byte-identical to R2C8 (SHA-256 41bda0e3eaf8bb32e398c260169b85715e8c82e04569a50a185ae49d0783704c); its checksum chain is unchanged and no definition, split, metric, timestamp or scope literal changed.",
   "excluded": {
    "results/framework_pilot/holdout/preds/holdout_preds.npz": {
     "redistributed": false,
@@ -282,12 +283,12 @@
    }
   },
   "current_sha256": {
-   "results/framework_pilot/holdout/report.md": "d18afa22903bb12b20e60f763fca5439242bef5996dd0d0bfab473022874579a",
-   "results/framework_pilot/holdout/summary.json": "1be5663b00ebc899962f39bd119806d72543b091bdad063b17aec8d350012f50",
-   "results/framework_pilot/holdout/parts/holdout_extras.json": "fe7d859a0a524a82135361d1ce2c1c62b9ea01bf21b60a716f3e1b2badc85ccb",
+   "results/framework_pilot/holdout/report.md": "35ebfde841837fc3a22d976f4806afb44b172c249e74d72f6ded0262da691460",
+   "results/framework_pilot/holdout/summary.json": "d798360a75f4ad14f9674bf8e8cefd54faa03963a217ba55af38991768199be3",
+   "results/framework_pilot/holdout/parts/holdout_extras.json": "8854dcc9c62f88259bc15239b1439fad99f61e32cc017ebddf07b2e368771cad",
    "results/framework_pilot/holdout/test_access_log.json": "4102c3da67fbc11fa35b5d8d82176b66437882785821c4db3705e8daca52b78d",
    "results/framework_pilot/holdout/tables/bh_families.csv": "1cbbd04cc5fb3274aae1ef79578d8ad1f34fcd6da7f680a74b9a80ea19b376aa",
-   "results/framework_pilot/holdout/CORRECTIONS.md": "1d58f87cd043c7aff7ae5ab04c911136b2c005a7e1a9feecbe28e2deb4a51b0e",
+   "results/framework_pilot/holdout/CORRECTIONS.md": "e81f19aacbcb06accd3f3fe600d67e08c589b54ae0d2fa3bd867a3c7f0c6ca31",
    "results/framework_pilot/holdout/run_once.json": "c1b92ef79815ad6d4192134a69b6856ad9ff0ccc73d565efd34f77509313e268",
    "results/framework_pilot/holdout/tables/auc_ap_deltas.csv": "2dede3a89a0ad5910d681398c3d90f49eca0f0b0631f6ddc8f1bc74a74474641",
    "results/framework_pilot/holdout/tables/auc_ap_levels.csv": "a89d3146e367dd40a43122d66fc8574060164cb75b8f3a60048b90746dd62c5a",
@@ -311,16 +312,17 @@
    "note": "`code` is the freeze-time digest of the bytes actually run. `current_sha256` is the digest of the bytes shipped at this release tag for every `code` entry; scripts/verify_release.py and scripts/check_aggregates.py recompute both directions and fail on an unannotated change. Files that differ from freeze time are listed in `changed_since_freeze` with their reason.",
    "current_sha256": {
     "experiments/sprint_a_run.py": "9494b04bbc0ccc75e906be5a7f1f250e4a044a894cbefac6cb69bcc3db470f43",
-    "experiments/sprint_a_holdout_extras.py": "7965b67c01fc6f87780d10bd3dbb70ee36d5e9d4fde4fc138c79cfad350af471",
-    "framework/sprint_a.py": "14d51b8e699325ef249dad302a914e5bf52f8ae944cacae4b8a9c0d027d53358",
+    "experiments/sprint_a_holdout_extras.py": "8d69b6df027df678fe2eef58b97199b517d79258384edc60fb5191b24282804b",
+    "framework/sprint_a.py": "31f8ea404dec9c79cbb6c8134503f2a25331a158ba297fc16cef52687ba7ba31",
     "framework/sprint_a_inference.py": "a63008ee818247ce1bb73bbe2c810f58d59dd8b367a0d791856192bbfdc08cad",
     "framework/models.py": "86ec8abb0ef9ddf13083aa4526080a2688883bea7c64db61cdb0de46a028f10f",
     "framework/metrics.py": "7a4229e78fe2d7e3ea591c5a9a0dc4580e142a9e6f3afca622bce2c92d093ac9"
    },
    "changed_since_freeze": {
     "experiments/sprint_a_run.py": "usage/command text, access-log policy wording and post-freeze claim wording only; no model, metric or prediction logic",
-    "experiments/sprint_a_holdout_extras.py": "usage/command text, warm-history comparator-label, pair-weighted/cache report labels, access-log policy and labels_read annotation wording only; the frozen aggregates are the same",
-    "framework/sprint_a_inference.py": "added p_display/boot_p_display for the 2026-10-26 censored-p convention; no frozen metric, prediction or conclusion changed"
+    "experiments/sprint_a_holdout_extras.py": "paper_sentence status vocabulary and BH-family label only in the generator; numbers, formulas and emitted values unchanged",
+    "framework/sprint_a_inference.py": "added p_display/boot_p_display for the 2026-10-26 censored-p convention; no frozen metric, prediction or conclusion changed",
+    "framework/sprint_a.py": "status-vocabulary docstrings and error strings only (plan-declared/pre-specified wording); no split, feature, model, inference or metric logic"
    },
    "p_display": {
     "utc": "2026-10-26T00:00:00Z",
@@ -371,20 +373,20 @@
  },
  "post_run_corrections": {
   "utc": "2026-10-23T22:20:00Z",
-  "reason": "Metadata/wording corrections after the one-shot run: within-dyad claim strings, calendar wording, calibration comparator and sign labels, censored p/q display, access-log policy note, the final public-release wording sync, and the two-direction warm-history comparator wording. Current-hash entries are reconciled to the shipped bytes. A 2026-10-27 text-only revision added the dyad_fe.csv convergence/evidence flags, the pair-weighted, comparator-sign, cache, raw-support and year-FE status wording; no metric, label, prediction or coefficient changed.",
+  "reason": "Metadata/wording corrections after the one-shot run: within-dyad claim strings, calendar wording, calibration comparator and sign labels, censored p/q display, access-log policy note, the final public-release wording sync, and the two-direction warm-history comparator wording. Current-hash entries are reconciled to the shipped bytes. A 2026-10-27 text-only revision added the dyad_fe.csv convergence/evidence flags, the pair-weighted, comparator-sign, cache, raw-support and year-FE status wording; no metric, label, prediction or coefficient changed. The 2026-10-28 R2C9 revision qualified reader-facing status wording in report.md, summary.json, holdout_extras.json and the public documents and added the matching CORRECTIONS entry; the frozen plan file is byte-identical to R2C8 and no metric, label, prediction, definition, split or timestamp changed.",
   "numbers_changed": false,
   "files": {
    "results/framework_pilot/holdout/report.md": {
     "run_sha256": "d6e60f3c4d2e4c843d39f9c7af4e1db25d3d9af5af44a0adf2b544d77656a5e0",
-    "current_sha256": "d18afa22903bb12b20e60f763fca5439242bef5996dd0d0bfab473022874579a"
+    "current_sha256": "35ebfde841837fc3a22d976f4806afb44b172c249e74d72f6ded0262da691460"
    },
    "results/framework_pilot/holdout/summary.json": {
     "run_sha256": "be9e4bb50b4d029a02e64bac90241c3a5ae5378273d424f8b0a2a7e4a0efbeb7",
-    "current_sha256": "1be5663b00ebc899962f39bd119806d72543b091bdad063b17aec8d350012f50"
+    "current_sha256": "d798360a75f4ad14f9674bf8e8cefd54faa03963a217ba55af38991768199be3"
    },
    "results/framework_pilot/holdout/parts/holdout_extras.json": {
     "run_sha256": "4d479d4650ae909d97bcf663ef969bdf1a73366ecf9178d52af45605fa4de81c",
-    "current_sha256": "fe7d859a0a524a82135361d1ce2c1c62b9ea01bf21b60a716f3e1b2badc85ccb"
+    "current_sha256": "8854dcc9c62f88259bc15239b1439fad99f61e32cc017ebddf07b2e368771cad"
    },
    "results/framework_pilot/holdout/test_access_log.json": {
     "run_sha256": "8b0915f9f9b2995191b3df5602475a800c3548c6e61dce9de679c7aa10a61417",
@@ -396,7 +398,7 @@
    },
    "results/framework_pilot/holdout/CORRECTIONS.md": {
     "run_sha256": "c74d1b21bc8e11fd6759c22602658ecb79c36bd499e99bb21d6827f78bb4886a",
-    "current_sha256": "f0a87b93cccbc9772f26c022dd28ef6da6cbe880ba92dfd096d5596a283fe750"
+    "current_sha256": "e81f19aacbcb06accd3f3fe600d67e08c589b54ae0d2fa3bd867a3c7f0c6ca31"
    },
    "results/framework_pilot/holdout/tables/dyad_fe.csv": {
     "run_sha256": "a0077fcd7a78c42243508d4a630a730ef1b1907964d8ef4e5f819c706504f48b",

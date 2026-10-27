@@ -47,7 +47,7 @@ accuracy is computed.
 |---|---|
 | `worldline_preview.png` / `.pdf` | Three-panel print figure: sampled dyad paths for two anchors, induced actor states for 2016-06, and transition tallies over four anchors. |
 | `worldline_trace.json` | Metadata, disclaimers, per-anchor counts, state-path and transition tallies, per-anchor `p1_summary`/`p2_summary` distributions (`mean`, `median`, `min`, `max` of the step-1 and step-2 predicted probabilities over the 20 sampled, unlabeled dyads; no per-dyad value), model provenance, sample rule and the no-row-level rule. No per-row records. |
-| `run_manifest.json` | Command, host/package versions, input/output SHA256, runtime, figure revision, preview scope and the withheld-export list. |
+| `run_manifest.json` | Command, host/package versions, input/output SHA256, runtime, figure revision, preview scope and the withheld-export list. Its `inputs`/`outputs` keys are bare filenames resolved inside this directory, not repo-relative paths. |
 
 **No CSV is shipped.** The 240-row `worldline_trace.csv` (per-row `state`,
 `p_model`) and the 249-row `node_trace.csv` (per-row induced actor state) were
@@ -94,7 +94,7 @@ $PY experiments/worldline_preview.py \
 
 1. An intermediate-month feature-generating model (or a joint state/feature
    model), not a state-lag-only approximation.
-2. A rolling-origin evaluation with a prospective period and a pre-registered
+2. A rolling-origin evaluation with a prospective period and a pre-specified
    multi-step metric.
 3. Uncertainty intervals over sampled paths and a comparison with persistence
    and Markov baselines.

@@ -178,14 +178,32 @@ README_FLAT = " ".join(README.lower().split())
 
 
 class TestCitationLicenceContract(unittest.TestCase):
-    """P2.4: mixed-licence deposit, pending authors, title and suite floor."""
+    """P2.4/R2C9: split code/deposit licences, pending authors, title and floor."""
 
-    def test_cff_and_zenodo_licences_agree(self):
-        self.assertEqual(CFF["license"], ZENODO["license"])
+    def test_cff_code_licence_is_valid_spdx_mit(self):
+        self.assertEqual(CFF["license"], "MIT")
+        self.assertNotEqual(CFF["license"], "other-open")
 
-    def test_deposit_licence_is_other_open_not_mit(self):
-        self.assertEqual(CFF["license"], "other-open")
-        self.assertNotEqual(CFF["license"], "MIT")
+    def test_zenodo_deposit_licence_stays_other_open(self):
+        self.assertEqual(ZENODO["license"], "other-open")
+
+    def test_metadata_state_the_code_only_carve_out(self):
+        abstract = " ".join((CFF.get("abstract") or "").split()).lower()
+        message = " ".join((CFF.get("message") or "").split()).lower()
+        notes = " ".join((ZENODO.get("notes") or "").split()).lower()
+        self.assertIn("not mit", abstract)
+        self.assertIn("code only", message)
+        self.assertIn("not mit", notes)
+        self.assertIn("other-open", notes)
+
+    def test_cff_validates_against_the_schema_when_available(self):
+        if shutil.which("cffconvert") is None:
+            self.skipTest("cffconvert is not installed")
+        proc = subprocess.run(
+            ["cffconvert", "--validate", "-i", "CITATION.cff"],
+            cwd=ROOT, capture_output=True, text=True,
+        )
+        self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
 
     def test_pyproject_code_licence_is_mit(self):
         self.assertEqual(pyproject()["project"]["license"]["text"], "MIT")
@@ -206,15 +224,51 @@ class TestCitationLicenceContract(unittest.TestCase):
         self.assertEqual(ZENODO["title"], VERIFIER.RELEASE_TITLE)
         self.assertEqual(pyproject()["project"]["description"].rstrip("."),
                          VERIFIER.RELEASE_TITLE)
-        self.assertIn("near-collinearity, and a within-panel stability audit",
-                      README_FLAT)
+        self.assertIn("one actor signal, near-collinearity, and a within-panel "
+                      "stability audit", README_FLAT)
 
     def test_no_superseded_title_framing(self):
-        old_framing = "portability " + "audit"
+        old_framings = (
+            "exact attribution, " + "near-collinearity",
+            "portability " + "audit",
+        )
         for name in ("README.md", "CITATION.cff", ".zenodo.json", "pyproject.toml",
                      "notebooks/README.md"):
             text = (ROOT / name).read_text(encoding="utf-8").lower()
-            self.assertNotIn(old_framing, text, name)
+            for old_framing in old_framings:
+                self.assertNotIn(old_framing, text, name)
+
+    def test_no_unqualified_registration_status_survives(self):
+        banned = (
+            "pre-" + "registered primary",
+            "pre-" + "registered secondary",
+            "pre-" + "registered confirmatory",
+            "pre-" + "registered one-shot",
+            "pre-" + "registered holdout",
+        )
+        surfaces = (
+            "README.md", "CITATION.cff", ".zenodo.json", "REPRODUCING.md",
+            "results/README.md", "results/framework_pilot/holdout/report.md",
+            "results/framework_pilot/holdout/summary.json",
+            "results/framework_pilot/holdout/parts/holdout_extras.json",
+            "experiments/STABILITY_VARIANT.md",
+            "notebooks/01_confirmatory_holdout.ipynb",
+            "notebooks/02_stability_audit.ipynb",
+        )
+        offenders = []
+        for rel in surfaces:
+            text = (ROOT / rel).read_text(encoding="utf-8").lower()
+            offenders += [f"{rel}: {phrase}" for phrase in banned if phrase in text]
+        self.assertEqual(offenders, [])
+
+    def test_claim_boundary_carries_the_qualifier(self):
+        readme = " ".join(
+            (ROOT / "results" / "README.md").read_text(encoding="utf-8").lower().split()
+        )
+        self.assertIn("internally hash-timestamped", readme)
+        self.assertIn("only the split has an independently written pre-run timestamp",
+                      readme)
+        self.assertIn("plan-declared primary", readme)
 
     def test_author_metadata_is_pending_and_not_invented(self):
         names = [row["name"] for row in CFF["authors"]]
@@ -253,7 +307,7 @@ class TestCitationLicenceContract(unittest.TestCase):
                             ignore=shutil.ignore_patterns("__pycache__"))
             cff = (target / "CITATION.cff").read_text(encoding="utf-8")
             (target / "CITATION.cff").write_text(
-                cff.replace("license: other-open", "license: MIT"), encoding="utf-8")
+                cff.replace("license: MIT", "license: other-open"), encoding="utf-8")
             errors = VERIFIER.check_metadata_contract(target)
             self.assertTrue(any("license" in error for error in errors), errors)
 

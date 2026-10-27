@@ -6,7 +6,7 @@ feature and contribution caches, the local experiment configuration, and — for
 post-holdout diagnostics — row-level predictions. The public tree has no
 cache-build entry point, so licensed access alone is not sufficient. L4 is the
 one-shot confirmatory holdout and **cannot** be re-run without violating the
-pre-registration and the one-shot lock.
+plan's split commitment and the one-shot lock.
 
 All commands assume the repository root and `python3` (>= 3.12; the pinned
 `numpy==2.5.4` and `scipy==1.18.1` have no cp311 wheels). CPU only.
@@ -30,7 +30,7 @@ preview — and row-level predictions and labels are withheld.
 | **L1 — Verify** | Do the shipped bytes, JSON and tests hold? | Python 3.12+, `requirements.txt` | `make doctor && make test && make verify` | Available; no data/GPU |
 | **L2 — Re-render** | Can the notebooks be executed from the aggregates? | L1 + `nbclient`/`ipykernel` | `make notebooks` | Available; rewrites notebook outputs in place, byte-stable from a cold cache |
 | **L3 — Restricted regeneration** | Can the aggregate tables be rebuilt? | licensed ICEWS v37, restricted feature and contribution caches, local experiment configuration, row-level holdout predictions for post-processing; no public cache-build entry point | `experiments/*.py` with local inputs | **Not runnable here**; the public Sprint-B scripts are a five-seed preview and do not regenerate the 50-refit tables |
-| **L4 — Confirmatory holdout** | Can the one-shot holdout be re-run? | the burned 2018–22 labels and a new pre-registration | — | **Not reproducible by design**; labels were read once, `run_once.json` locks the run and row-level predictions are excluded |
+| **L4 — Confirmatory holdout** | Can the one-shot holdout be re-run? | the burned 2018–22 labels and a new pre-specified split/plan (there is no external registration; the existing plan is internally hash-timestamped) | — | **Not reproducible by design**; labels were read once, `run_once.json` locks the run and row-level predictions are excluded |
 
 `make test` and `make verify` pass without `data/`, `configs/`, `paper/`,
 `docs/`, `preds/` or any cache.
@@ -132,8 +132,9 @@ the freeze, and the three earlier exploratory passes (G2, D2, B), are outside
 its scope and are disclosed in the manuscript. The lock file is part of the
 shipped holdout tree and there is no public unlock path. The labels were read
 once on 2026-10-23. Re-running the holdout, re-reading labels, or fitting to
-the holdout would invalidate the pre-registration. The public release therefore
-verifies the frozen aggregates and their hashes, not a fresh fit.
+the holdout would violate the one-shot lock and the plan's split commitment.
+The public release therefore verifies the frozen aggregates and their hashes,
+not a fresh fit.
 
 ## Artifact map
 
@@ -166,19 +167,24 @@ in `results/README.md` and the notebooks rather than by a `paper/` build.
 - A byte-identical copy of the stability tree, even with the five-delta variant
   applied: restricted caches, timestamps and floating-point last bits differ.
   Verify the shipped bytes with `stability/SHA256SUMS` instead.
+- Manuscript Figures 3–4 or a byte-identical stability table from the public
+  tree: the default path is the private 50-refit tree, while the public
+  five-seed preview fails the 50-replicate guard by design and no
+  figure-generation script ships here.
 
 ## Verification details
 
 `scripts/verify_release.py` checks only distributed files:
 
-- required public files and directories, with CFF/Zenodo/pyproject licence and
-  title agreement, pending author metadata, the nine required test modules and
-  the 123-test floor;
+- required public files and directories, with a split code/deposit licence
+  contract (CITATION.cff `MIT`, code only; `.zenodo.json` `other-open`),
+  matching title metadata, pending author metadata, the nine required test
+  modules and the 123-test floor;
 - absence of `paper/`, `docs/`, `configs/`, `data/`, `preds/`, caches and logs;
 - strict JSON (`NaN`/`Infinity` rejected) for every `results/**/*.json`;
 - `sha256sum -c results/framework_pilot/holdout/SHA256SUMS` and
   `sha256sum -c results/framework_pilot/stability/SHA256SUMS` compatibility;
-- the repo-relative pre-registration checksum;
+- the repo-relative checksum of the plan file (`preregistration.json`);
 - `redistributed: false` annotations for the four excluded prediction/log files;
 - executed, error-free, path-clean notebook outputs;
 - the frozen headline numbers, the stability status banner, the 50-refit /
@@ -188,6 +194,14 @@ in `results/README.md` and the notebooks rather than by a `paper/` build.
   legacy pre-holdout status label or five-seed audit claims in public docs;
 - no absolute home/temporary paths and no credential-like strings;
 - no forbidden path tracked by git (when run in a git tree).
+
+`cffconvert --validate -i CITATION.cff` is part of CI and runs in the metadata
+tests when the tool is installed; it must report schema 1.2.0 validity.
+
+The suite has no coverage threshold: `make test` runs the full public suite
+(144 tests at this revision) and `make verify` enforces a 123-test floor, so a
+shrinking suite fails the release even though no line-coverage percentage is
+reported.
 
 Use `python3 scripts/verify_release.py --root <extracted-release>` to verify an
 archive or DOI deposit.

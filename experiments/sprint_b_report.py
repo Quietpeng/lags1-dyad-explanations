@@ -676,7 +676,7 @@ def main() -> None:
     if holdout.get("used"):
         add(f"Holdout prediction files were used: {', '.join(holdout.get('files', []))}. "
             "They are a separate confirmatory check and must be read once under "
-            "the preregistered protocol.\n")
+            "the plan-declared protocol.\n")
     else:
         add("The one-shot holdout had not completed when this audit was frozen. "
             "It completed later and its predictions were not used here "

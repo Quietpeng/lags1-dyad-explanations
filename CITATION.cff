@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this attribution contract, its within-panel stability audit, or its public artifact, cite the manuscript. No archival release (git tag plus DOI) exists yet: this tree is a v0.1.1 release candidate. The source code is MIT-licensed, code only; the ICEWS-derived aggregate results are not MIT."
-title: "Actor-role components of dyadic event forecasts: exact attribution, near-collinearity, and a within-panel stability audit"
+title: "Actor-role components of dyadic event forecasts: one actor signal, near-collinearity, and a within-panel stability audit"
 abstract: >-
   Public artifact and L0-L2 verification release for the actor-role
   attribution contract of this manuscript, together with a within-panel
@@ -14,10 +14,11 @@ abstract: >-
   verify their hashes and contracts, re-render the notebooks). The
   restricted 50-refit audit code and all ICEWS inputs are not redistributed;
   row-level predictions and labels are withheld. The confirmatory evaluation
-  is a pre-registered, one-shot, unit-fresh 20% dyad holdout; it is
-  retrospective, not time-fresh. The stability audit is provisional,
-  holdout-row-excluded and based on 50 dyad-cluster bootstrap refits; it is
-  not a holdout-side stability test. The public experiment scripts are a
+  is a plan-declared, internally hash-timestamped, one-shot, unit-fresh 20%
+  dyad holdout whose split alone carries an independently written pre-run
+  timestamp; it is retrospective, not time-fresh. The stability audit is
+  provisional, holdout-row-excluded and based on 50 dyad-cluster bootstrap
+  refits; it is not a holdout-side stability test. The public experiment scripts are a
   five-seed preview of the audit method and do not regenerate the 50-refit
   holdout-row-excluded aggregates. No general claim is made about graph
   features, persistence or any corpus beyond this panel. Source code is
@@ -30,7 +31,10 @@ abstract: >-
 authors:
   - name: "LAGS-1 authors"
 version: "0.1.1"
-license: other-open
+# SPDX MIT: the source code only. The ICEWS-derived aggregate results under
+# results/ are not MIT and remain under the ICEWS research-and-teaching terms;
+# this field must not be read as licensing the aggregates.
+license: MIT
 keywords:
   - dyadic event forecasting
   - ICEWS

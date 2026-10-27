@@ -13,7 +13,7 @@ provisional. Read the status table before quoting a number.
 
 | Artifact | Status | What it supports |
 |---|---|---|
-| `framework_pilot/holdout/` | **Frozen, one-shot, completed** | The pre-registered 49-feature primary, pre-registered 29-feature secondary, baselines, within/between-dyad checks, feature-group LOO and sensitivity tables. |
+| `framework_pilot/holdout/` | **Frozen, one-shot, completed** | The plan-declared 49-feature primary, plan-declared 29-feature secondary, baselines, within/between-dyad checks, feature-group LOO and sensitivity tables. |
 | `framework_pilot/stability/` | **Provisional; holdout-excluded 50-refit rerun** | Exactness, source/target aggregation, seed/regime/window stability, top-k and decision proxy, HGB occlusion. `audit_design = frozen_during_confirmatory_run_holdout_rows_excluded`: the grid was frozen at 06:31:40Z, after the confirmatory read began at 05:26:55Z and before it completed at 07:45:19Z; the rerun is non-confirmatory and every eventual holdout dyad is excluded at row level. The public `experiments/` tree is a five-seed preview, not this audit; see `experiments/STABILITY_VARIANT.md`. |
 | `worldline_preview/` | **Illustrative only** | A two-step communication preview; no multi-step accuracy claim. Ships a standalone 150 mm vector illustration (Arimo/TrueType; a repo-only render, not a manuscript exhibit) and a 300 dpi PNG plus aggregate JSON; no row-level trace file. |
 
@@ -35,6 +35,16 @@ The audit is **not a holdout-side stability test**. It was recomputed with all
 eventual holdout dyads excluded from fitting and aggregation; every stability
 number remains provisional and must not be written as a confirmatory headline.
 
+`provisional_holdout_not_integrated` is scoped to **rows**: holdout *rows* are
+not integrated, while the P1 graph cache retains edges incident to eventual
+holdout dyads at every month. Burned-period attributions are therefore
+conditional on those edges, and the audit is not a holdout performance
+estimate.
+
+`stability/summary.json#/files` is the audit-run inventory (48 names). The
+redistributed set is 47 files plus `SHA256SUMS`: `run.log` was not redistributed
+and carries no separate exclusion annotation.
+
 ## Artifact map
 
 ### Confirmatory holdout
@@ -45,11 +55,11 @@ number remains provisional and must not be written as a confirmatory headline.
 | `holdout/summary.json` | Machine-readable headline aggregates, comparisons and verdict flags. |
 | `holdout/parts/holdout_core.json` | Core one-shot arrays and point metrics. |
 | `holdout/parts/holdout_extras.json` | Post-holdout diagnostics computed from the saved predictions (bootstrap/within-dyad/LOO). |
-| `holdout/tables/*.csv` | The 18 pre-registered tables behind Table 2 and the supporting checks (`holdout_metrics_main`, `primary_comparisons`, `auc_ap_deltas`, `within_between_*`, `feature_group_*`, `calibration`, `hgb_grid`, `logistic_selection`, `mde`, `seed_spread`, `bh_families`, `dyad_fe`), plus the post-hoc pair-cluster sensitivity table. |
-| `holdout/preregistration.json` | Frozen pre-registration: definition, endpoints, feature sets, stopping rules and claim boundary. |
-| `holdout/preregistration.json.sha256` | Repo-relative SHA-256 of the pre-registration file. |
+| `holdout/tables/*.csv` | The 18 frozen holdout tables behind Table 2 and the supporting checks (`holdout_metrics_main`, `primary_comparisons`, `auc_ap_deltas`, `within_between_*`, `feature_group_*`, `calibration`, `hgb_grid`, `logistic_selection`, `mde`, `seed_spread`, `bh_families`, `dyad_fe`), plus the post-hoc pair-cluster sensitivity table. |
+| `holdout/preregistration.json` | Frozen plan: definition, endpoints, feature sets, stopping rules and claim boundary. The split is pre-specified and independently timestamped before the confirmatory run; the analysis-plan file itself is internally hash-timestamped. |
+| `holdout/preregistration.json.sha256` | Repo-relative SHA-256 of the plan file. |
 | `holdout/run_once.json` | One-shot lock record: status, attempts, counts, timestamps. |
-| `holdout/test_access_log.json` | Post-freeze 2018–22 holdout reads, including the pre-registration aggregate support count and the single holdout evaluation; the three earlier exploratory passes (G2, D2, B) predate the log and are out of scope, and the stability audit logs its own burned-retrospective read in `stability/summary_decompose.json`. |
+| `holdout/test_access_log.json` | Post-freeze 2018–22 holdout reads, including the untimestamped aggregate support count that preceded the plan freeze and the single holdout evaluation; the three earlier exploratory passes (G2, D2, B) predate the log and are out of scope, and the stability audit logs its own burned-retrospective read in `stability/summary_decompose.json`. |
 | `holdout/manifest.json` | Freeze manifest: host, packages, inputs, code and output hashes, plus post-freeze release annotations. |
 | `holdout/SHA256SUMS` | `sha256sum -c` compatible checksums for every distributed file in this directory. |
 | `holdout/CORRECTIONS.md` | Errata notes: the 29-feature sign-convention and pair-weighted-label clarification, a misattributed BH q in the 29-feature sentence, and the BH family D `p`/`q` recomputation from the frozen `p_normal` column (all nine still `<1e-12`). |
@@ -73,7 +83,7 @@ and `manifest.json#/counts` carry the filtered counts.
 | `stability/summary_stability.json` | Seed/period/window stability, variance decomposition, top-k and decision proxy. |
 | `stability/summary_hgb.json` | HGB capacity control and block-occlusion agreement. |
 | `stability/tables/*.csv` | The tables behind the audit. Actor tables carry aggregate attribution, exposure, bucket shares and ranks only; predicted probabilities (`mean_p`, `p_sum`) and observed counts/rates (`y_sum`, `mean_y`) are not released. |
-| `stability/SHA256SUMS` | `sha256sum -c` compatible checksums for all 47 distributed files in this directory (4 summaries, `report.md`, 42 tables). |
+| `stability/SHA256SUMS` | `sha256sum -c` compatible checksums for all 47 distributed files in this directory (4 summaries, `report.md`, 42 tables); `summary.json#/files` also lists the non-redistributed `run.log` as the 48th audit-run name. |
 
 ### World-line preview
 
@@ -159,6 +169,20 @@ Not included: the raw or derived event panel, row-level predictions, labels,
 actor-level predicted probabilities or observed outcome rates, feature caches
 and run logs.
 
+## Regeneration boundary for the audit and the manuscript figures
+
+Two paths exist and they are not interchangeable. The default path is the
+private 50-refit tree that produced these aggregates and the manuscript figures
+3–4. The public `experiments/` tree is a five-seed preview: it fails the
+50-replicate guard by design, so it cannot reproduce the shipped stability
+tables or the manuscript figures byte-for-byte. The public commands therefore
+pin and check the shipped aggregates (`make stability-check`, `make verify`)
+rather than regenerate them; no figure-generation script ships here. Preview
+output can be redirected with `NEUROSIM_STABILITY_OUT`; writing into
+`results/framework_pilot/stability/` requires `NEUROSIM_ALLOW_OVERWRITE=1` and
+is not a supported public path. Figures 3–4 are not byte-reproducible from this
+repository.
+
 ## Verification
 
 From the repository root:
@@ -223,7 +247,7 @@ uses only the current status and the holdout-excluded audit literal.
 
 | Internal label | Public meaning |
 |---|---|
-| “Sprint A” | The pre-registered confirmatory holdout phase. |
+| “Sprint A” | The plan-declared confirmatory holdout phase. |
 | “Sprint B” | The exact-attribution and stability-audit phase. |
 | “P6” | An internal stage identifier; no public claim depends on it. |
 
@@ -231,8 +255,13 @@ uses only the current status and the holdout-excluded audit literal.
 
 - Binary dyad-month event prediction; no node-level prediction.
 - Unit-fresh, not time-fresh: 2018–22 is retrospective and burned.
-- The 49-feature logistic is the pre-registered primary; the 29-feature logistic
-  is the pre-registered secondary. Dropping the graph block is a post-hoc
+- The 49-feature logistic is the plan-declared primary; the 29-feature logistic
+  is the plan-declared secondary. Only the split has an independently written
+  pre-run timestamp (hash-committed 2026-10-23T05:04:35Z, before the
+  confirmatory run); the analysis plan is internally hash-timestamped and its
+  hash is recorded in the post-run manifest at 2026-10-23T08:33:12Z. An
+  untimestamped aggregate support count that read labels preceded the plan
+  freeze. Dropping the graph block is a post-hoc
   candidate for dyad-level probability ranking, not a new confirmatory test and
   not a primary swap.
 - No causal, actor-lifecycle, state-of-the-art, sim-to-real, human-decision or

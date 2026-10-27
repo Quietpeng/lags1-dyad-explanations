@@ -1,4 +1,4 @@
-"""Sprint-A: pre-registered 20% unordered-dyad holdout with boundary embargo.
+"""Sprint-A: pre-specified 20% unordered-dyad holdout with boundary embargo.
 
 This module is deliberately separate from the frozen P1 artefacts.  It never
 overwrites ``framework/cache/graph_*.npy``, ``results/framework_pilot/parts``
@@ -26,7 +26,7 @@ Algorithm
     ``rng = np.random.default_rng(20261023)``; for stratum in ``(1, 0)``:
     ``idx = rng.permutation(n)``; ``k = max(1, floor(0.2*n + 0.5))``; take
     ``idx[:k]``.  The stratum order and the rounding rule are part of the
-    pre-registration.
+    internally hash-timestamped plan.
 Evaluation
     The held-out pairs' 2018-01..2022-11 rows (``276 <= t_idx < 335``; 2022-12
     is embargoed because its label is 2023-01).  The period is retrospective
@@ -147,7 +147,7 @@ def define_holdout(con, frac: float = HOLDOUT_FRAC,
 
     Only ``active`` (current-month activity) is touched for stratification; no
     ``active_next`` label from 2018-22 is read.  The function is deterministic
-    and the returned ``definition_sha256`` is the pre-registration hash.
+    and the returned ``definition_sha256`` is the plan hash.
     """
     rows = con.execute("""
         SELECT DISTINCT did::INTEGER AS did, sid::SMALLINT AS sid,
@@ -245,9 +245,9 @@ def define_holdout(con, frac: float = HOLDOUT_FRAC,
 
 
 def write_preregistration(path: str, payload: dict, force: bool = False) -> dict:
-    """Write the frozen pre-registration once; refuse silent overwrite."""
+    """Write the frozen plan once; refuse silent overwrite."""
     if os.path.exists(path) and not force:
-        raise FileExistsError(f"pre-registration already frozen: {path}")
+        raise FileExistsError(f"plan already frozen: {path}")
     payload = json.loads(json.dumps(payload))  # JSON-safe copy
     payload["hashes"] = payload.get("hashes", {})
     payload["hashes"]["definition_sha256"] = sha256_json(payload["definition"])
@@ -271,13 +271,13 @@ def verify_preregistration(path: str) -> dict:
     frozen = payload.get("hashes", {}).get("definition_sha256")
     if frozen != recomputed:
         raise AssertionError(
-            f"pre-registration definition hash mismatch: {frozen} != {recomputed}")
+            f"plan definition hash mismatch: {frozen} != {recomputed}")
     pairs_hash = sha256_json(payload["definition"]["pairs"])
     dids_hash = sha256_json(payload["definition"]["dids"])
     if payload["hashes"].get("pairs_sha256") != pairs_hash:
-        raise AssertionError("pre-registration pairs hash mismatch")
+        raise AssertionError("plan pairs hash mismatch")
     if payload["hashes"].get("dids_sha256") != dids_hash:
-        raise AssertionError("pre-registration dids hash mismatch")
+        raise AssertionError("plan dids hash mismatch")
     return payload
 
 
@@ -312,7 +312,7 @@ def build_holdout_bundle(cfg: dict, spec: dict, force_graph: bool = False,
     """Load the frozen base features, rebuild graph/br without holdout, export.
 
     The train/select/eval dictionaries contain only rows allowed by the
-    pre-registered split.  The full frozen caches are never modified.
+    pre-specified split.  The full frozen caches are never modified.
     """
     own = con is None
     if own:

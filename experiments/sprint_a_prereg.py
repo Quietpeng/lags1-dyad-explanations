@@ -94,12 +94,14 @@ def main() -> int:
         },
         "calendar_specs": {
             "S1_primary": ("frozen t_yr = t_idx/12, linear extrapolation as in "
-                           "P1; this is the pre-registered primary because it "
+                           "P1; this is the plan-declared primary because it "
                            "is the exact frozen feature contract."),
             "S2_sensitivity": ("t_yr clipped at 238/12 (2014-11, last train "
                                "month), a no-extrapolation calendar encoding "
                                "motivated by the 2026-10-23 methodology review; "
-                               "pre-registered before the holdout run."),
+                               "added on the day of the run, per the plan's "
+                               "self-reported timestamp, before the "
+                               "confirmatory read."),
             "year_fe_anchor": ("year dummies 1996..2014 with 2014 carried "
                                "forward for 2015+; used as a feature-group "
                                "anchor, not as the primary model."),

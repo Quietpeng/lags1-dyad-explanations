@@ -1,7 +1,7 @@
 # Data exclusions and privacy boundary
 
 **Applies to:** the public artifact `lags1-dyad-explanations`, release candidate
-0.1.1 (`review-r2c6` tree). **Status:** the earlier row-level leak is closed (the
+0.1.1 (`review-r2c9` tree). **Status:** the earlier row-level leak is closed (the
 contaminated history is quarantined in a private repository and is not reachable
 from this tree).
 
@@ -106,6 +106,10 @@ Retained actor-level attribution is explicitly framed as **not** intent, not a
 threat score and not a node-level forecast. See `NOTICE` and
 `results/README.md`.
 
+`stability/summary.json#/files` is the audit-run inventory and lists 48 names.
+The redistributed stability set is 47 files plus `SHA256SUMS`: the 48th name,
+`run.log`, was not redistributed and carries no separate exclusion annotation.
+
 ## 6. Never released
 
 - ICEWS raw or derived event panels, parquet files and feature/graph caches.
@@ -125,7 +129,8 @@ make test              # contract + negative tests
 sha256sum -c results/framework_pilot/stability/SHA256SUMS
 ```
 
-`scripts/verify_release.py` fails if any distributed CSV:
+`scripts/verify_release.py`'s row-level/named-rate check fails if any
+distributed CSV:
 
 - contains both `y` and `p`, or a `p_model` column;
 - contains `mean_p`, `p_sum`, `y_sum` or `mean_y`;

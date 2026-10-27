@@ -1,5 +1,41 @@
 # Release notes
 
+## Public-artifact revision (R2C9; claim wording, licence split and title)
+
+Text, metadata, documentation, tests and CI only; no analysis, refit, label
+read or aggregate value changed. The frozen holdout JSON changed in two
+`paper_sentences` strings (and the `holdout_extras` mirror) and the `report.md`
+BH-family label; the plan file `preregistration.json` is **byte-identical** to
+R2C8 (`41bda0e3…`), and no numeric, timestamp, split or scope field changed.
+`CORRECTIONS.md` records the errata and the shipped hashes are updated.
+
+- **Claim status qualified.** Public status adjectives that implied an external
+  registration are replaced by the paper's vocabulary: the plan is
+  plan-declared and internally hash-timestamped, the split is pre-specified, the
+  holdout is one-shot, and only the split carries an independently written
+  pre-run timestamp. Numbers, timestamps and frozen scope literals are
+  unchanged; the access log is untouched.
+- **Licence split.** `CITATION.cff` now carries `license: MIT` (valid SPDX,
+  source code only); `.zenodo.json` keeps `other-open` for the mixed deposit;
+  `pyproject.toml`, `LICENSE` and `NOTICE` keep MIT for code only and state that
+  the ICEWS-derived aggregates are not MIT. `cffconvert --validate` runs in CI
+  and in the metadata tests when the tool is installed.
+- **Title cascade.** `README.md`, `CITATION.cff`, `.zenodo.json`,
+  `pyproject.toml`, `notebooks/README.md`, the verifier, the metadata tests and
+  the frozen title strings carry the final title: *Actor-role components of
+  dyadic event forecasts: one actor signal, near-collinearity, and a
+  within-panel stability audit*.
+- **Public-boundary notes.** `DATA_EXCLUSIONS.md` names the `review-r2c9` tree;
+  the tag inventory is `review-r2c2` … `review-r2c9`; `results/README.md` and
+  `DATA_EXCLUSIONS.md` document the 48-name `files[]` inventory versus the 47
+  redistributed files plus `SHA256SUMS`; the audit/figure regeneration boundary
+  (private 50-refit tree versus the public five-seed preview) is stated; and the
+  world-line preview remains a standalone, repo-only illustration.
+- **Cache gloss.** `experiments/sprint_b_common.py`, `results/README.md` and
+  notebook 02 state that `provisional_holdout_not_integrated` is literal about
+  holdout *rows*: the P1 graph cache retains edges incident to holdout dyads, so
+  burned-period attributions are conditional on them.
+
 ## Public-artifact revision (R2C8; documentation, code-reproducibility and tests)
 
 Documentation, verifier, notebook-executor, CI and lock-note changes only; no
@@ -53,8 +89,9 @@ bytes are tracked by `outputs`/`current_sha256` and `SHA256SUMS`.
 - Year-fixed-effects status: the anchor is **plan-declared**; its promotion and
   warm-history contrast are post-hoc, C-confounded and uncorrected; it remains
   “not a prospective model” with the linear-extrapolation limitation.
-- Deposit metadata: `CITATION.cff` licence is `other-open`, matching
-  `.zenodo.json`; `pyproject.toml` and `LICENSE` keep MIT **code only**, and the
+- Deposit metadata: `CITATION.cff` licence was `other-open` at R2C7, matching
+  `.zenodo.json`; R2C9 splits the fields (CFF MIT, code only; Zenodo keeps
+  `other-open`). `pyproject.toml` and `LICENSE` keep MIT **code only**, and the
   aggregates are explicitly not MIT. Author metadata stays pending; no DOI, tag
   or ORCID is invented.
 - `tables/dyad_fe.csv` marks the non-converged conditional-logit row with
@@ -97,9 +134,8 @@ test semantics changed.
 
 - **Public title follows the manuscript.** `CITATION.cff`, `.zenodo.json`,
   `README.md`, `notebooks/README.md`, `REPRODUCING.md` and the
-  `pyproject.toml` description now carry *Actor-role components of dyadic event
-  forecasts: exact attribution, near-collinearity, and a within-panel stability
-  audit*.
+  `pyproject.toml` description carried the manuscript title verbatim at this
+  revision; the final title is set at R2C9 (see above).
 - **Audit label corrected in public prose.** Public text now names only the
   within-panel stability audit; `CODE_MAP.md` uses the same label. No numerical
   claim, scope statement or evidential status changed.
@@ -198,7 +234,7 @@ blob, `SHA256SUMS` entry or frozen number changed.
   prediction/label file or a named actor probability/outcome rate reappears.
   No frozen number changed.
 - Results provenance: `results/README.md`, `holdout/SHA256SUMS`, a repo-relative
-  pre-registration checksum, `redistributed: false` annotations for the four
+  checksum of the holdout plan, `redistributed: false` annotations for the four
   excluded prediction/log files, and `scripts/verify_release.py`.
 - The shipped package contains the paper path only. Legacy audit/graph/
   interpret/operators/pipeline/reporting/run_pilot/synth/synth_arms/targets/
@@ -243,7 +279,8 @@ blob, `SHA256SUMS` entry or frozen number changed.
 ## v0.1.0 — first curated release (no git tag)
 
 This milestone is recorded in these notes only: no `v0.1.0` tag exists in the
-public repository, and the tag inventory is `review-r2c2` … `review-r2c6`.
+public repository, and the tag inventory is `review-r2c2` … `review-r2c9`.
+Neither a `v0.1.0` nor a `v0.1.1` tag has been pushed to the public remote.
 
 This was a curated public release of the code and non-restricted aggregate
 artifacts. Local absolute paths in copied reports/scripts were replaced with
