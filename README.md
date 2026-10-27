@@ -1,6 +1,6 @@
-# Actor-role components of dyadic event forecasts: one actor signal, near-collinearity, and a within-panel stability audit
+# Actor-role components of dyadic event forecasts: shared graph columns, near-collinearity in a 196-actor panel, and a within-panel stability audit
 
-**one actor signal, near-collinearity, and a within-panel stability audit.**
+**shared graph columns, near-collinearity in a 196-actor panel, and a within-panel stability audit.**
 
 Code, tests and aggregate results for the **actor-role attribution contract**
 and **within-panel stability audit** of the manuscript: an ex ante ownership
@@ -23,7 +23,9 @@ this repository.
 is `0.1.1`, but no `v0.1.1` git tag has been created and no DOI has been
 minted; until the tag and DOI exist, cite the repository URL and this candidate.
 Production replaces the review-candidate label with the `v0.1.1` tag and DOI; do
-not cite this tree as an archival release. The confirmatory
+not cite this tree as an archival release. Review snapshots after `review-r2c8`
+are local only and available from the authors on request; no `review-r2c9` or
+`review-r2c10` ref is published. The confirmatory
 holdout is frozen. The stability audit is **provisional**: it was recomputed
 after excluding all eventual holdout dyads from fitting and aggregation, with C
 fixed at the primary value and 50 dyad-cluster bootstrap refits. The

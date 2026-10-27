@@ -222,8 +222,12 @@ def check_required(root: Path) -> list[str]:
 # Citation / licence / test-suite contract (no PyYAML dependency)
 # ---------------------------------------------------------------------------
 RELEASE_TITLE = (
-    "Actor-role components of dyadic event forecasts: one actor signal, "
-    "near-collinearity, and a within-panel stability audit"
+    "Actor-role components of dyadic event forecasts: shared graph columns, "
+    "near-collinearity in a 196-actor panel, and a within-panel stability audit"
+)
+RELEASE_SUBTITLE = (
+    "shared graph columns, near-collinearity in a 196-actor panel, and a "
+    "within-panel stability audit"
 )
 # The frozen plan is byte-pinned to the paper's Appendix B hash. Reader-facing
 # surfaces are qualified, but the plan file itself is never rewritten: a drift
@@ -432,6 +436,7 @@ def check_metadata_contract(root: Path) -> list[str]:
         )
     old_framing = "portability " + "audit"
     old_subtitle = "exact attribution, " + "near-collinearity"
+    old_claim = "one actor " + "signal"
     for name in ("README.md", "CITATION.cff", ".zenodo.json", "pyproject.toml",
                  "notebooks/README.md"):
         path = root / name
@@ -443,10 +448,12 @@ def check_metadata_contract(root: Path) -> list[str]:
             errors.append(f"{name} retains the superseded title framing")
         if old_subtitle in text:
             errors.append(f"{name} retains the superseded subtitle")
+        if old_claim in text:
+            errors.append(f"{name} retains the superseded empirical title claim")
 
     readme = (root / "README.md").read_text(encoding="utf-8")
     readme_flat = " ".join(readme.lower().split())
-    if "one actor signal, near-collinearity, and a within-panel stability audit" not in readme_flat:
+    if RELEASE_SUBTITLE not in readme_flat:
         errors.append("README.md subtitle does not carry the current title framing")
     versions = {
         "CITATION.cff": cff.get("version"),

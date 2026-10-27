@@ -161,6 +161,13 @@ The five seeds vary only the bootstrap weights; the fitted models are determinis
 
 ## 9. Exact sentences the paper can use
 
+**Status note (R2C10).** These sentences mirror
+`summary.json#/paper_sentences`; the frozen JSON bytes are unchanged. The phrase
+"internally hash-timestamped" predates the paper's Appendix B and is superseded
+there: only the split carries an independently written pre-run timestamp, while
+the analysis plan is internally hash-timestamped through the post-run manifest.
+No number in these sentences changed.
+
 > In a plan-declared, internally hash-timestamped, one-shot unit-fresh 20% unordered-dyad holdout (311,638 dyad-months; 32,614 positives; 5,282 directed dyads; 2018-01-–2022-11), the frozen temperature-calibrated 49-feature logistic model achieved log-loss 0.21788, Brier 0.06401, ECE 0.04211, AUC 0.9102, and AP 0.6719.
 
 > Against the train-only per-dyad Markov baseline (log-loss 0.26587, which equals the global transition on unit-fresh dyads), the primary model reduced log-loss by 0.04800 (18.05% relative; 95% multiway CI [0.04333, 0.05267]; BH q<1e-12 (normal-approximation tail; 1,000 reps)), increased AUC by 0.17788 and AP by 0.35072, but its ECE was worse by 0.03864 (95% multiway CI [-0.05303, -0.02426]).

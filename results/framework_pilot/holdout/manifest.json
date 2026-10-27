@@ -283,7 +283,7 @@
    }
   },
   "current_sha256": {
-   "results/framework_pilot/holdout/report.md": "35ebfde841837fc3a22d976f4806afb44b172c249e74d72f6ded0262da691460",
+   "results/framework_pilot/holdout/report.md": "5f6879f7ce9a31ca3e3e17c3addbc8d761f58461245865328ea01623c3d4860b",
    "results/framework_pilot/holdout/summary.json": "d798360a75f4ad14f9674bf8e8cefd54faa03963a217ba55af38991768199be3",
    "results/framework_pilot/holdout/parts/holdout_extras.json": "8854dcc9c62f88259bc15239b1439fad99f61e32cc017ebddf07b2e368771cad",
    "results/framework_pilot/holdout/test_access_log.json": "4102c3da67fbc11fa35b5d8d82176b66437882785821c4db3705e8daca52b78d",
@@ -373,12 +373,12 @@
  },
  "post_run_corrections": {
   "utc": "2026-10-23T22:20:00Z",
-  "reason": "Metadata/wording corrections after the one-shot run: within-dyad claim strings, calendar wording, calibration comparator and sign labels, censored p/q display, access-log policy note, the final public-release wording sync, and the two-direction warm-history comparator wording. Current-hash entries are reconciled to the shipped bytes. A 2026-10-27 text-only revision added the dyad_fe.csv convergence/evidence flags, the pair-weighted, comparator-sign, cache, raw-support and year-FE status wording; no metric, label, prediction or coefficient changed. The 2026-10-28 R2C9 revision qualified reader-facing status wording in report.md, summary.json, holdout_extras.json and the public documents and added the matching CORRECTIONS entry; the frozen plan file is byte-identical to R2C8 and no metric, label, prediction, definition, split or timestamp changed.",
+  "reason": "Metadata/wording corrections after the one-shot run: within-dyad claim strings, calendar wording, calibration comparator and sign labels, censored p/q display, access-log policy note, the final public-release wording sync, and the two-direction warm-history comparator wording. Current-hash entries are reconciled to the shipped bytes. A 2026-10-27 text-only revision added the dyad_fe.csv convergence/evidence flags, the pair-weighted, comparator-sign, cache, raw-support and year-FE status wording; no metric, label, prediction or coefficient changed. The 2026-10-28 R2C9 revision qualified reader-facing status wording in report.md, summary.json, holdout_extras.json and the public documents and added the matching CORRECTIONS entry; the frozen plan file is byte-identical to R2C8 and no metric, label, prediction, definition, split or timestamp changed. The 2026-10-28 R2C10 revision adds a documentation-only status note to report.md §9 (the \"internally hash-timestamped\" phrase is superseded by the paper's Appendix B; only the split has an independently written pre-run timestamp) and updates its current_sha256; summary.json and summary_decompose.json bytes are unchanged and no metric, label, prediction, definition, split or timestamp changed.",
   "numbers_changed": false,
   "files": {
    "results/framework_pilot/holdout/report.md": {
     "run_sha256": "d6e60f3c4d2e4c843d39f9c7af4e1db25d3d9af5af44a0adf2b544d77656a5e0",
-    "current_sha256": "35ebfde841837fc3a22d976f4806afb44b172c249e74d72f6ded0262da691460"
+    "current_sha256": "5f6879f7ce9a31ca3e3e17c3addbc8d761f58461245865328ea01623c3d4860b"
    },
    "results/framework_pilot/holdout/summary.json": {
     "run_sha256": "be9e4bb50b4d029a02e64bac90241c3a5ae5378273d424f8b0a2a7e4a0efbeb7",

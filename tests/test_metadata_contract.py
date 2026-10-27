@@ -224,13 +224,20 @@ class TestCitationLicenceContract(unittest.TestCase):
         self.assertEqual(ZENODO["title"], VERIFIER.RELEASE_TITLE)
         self.assertEqual(pyproject()["project"]["description"].rstrip("."),
                          VERIFIER.RELEASE_TITLE)
-        self.assertIn("one actor signal, near-collinearity, and a within-panel "
-                      "stability audit", README_FLAT)
+        self.assertEqual(
+            "Actor-role components of dyadic event forecasts: shared graph "
+            "columns, near-collinearity in a 196-actor panel, and a "
+            "within-panel stability audit",
+            VERIFIER.RELEASE_TITLE,
+        )
+        self.assertIn("shared graph columns, near-collinearity in a 196-actor "
+                      "panel, and a within-panel stability audit", README_FLAT)
 
     def test_no_superseded_title_framing(self):
         old_framings = (
             "exact attribution, " + "near-collinearity",
             "portability " + "audit",
+            "one actor " + "signal",
         )
         for name in ("README.md", "CITATION.cff", ".zenodo.json", "pyproject.toml",
                      "notebooks/README.md"):

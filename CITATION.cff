@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this attribution contract, its within-panel stability audit, or its public artifact, cite the manuscript. No archival release (git tag plus DOI) exists yet: this tree is a v0.1.1 release candidate. The source code is MIT-licensed, code only; the ICEWS-derived aggregate results are not MIT."
-title: "Actor-role components of dyadic event forecasts: one actor signal, near-collinearity, and a within-panel stability audit"
+title: "Actor-role components of dyadic event forecasts: shared graph columns, near-collinearity in a 196-actor panel, and a within-panel stability audit"
 abstract: >-
   Public artifact and L0-L2 verification release for the actor-role
   attribution contract of this manuscript, together with a within-panel

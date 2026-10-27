@@ -240,8 +240,11 @@ tree does not ship either file; this note only explains the freeze identity.
 
 All four stability summaries — including the nested `summary_stability.json`
 and `summary_hgb.json` — carry `provisional_holdout_not_integrated`. The
-superseded pre-holdout status label appears in no shipped file; the artifact
-uses only the current status and the holdout-excluded audit literal.
+superseded pre-holdout status label survives only in
+`stability/summary_decompose.json#/provisional`
+(`fresh_dyad_holdout: not available in this sprint`); it is annotated here as
+superseded and is not used by the manuscript. The artifact otherwise uses only
+the current status and the holdout-excluded audit literal.
 
 ## Glossary
 

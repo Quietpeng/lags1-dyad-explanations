@@ -1,5 +1,49 @@
 # Release notes
 
+## Public-artifact revision (R2C10; construction statement, status annotations and title)
+
+Text, public documentation, metadata and tests only; no analysis, refit, label
+read or aggregate value changed. The frozen plan `preregistration.json` stays
+byte-identical to R2C8 (`41bda0e3…`); no metric, interval, sign, timestamp,
+split or scope literal changed. The only shipped-artifact edit is a prose status
+note in `results/framework_pilot/holdout/report.md`, whose digest is updated in
+`results/framework_pilot/holdout/SHA256SUMS` and
+`manifest.json#/release_annotations/current_sha256`; `summary.json` bytes are
+unchanged.
+
+- **Title corrected.** The R2C9 title carried the phrase "one actor signal" as
+  an empirical claim; that phrase is superseded, not current. The public title
+  now reads *Actor-role components of dyadic event forecasts: shared graph
+  columns, near-collinearity in a 196-actor panel, and a within-panel stability
+  audit*. The manuscript-side replacement is the construction statement: five
+  of the seven actor-owned column pairs are the same undirected graph vector, so
+  near-collinearity is largely a property of the feature contract, scoped to
+  this 196-actor panel; the empirical residual is the ego/neighbour-activity
+  asymmetry and the ridge split. `README.md`, `CITATION.cff`, `.zenodo.json`,
+  `pyproject.toml`, `notebooks/README.md`, the verifier and the metadata tests
+  carry the new string, and the old phrase is a banned framing in both the
+  verifier and the test suite.
+- **Artifact status annotations.** `results/README.md` names the single
+  surviving superseded status literal
+  (`stability/summary_decompose.json#/provisional`,
+  `fresh_dyad_holdout: not available in this sprint`) and records that it is
+  superseded and unused by the manuscript. `holdout/report.md` §9 now states
+  that "internally hash-timestamped" is superseded by the paper's Appendix B:
+  only the split carries an independently written pre-run timestamp, while the
+  analysis plan is internally hash-timestamped. `summary.json` and
+  `summary_decompose.json` bytes are unchanged; the annotation is
+  documentation-only.
+- **No new public ref.** The `review-r2c10` branch remains local and no
+  `review-r2c10` tag was created, and the `review-r2c9` snapshot is not
+  published. No `review-r2c9` or `review-r2c10` ref exists on the remote;
+  `origin/main` remains `170f7c1…`; remote review refs stop at `review-r2c8`;
+  no `v0.1.1` tag and no DOI. The reviewed snapshot is available from the
+  authors on request.
+- **Unchanged contract.** CFF `license: MIT` (code only) and Zenodo
+  `other-open` (mixed deposit) are unchanged; the version stays `0.1.1`; the
+  full suite (144 tests), the verifier (15 checks), `cffconvert`, cold-cache
+  notebook execution and deterministic `make dist` all pass.
+
 ## Public-artifact revision (R2C9; claim wording, licence split and title)
 
 Text, metadata, documentation, tests and CI only; no analysis, refit, label
@@ -20,11 +64,10 @@ R2C8 (`41bda0e3…`), and no numeric, timestamp, split or scope field changed.
   `pyproject.toml`, `LICENSE` and `NOTICE` keep MIT for code only and state that
   the ICEWS-derived aggregates are not MIT. `cffconvert --validate` runs in CI
   and in the metadata tests when the tool is installed.
-- **Title cascade.** `README.md`, `CITATION.cff`, `.zenodo.json`,
-  `pyproject.toml`, `notebooks/README.md`, the verifier, the metadata tests and
-  the frozen title strings carry the final title: *Actor-role components of
-  dyadic event forecasts: one actor signal, near-collinearity, and a
-  within-panel stability audit*.
+- **Title cascade (superseded at R2C10).** `README.md`, `CITATION.cff`,
+  `.zenodo.json`, `pyproject.toml`, `notebooks/README.md`, the verifier, the
+  metadata tests and the frozen title strings carried the R2C9 title, which is
+  superseded at R2C10 (see above).
 - **Public-boundary notes.** `DATA_EXCLUSIONS.md` names the `review-r2c9` tree;
   the tag inventory is `review-r2c2` … `review-r2c9`; `results/README.md` and
   `DATA_EXCLUSIONS.md` document the 48-name `files[]` inventory versus the 47
