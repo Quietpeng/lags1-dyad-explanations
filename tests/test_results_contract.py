@@ -649,5 +649,58 @@ class TestWorldlinePreview(unittest.TestCase):
             self.assertIn("byte-identical", joined)
 
 
+class TestR2C7EvidenceFlags(unittest.TestCase):
+    """P2.2/P2.9/year-FE status: evidence flags and comparator wording."""
+
+    def fe_rows(self) -> dict[str, dict]:
+        with (HOLDOUT / "tables" / "dyad_fe.csv").open(
+            encoding="utf-8", newline=""
+        ) as handle:
+            return {row["model"]: row for row in csv.DictReader(handle)}
+
+    def test_non_converged_conditional_logit_is_not_evidence(self):
+        rows = self.fe_rows()
+        self.assertEqual(rows["conditional_logit"]["converged"], "false")
+        self.assertEqual(rows["conditional_logit"]["used_as_evidence"], "false")
+        extras = strict_load(HOLDOUT / "parts" / "holdout_extras.json")
+        self.assertFalse(extras["fe"]["conditional_logit"]["success"])
+
+    def test_dyad_fe_table_values_match_the_frozen_json(self):
+        rows = self.fe_rows()
+        extras = strict_load(HOLDOUT / "parts" / "holdout_extras.json")["fe"]
+        pairs = {
+            "conditional_logit": extras["conditional_logit_within"],
+            "within_ols_lpm": extras["within_ols"]["within"],
+        }
+        for name, block in pairs.items():
+            self.assertEqual(rows[name]["p1_within_auc"],
+                             f"{block['p1']['within_auc']:.6f}")
+            self.assertEqual(float(rows[name]["strict_mean"]), block["strict"]["mean"])
+            self.assertEqual(float(rows[name]["strict_pooled"]),
+                             block["strict"]["pooled"])
+        self.assertEqual(rows["within_ols_lpm"]["converged"], "true")
+
+    def test_comparator_wording_is_two_directional(self):
+        report = (HOLDOUT / "report.md").read_text(encoding="utf-8").lower()
+        self.assertIn("unequal in two directions", report)
+        for stale in ("information-" + "advantaged", "information-" + "matched"):
+            self.assertNotIn(stale, report)
+        summary = strict_load(HOLDOUT / "summary.json")
+        joined = " ".join(summary["paper_sentences"]).lower()
+        self.assertNotIn("information-" + "matched", joined)
+        self.assertIn("unequal in two directions", joined)
+
+    def test_year_fe_status_is_plan_declared_and_post_hoc(self):
+        summary = strict_load(HOLDOUT / "summary.json")
+        sentence = next(s for s in summary["paper_sentences"]
+                        if "year-fixed-effects anchor" in s)
+        self.assertIn("plan-declared", sentence)
+        self.assertIn("post-hoc, C-confounded and uncorrected", sentence)
+        self.assertIn("not a prospective model", sentence)
+        self.assertNotIn("pre-registered " + "descriptive", sentence)
+        report = (HOLDOUT / "report.md").read_text(encoding="utf-8")
+        self.assertIn(sentence, report)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -14,6 +14,8 @@ to the frozen results in ``test_results_contract.py``.
 
 from __future__ import annotations
 
+import importlib.util
+import json
 import re
 import shutil
 import subprocess
@@ -157,6 +159,103 @@ class TestDistArchivesHead(unittest.TestCase):
         self.assertIn("git archive", recipe)
         self.assertIn("HEAD", recipe)
         self.assertIn("verify_release.py --root", recipe)
+
+
+def _verifier():
+    spec = importlib.util.spec_from_file_location(
+        "verify_release_metadata", ROOT / "scripts" / "verify_release.py"
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+VERIFIER = _verifier()
+CFF = VERIFIER.parse_cff(ROOT / "CITATION.cff")
+ZENODO = json.loads((ROOT / ".zenodo.json").read_text(encoding="utf-8"))
+README = (ROOT / "README.md").read_text(encoding="utf-8")
+README_FLAT = " ".join(README.lower().split())
+
+
+class TestCitationLicenceContract(unittest.TestCase):
+    """P2.4: mixed-licence deposit, pending authors, title and suite floor."""
+
+    def test_cff_and_zenodo_licences_agree(self):
+        self.assertEqual(CFF["license"], ZENODO["license"])
+
+    def test_deposit_licence_is_other_open_not_mit(self):
+        self.assertEqual(CFF["license"], "other-open")
+        self.assertNotEqual(CFF["license"], "MIT")
+
+    def test_pyproject_code_licence_is_mit(self):
+        self.assertEqual(pyproject()["project"]["license"]["text"], "MIT")
+
+    def test_license_file_grants_mit_for_code_only(self):
+        text = (ROOT / "LICENSE").read_text(encoding="utf-8")
+        self.assertIn("MIT License", text)
+        self.assertIn("covers the source code only", text.lower())
+        self.assertIn("not MIT-licensed", text)
+
+    def test_notice_carves_out_the_aggregate_results(self):
+        text = (ROOT / "NOTICE").read_text(encoding="utf-8")
+        self.assertIn("not MIT-licensed", text)
+        self.assertIn("doi:10.7910/DVN/28075", text)
+
+    def test_titles_match_the_manuscript_title(self):
+        self.assertEqual(CFF["title"], VERIFIER.RELEASE_TITLE)
+        self.assertEqual(ZENODO["title"], VERIFIER.RELEASE_TITLE)
+        self.assertEqual(pyproject()["project"]["description"].rstrip("."),
+                         VERIFIER.RELEASE_TITLE)
+        self.assertIn("near-collinearity, and a within-panel stability audit",
+                      README_FLAT)
+
+    def test_no_superseded_title_framing(self):
+        old_framing = "portability " + "audit"
+        for name in ("README.md", "CITATION.cff", ".zenodo.json", "pyproject.toml",
+                     "notebooks/README.md"):
+            text = (ROOT / name).read_text(encoding="utf-8").lower()
+            self.assertNotIn(old_framing, text, name)
+
+    def test_author_metadata_is_pending_and_not_invented(self):
+        names = [row["name"] for row in CFF["authors"]]
+        zen_names = [row["name"] for row in ZENODO["creators"]]
+        self.assertEqual(names, zen_names)
+        self.assertIn("pending", CFF["abstract"].lower())
+        self.assertIn("pending", ZENODO["notes"].lower())
+        payload = json.dumps([CFF, ZENODO]) + README
+        self.assertIsNone(VERIFIER.ORCID_RE.search(payload))
+        self.assertIsNone(VERIFIER.DOI_RE.search(json.dumps([CFF, ZENODO])))
+
+    def test_required_test_modules_and_floor(self):
+        modules = sorted(path.name for path in (ROOT / "tests").glob("test_*.py"))
+        self.assertEqual(modules, sorted([
+            "test_attribution.py", "test_features_contract.py",
+            "test_inference_units.py", "test_metadata_contract.py",
+            "test_models.py", "test_notebooks.py", "test_results_contract.py",
+            "test_smoke.py", "test_splits_contract.py",
+        ]))
+        self.assertGreaterEqual(VERIFIER._count_tests(ROOT),
+                                VERIFIER.MIN_TEST_COUNT)
+
+    def test_metadata_contract_is_clean(self):
+        self.assertEqual(VERIFIER.check_metadata_contract(ROOT), [])
+
+    def test_metadata_contract_flags_a_licence_mismatch(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp)
+            for name in ("CITATION.cff", ".zenodo.json", "pyproject.toml",
+                         "LICENSE", "NOTICE", "README.md"):
+                shutil.copy2(ROOT / name, target / name)
+            (target / "notebooks").mkdir()
+            shutil.copy2(ROOT / "notebooks" / "README.md",
+                         target / "notebooks" / "README.md")
+            shutil.copytree(ROOT / "tests", target / "tests",
+                            ignore=shutil.ignore_patterns("__pycache__"))
+            cff = (target / "CITATION.cff").read_text(encoding="utf-8")
+            (target / "CITATION.cff").write_text(
+                cff.replace("license: other-open", "license: MIT"), encoding="utf-8")
+            errors = VERIFIER.check_metadata_contract(target)
+            self.assertTrue(any("license" in error for error in errors), errors)
 
 
 if __name__ == "__main__":

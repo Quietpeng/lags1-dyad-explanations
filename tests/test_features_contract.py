@@ -45,7 +45,7 @@ class TestNoLabelLeakage(unittest.TestCase):
         with self.assertRaises(AssertionError):
             F.assert_no_label(["active", "y"])
 
-    def test_manifest_is_available_at_t_only(self):
+    def test_manifest_rows_carry_the_structural_t_tag(self):
         manifest = F.feature_manifest()
         rows = manifest["dyad"] + manifest["graph"] + manifest["actor"]
         self.assertGreater(len(rows), 49)
@@ -55,6 +55,15 @@ class TestNoLabelLeakage(unittest.TestCase):
         self.assertEqual(manifest["train_only_statistics"], ["br", "seen_tr"])
         self.assertEqual(len(manifest["dyad"]), 29)
         self.assertEqual(len(manifest["graph"]), 35)
+
+    def test_manifest_documents_the_train_only_statistics_caveat(self):
+        doc = " ".join((F.feature_manifest.__doc__ or "").lower().split())
+        self.assertIn("train-only statistics", doc)
+        self.assertIn("inaccurate", doc)
+        code_map = (ROOT / "CODE_MAP.md").read_text(encoding="utf-8")
+        self.assertIn("27 causal features plus two train-only statistics", code_map)
+        self.assertIn("available_at=t", code_map)
+        self.assertNotIn("all features " + "available at", code_map)
 
 
 if __name__ == "__main__":

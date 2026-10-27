@@ -2,8 +2,8 @@
 > row-level prediction/log files; the manifest marks each as
 > `redistributed: false`. The metric and model numbers are unchanged.
 > The within-dyad/calendar wording was corrected to match the manuscript, and
-> the warm-history comparator is now labelled information-advantaged (with the
-> two-direction asymmetry and graph-cache limitation); no frozen number changed.
+> the warm-history comparator is now described as unequal in two directions
+> (with the graph-cache limitation); no frozen number changed.
 
 # Sprint-A confirmatory unit-fresh dyad holdout
 
@@ -23,7 +23,7 @@ Period: 2018-01–2022-11 (retrospective; unit-fresh, not time-fresh).
 
 ## 2. Headline metrics (full holdout)
 
-| model | LL | Brier | ECE | AUC | AP | within-dyad AUC (P1) | within-dyad AUC (strict) | between-dyad AUC (P1) |
+| model | LL | Brier | ECE | AUC | AP | within-dyad AUC (P1) | within-dyad AUC (strict, pair-weighted) | between-dyad AUC (P1) |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
 | `base_global_transition` | 0.265874 | 0.073497 | 0.003470 | 0.7323 | 0.3211 | 0.5315 | 0.5376 | 1.0000 |
 | `base_per_dyad_markov` | 0.265874 | 0.073497 | 0.003470 | 0.7323 | 0.3211 | 0.5315 | 0.5376 | 1.0000 |
@@ -38,9 +38,11 @@ Period: 2018-01–2022-11 (retrospective; unit-fresh, not time-fresh).
 | `logistic49_S2_temperature` | 0.218494 | 0.064199 | 0.042743 | 0.9101 | 0.6718 | 0.5264 | 0.5616 | 0.9983 |
 | `hgb49_none` | 0.225823 | 0.061506 | 0.035326 | 0.8805 | 0.6293 | 0.5332 | 0.5610 | 0.9980 |
 
+Within-dyad columns: `P1` is the P1-compatible centred score. The strict column is **pair-weighted** over the 3,310 dyads with both classes; the strict **equal-dyad mean** is **0.5139** for the primary (`summary.json#/within_between/primary`, mean 0.513858), not 0.5616. Sections 4 and 5 report both definitions; they are not interchangeable, and no number in this table changed.
+
 Primary vs per-dyad Markov (table convention: comparator − model, positive = primary better): ΔLL = **+0.047999** (+18.05% relative), 95% multiway CI [0.043333, 0.052665]; ΔECE = **-0.038642** (95% multiway CI [-0.053028, -0.024256]). Dyad-only CI [0.046280, 0.049732]; source CI [0.044708, 0.052009]; target CI [0.044731, 0.051589].
 
-**Baseline caveat.** The train-only per-dyad Markov baseline collapses to the global transition for unit-fresh dyads (identical LL 0.265874); the warm-history Markov baseline (pre-2018 observed history only) is the information-advantaged strong comparator and is reported as a secondary row below. The comparison is unequal in two directions: warm history has 35 additional months of outcomes (through 2017-11) while the primary's features observe within-period history through t; separately, the confirmatory evaluation zeroes every held-out dyad's graph edges whereas the stability audit uses the frozen P1 cache, so that cache difference limits the primary's evaluation and is not a baseline advantage. Against the warm-history baseline the primary model **loses on LL and ECE** but **wins on AUC/AP**; see Section 3 and the exact sentences in Section 9.
+**Baseline caveat.** The train-only per-dyad Markov baseline collapses to the global transition for unit-fresh dyads (identical LL 0.265874); the warm-history Markov baseline (pre-2018 observed history only) is the strong comparator and is reported as a secondary row below. That contrast is **unequal in two directions**: warm history has 35 additional months of outcomes (through 2017-11) that the model does not see, while the primary carries the 49-feature actor-role and graph set and observes within-period history through t. Separately, the confirmatory evaluation uses the **holdout-zeroed** graph cache (held-out edges zeroed for every month, including the training snapshots) whereas the stability audit is **holdout-row-excluded** (eventual holdout rows removed from fitting and aggregation), so that cache difference limits the primary's evaluation and is not a baseline advantage. Against the warm-history baseline the primary model **loses on LL and ECE** but **wins on AUC/AP**; see Section 3 and the exact sentences in Section 9.
 
 ## 3. Primary comparisons and multiplicity
 
@@ -64,27 +66,29 @@ Full dyad, source-actor, target-actor, and multiway intervals for ECE, Brier, AU
 ## 4. Within- vs between-dyad discrimination (key verdict)
 
 - Primary within-dyad AUC (P1-compatible centered score): **0.5266**.
-- Primary strict per-dyad mean AUC: **0.5139**; pair-weighted: **0.5616** over 3,310 dyads with both classes.
-- Per-dyad Markov: within-dyad AUC 0.5185 (pooled 0.5376; P1-compatible 0.5315).
+- Primary strict per-dyad **equal-dyad mean** AUC: **0.5139**; strict **pair-weighted** AUC: **0.5616** (3,310 dyads with both classes).
+- Per-dyad Markov: within-dyad AUC 0.5185 (strict pair-weighted 0.5376; P1-compatible 0.5315).
 - HGB49: within-dyad AUC 0.5169 (P1-compatible 0.5332).
 - Paired strict within-dyad ΔAUC (primary − Markov): 0.0240 (95% dyad bootstrap CI [0.020156, 0.028349]).
 - P1-compatible centered within-dyad ΔAUC: -0.0049 (95% CI [-0.019078, 0.008487]).
 
 Within/between intervals use the dyad cluster bootstrap because the estimand is dyad-level. The primary LL/ECE/Brier/AUC/AP comparisons in Section 3 report dyad, source-actor, target-actor, and multiway intervals.
 
-**Interpretation.** The conditional-logit check did not converge and provides no within-dyad evidence; the converged linear probability model gives P1 0.5386, strict mean 0.5382 and pooled 0.5559, which we report descriptively. The global AUC cannot be interpreted as pure between-dyad propensity.
+**Interpretation.** The conditional-logit check did not converge and provides no within-dyad evidence; the converged linear probability model gives P1 0.5386, strict equal-dyad mean 0.5382 and strict pair-weighted 0.5559, which we report descriptively. The global AUC cannot be interpreted as pure between-dyad propensity.
 
 ## 5. Dyad fixed-effects / conditional logit
 
 Exact Chamberlain conditional logit on 16,559 of 21,152 training dyads (dyads with 1–60 positives; k median 5); 3,957,601 rows; 48 within-varying features. Optimizer success=False, nit=120.
 
-| model | within-dyad AUC (P1) | strict mean | strict pooled |
+| model | within-dyad AUC (P1) | strict mean | strict pair-weighted |
 |---|---:|---:|---:|
 | `primary logistic49` | 0.5266 | 0.5139 | 0.5616 |
 | `per-dyad Markov` | 0.5315 | 0.5185 | 0.5376 |
 | `HGB49` | 0.5332 | 0.5169 | 0.5610 |
-| dyad FE conditional logit | 0.5561 | 0.5597 | 0.5759 |
+| dyad FE conditional logit (did not converge) | 0.5561 | 0.5597 | 0.5759 |
 | within-dyad OLS (LPM) | 0.5386 | 0.5382 | 0.5559 |
+
+Strict mean = equal-dyad mean over the 3,310 eligible dyads; strict pair-weighted = pooled over all within-dyad pairs from those dyads. The conditional-logit row is shown for completeness only and is not used as evidence.
 
 **Verdict.** The conditional logit did not converge; no within-dyad signal is claimed. The converged LPM is descriptive only.
 
@@ -111,6 +115,8 @@ Exact Chamberlain conditional logit on 16,559 of 21,152 training dyads (dyads wi
 | `graph` | -0.012911 | [-0.014016, -0.011839] | 0 |
 
 The `p` column is the floored bootstrap tail (1,000 replicates). Pre-registered BH family D uses the normal-approximation `p_normal` column of `tables/feature_group_loo.csv`: all nine `q < 1e-12` and all nine are rejected (see `tables/bh_families.csv` and `CORRECTIONS.md`).
+
+**Cache policies.** The confirmatory holdout and this feature-group LOO use the **holdout-zeroed** graph cache: held-out edges are zeroed for every month, including the training snapshots, so the graph coefficients are estimated on the reduced network. The provisional stability audit uses the distinct **holdout-row-excluded** policy (eventual holdout rows removed from fitting and aggregation). These are different estimands and are not interchangeable.
 
 **Grouped permutation** (all columns of a group permuted jointly; 10 permutations; dyad bootstrap CI):
 
@@ -159,11 +165,11 @@ The five seeds vary only the bootstrap weights; the fitted models are determinis
 
 > Against the train-only per-dyad Markov baseline (log-loss 0.26587, which equals the global transition on unit-fresh dyads), the primary model reduced log-loss by 0.04800 (18.05% relative; 95% multiway CI [0.04333, 0.05267]; BH q<1e-12 (normal-approximation tail; 1,000 reps)), increased AUC by 0.17788 and AP by 0.35072, but its ECE was worse by 0.03864 (95% multiway CI [-0.05303, -0.02426]).
 
-> Against the warm-history Markov baseline with 35 extra months of dyad history (log-loss 0.20973, ECE 0.01023), the primary model log-loss was worse by 0.00815 (model − comparator; 95% multiway CI [0.00233, 0.01396]) and its ECE was worse by 0.03188 (95% CI [0.02293, 0.04084]); its AUC was higher by 0.01598 and AP by 0.03502. The comparison is not information-matched.
+> Against the warm-history Markov baseline with 35 extra months of dyad history (log-loss 0.20973, ECE 0.01023), the primary model log-loss was worse by 0.00815 (model − comparator; 95% multiway CI [0.00233, 0.01396]) and its ECE was worse by 0.03188 (95% CI [0.02293, 0.04084]); its AUC was higher by 0.01598 and AP by 0.03502. The comparison is unequal in two directions: warm history has 35 additional months of outcomes, the model carries the 49-feature set; neither side is dominated.
 
 > The pre-registered secondary 29-feature model (log-loss 0.20522, ECE 0.02746, AUC 0.9083, AP 0.6717) had a nominal log-loss improvement over warm history (Δ = −0.00451, model − comparator; 95% multiway CI [−0.00760, −0.00142]; Brier null; exploratory, not multiplicity-controlled). Its strict-mean within-dyad AUC is 0.4716, below chance. It is a dyad-level ranking candidate, not a new primary.
 
-> A 29-feature year-fixed-effects anchor achieved log-loss 0.20063 and Brier 0.05717, better than the primary; it is a pre-registered descriptive anchor, not a prospective model, and linear calendar extrapolation is a limitation.
+> A 29-feature year-fixed-effects anchor achieved log-loss 0.20063 and Brier 0.05717, better than the primary; it is a plan-declared descriptive anchor; its promotion and warm-history contrast are post-hoc, C-confounded and uncorrected; it is not a prospective model, and linear calendar extrapolation is a limitation.
 
 > Within-dyad AUC was 0.5266 (P1-compatible), 0.5139 (strict mean) and 0.5616 (strict pair-weighted) for the primary; the warm-history levels were 0.5503, 0.5179 and 0.5364. Only the pair-weighted definition favors the primary; there is no robust within-dyad advantage. The conditional logit did not converge; the converged LPM gave 0.5386/0.5382/0.5559 descriptively.
 

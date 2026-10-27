@@ -19,9 +19,11 @@ predictions and labels are withheld. The aggregate results do not redistribute
 event rows and remain subject to the ICEWS terms. The manuscript is not part of
 this repository.
 
-**Release status:** v0.1.1 release candidate. The metadata version is `0.1.1`,
-but no `v0.1.1` git tag has been created and no DOI has been minted; until the
-tag exists, cite the repository URL and this candidate. The confirmatory
+**Release status:** v0.1.1 release candidate under review; the metadata version
+is `0.1.1`, but no `v0.1.1` git tag has been created and no DOI has been
+minted; until the tag and DOI exist, cite the repository URL and this candidate.
+Production replaces the review-candidate label with the `v0.1.1` tag and DOI; do
+not cite this tree as an archival release. The confirmatory
 holdout is frozen. The stability audit is **provisional**: it was recomputed
 after excluding all eventual holdout dyads from fitting and aggregation, with C
 fixed at the primary value and 50 dyad-cluster bootstrap refits. The
@@ -152,20 +154,31 @@ baseline (log-loss 0.265874), log-loss was lower by 0.047999 (Δ = −0.047999;
 stronger warm-history Markov baseline (log-loss 0.209729; ECE 0.010228), the
 primary improved AUC by 0.015979 and AP by 0.035016, but its log-loss was worse
 by 0.008146 (Δ = +0.008146; 95% CI +0.002334 to +0.013958; positive = worse) and
-its ECE was worse by 0.031883 (0.042112 vs 0.010228). The pre-registered
+its ECE was worse by 0.031883 (0.042112 vs 0.010228). That contrast is
+**unequal in two directions**: warm history has 35 additional months of outcomes
+(through 2017-11) that the model does not see, while the model carries the
+49-feature actor-role and graph block that the baseline does not see; neither
+side is dominated. The pre-registered
 29-feature secondary (log-loss 0.205219, ECE 0.027463, AUC 0.908290, AP 0.671747)
 beat the warm-history baseline on log-loss by 0.004510 (Δ = −0.004510; 95% CI
 −0.007597 to −0.001423; secondary, not in a BH family); its use for dyad-level
 probability ranking is **post-hoc**, not a new confirmatory test and not a
-primary swap. In the pre-registered 49-feature contract, under the holdout-excluded graph
-cache, the 20 graph features do not improve held-out log-loss. The train-only
+primary swap. In the pre-registered 49-feature contract, under the
+**holdout-zeroed** graph cache, the 20 graph features do not improve held-out
+log-loss. The confirmatory evaluation and the stability audit use distinct cache
+policies: the confirmatory numbers are **holdout-zeroed** (held-out edges zeroed
+for every month, including the training snapshots), whereas the audit is
+**holdout-row-excluded** (eventual holdout rows removed from fitting and
+aggregation). These are different cache policies for different estimands, not
+interchangeable runs. The train-only
 statistics block is constant on the holdout; removing it is an intercept/
 recalibration effect, not a transfer result. The graph effect reverses when the
 train-statistics block is absent, so this is not a general claim about graph
 features; the warm-history comparison is likewise not a general claim about
 persistence beyond this panel. The stability audit is provisional: its grid was
 frozen during the confirmatory run (after the read began, before it completed),
-it excludes all eventual holdout dyads at row level and uses 50 refits; it is
+it excludes all eventual holdout dyads at row level (holdout-row-excluded) and
+uses 50 refits; it is
 not a holdout-side stability test and not a pre-holdout design.
 The public `experiments/` scripts are a five-seed preview and do not reproduce
 those 50-refit estimates. We make no node-level, causal, lifecycle or
@@ -177,7 +190,8 @@ ICEWS v37 is available from the Harvard Dataverse
 (doi:10.7910/DVN/28075) under research-and-teaching terms. This repository does
 not redistribute the raw or derived event panel, row-level predictions or
 labels, actor-level predicted probabilities or observed outcome rates. Source
-code is released under the MIT license (see `LICENSE`). The aggregate results
+code is released under the MIT license, **code only** (see `LICENSE`). The
+aggregate results
 include ICEWS-derived quantities (for example actor-level aggregate attribution
 and a rendered, aggregate-only world-line preview) and are **not** MIT: they
 remain subject to the ICEWS terms and are provided for research and teaching
@@ -187,8 +201,11 @@ only. See `NOTICE`, `DATA_EXCLUSIONS.md` and the “Derived-data terms” sectio
 ## Citation and status
 
 Citation metadata is in `CITATION.cff` and `.zenodo.json`. This is a v0.1.1
-release candidate: the `v0.1.1` git tag and the DOI are pending, so cite the
-repository URL and this candidate until they exist. The stability audit is
-provisional (holdout-excluded, 50 refits); the public `experiments/` tree is a
+release candidate under review: the `v0.1.1` git tag and the DOI are pending, so
+cite the repository URL and this candidate until they exist; production replaces
+the review-candidate label with the `v0.1.1` tag and DOI. Author metadata
+(individual names, affiliations, ORCIDs) is **pending** and is not invented
+here. The stability audit is
+provisional (holdout-row-excluded, 50 refits); the public `experiments/` tree is a
 five-seed preview. The manuscript is under review and is not part of this
 repository.

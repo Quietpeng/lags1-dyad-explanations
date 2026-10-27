@@ -163,7 +163,9 @@ in `results/README.md` and the notebooks rather than by a `paper/` build.
 
 `scripts/verify_release.py` checks only distributed files:
 
-- required public files and directories;
+- required public files and directories, with CFF/Zenodo/pyproject licence and
+  title agreement, pending author metadata, the nine required test modules and
+  the 123-test floor;
 - absence of `paper/`, `docs/`, `configs/`, `data/`, `preds/`, caches and logs;
 - strict JSON (`NaN`/`Infinity` rejected) for every `results/**/*.json`;
 - `sha256sum -c results/framework_pilot/holdout/SHA256SUMS` and

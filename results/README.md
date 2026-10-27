@@ -52,7 +52,16 @@ number remains provisional and must not be written as a confirmatory headline.
 | `holdout/test_access_log.json` | Every 2018–22 read, including the pre-registration aggregate support count and the single holdout evaluation. |
 | `holdout/manifest.json` | Freeze manifest: host, packages, inputs, code and output hashes, plus post-freeze release annotations. |
 | `holdout/SHA256SUMS` | `sha256sum -c` compatible checksums for every distributed file in this directory. |
-| `holdout/CORRECTIONS.md` | Errata notes: a misattributed BH q in the 29-feature sentence, and the BH family D `p`/`q` recomputation from the frozen `p_normal` column (all nine still `<1e-12`). |
+| `holdout/CORRECTIONS.md` | Errata notes: the 29-feature sign-convention and pair-weighted-label clarification, a misattributed BH q in the 29-feature sentence, and the BH family D `p`/`q` recomputation from the frozen `p_normal` column (all nine still `<1e-12`). |
+
+**Raw support versus filtered rows (manuscript Table 1).** The manuscript reports
+raw-panel support of 6,344,160 training, 317,208 selection and 311,638 holdout
+dyad-months. The frozen fits and the public aggregates correspond to the filtered
+rows: 5,055,328 training, 232,672 selection and 311,638 holdout. The raw-panel
+counts — including the 67,057 inner-period positives — are **manuscript-only
+context**: no public table, aggregate or test is derived from them, they are not
+redistributed, and Table 1 is neither reproduced nor changed here. `run_once.json`
+and `manifest.json#/counts` carry the filtered counts.
 
 ### Stability audit (provisional)
 
@@ -109,6 +118,11 @@ of the release. `make verify` fails if one appears.
   `Δ = −0.047999` (primary better).
 - **AUC/AP tables:** `auc_ap_deltas.csv` stores model − comparator, so a
   positive value already means the primary is better.
+- **Errata and the 29-feature contrast:** `holdout/CORRECTIONS.md` states the
+  same 29-feature versus warm-history interval under both conventions:
+  `+0.004510` (comparator − model; positive = secondary better, as frozen in
+  `primary_comparisons.csv`) and `−0.004510` (model − comparator; 95% CI
+  `−0.00760` to `−0.00142`, as printed in the manuscript).
 - **Feature-group LOO:** `delta_vs_full` is “log-loss without the group minus
   the full model”; positive means the removed group carried held-out signal.
   This is a different estimand from the primary contrast and is labelled in the

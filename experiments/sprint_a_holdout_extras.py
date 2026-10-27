@@ -1289,7 +1289,7 @@ def build_report(core, prereg, run_once, summary, rows, within_rows, between_row
     w("")
     w("## 2. Headline metrics (full holdout)")
     w("")
-    w("| model | LL | Brier | ECE | AUC | AP | within-dyad AUC (P1) | within-dyad AUC (strict) | between-dyad AUC (P1) |")
+    w("| model | LL | Brier | ECE | AUC | AP | within-dyad AUC (P1) | within-dyad AUC (strict, pair-weighted) | between-dyad AUC (P1) |")
     w("|---|---:|---:|---:|---:|---:|---:|---:|---:|")
     for r in rows:
         if r["model"] not in (PRIMARY, PRIMARY_RAW, PRIMARY_ISO, LOGIT29,
@@ -1313,13 +1313,16 @@ def build_report(core, prereg, run_once, summary, rows, within_rows, between_row
     w("**Baseline caveat.** The train-only per-dyad Markov baseline collapses "
       "to the global transition for unit-fresh dyads (identical LL 0.265874); "
       "the warm-history Markov baseline (pre-2018 observed history only) is the "
-      "information-advantaged strong comparator and is reported as a secondary "
-      "row below. The comparison is unequal in two directions: warm history has "
-      "35 additional months of outcomes (through 2017-11) while the primary's "
-      "features observe within-period history through t; separately, the "
-      "confirmatory evaluation zeroes every held-out dyad's graph edges whereas "
-      "the stability audit uses the frozen P1 cache, so that cache difference "
-      "limits the primary's evaluation and is not a baseline advantage. Against "
+      "strong comparator and is reported as a secondary row below. That contrast "
+      "is **unequal in two directions**: warm history has 35 additional months of "
+      "outcomes (through 2017-11) that the model does not see, while the primary "
+      "carries the 49-feature actor-role and graph set and observes within-period "
+      "history through t. Separately, the confirmatory evaluation uses the "
+      "**holdout-zeroed** graph cache (held-out edges zeroed for every month, "
+      "including the training snapshots) whereas the stability audit is "
+      "**holdout-row-excluded** (eventual holdout rows removed from fitting and "
+      "aggregation), so that cache difference limits the primary's evaluation and "
+      "is not a baseline advantage. Against "
       "the warm-history baseline the primary model **loses on LL and ECE** but "
       "**wins on AUC/AP**; see Section 3 and the exact sentences in Section 9.")
     w("")
@@ -1368,14 +1371,15 @@ def build_report(core, prereg, run_once, summary, rows, within_rows, between_row
     w("")
     w(f"- Primary within-dyad AUC (P1-compatible centered score): "
       f"**{_fmt(summary['primary']['within_auc_p1'],4)}**.")
-    w(f"- Primary strict per-dyad mean AUC: "
+    w(f"- Primary strict per-dyad **equal-dyad mean** AUC: "
       f"**{_fmt(summary['within_between']['primary']['mean'],4)}**; "
-      f"pair-weighted: **{_fmt(summary['within_between']['primary']['pooled'],4)}** "
+      f"strict **pair-weighted**: "
+      f"**{_fmt(summary['within_between']['primary']['pooled'],4)}** "
       f"over {summary['within_between']['primary']['n_dyads_eligible']:,} dyads "
       f"with both classes.")
     w(f"- Per-dyad Markov: within-dyad AUC "
       f"{_fmt(summary['within_between']['per_dyad_markov']['mean'],4)} "
-      f"(pooled {_fmt(summary['within_between']['per_dyad_markov']['pooled'],4)}; "
+      f"(strict pair-weighted {_fmt(summary['within_between']['per_dyad_markov']['pooled'],4)}; "
       f"P1-compatible {_fmt(summary['within_between']['p1']['per_dyad_markov'].get('within_auc'),4)}).")
     w(f"- HGB49: within-dyad AUC "
       f"{_fmt(summary['within_between']['hgb49']['mean'],4)} "
@@ -1410,19 +1414,23 @@ def build_report(core, prereg, run_once, summary, rows, within_rows, between_row
       f"{fe['n_features_used']} within-varying features. "
       f"Optimizer success={fec['success']}, nit={fec['nit']}.")
     w("")
-    w("| model | within-dyad AUC (P1) | strict mean | strict pooled |")
+    w("| model | within-dyad AUC (P1) | strict mean | strict pair-weighted |")
     w("|---|---:|---:|---:|")
     for label, d in (("primary logistic49", fe["comparators"][PRIMARY]),
                      ("per-dyad Markov", fe["comparators"][BASE_MARKOV]),
                      ("HGB49", fe["comparators"][HGB])):
         w(f"| `{label}` | {_fmt(d['p1'].get('within_auc'),4)} | "
           f"{_fmt(d['strict'].get('mean'),4)} | {_fmt(d['strict'].get('pooled'),4)} |")
-    w(f"| dyad FE conditional logit | {_fmt(fe['conditional_logit_within']['p1'].get('within_auc'),4)} | "
+    w(f"| dyad FE conditional logit (did not converge) | {_fmt(fe['conditional_logit_within']['p1'].get('within_auc'),4)} | "
       f"{_fmt(fe['conditional_logit_within']['strict'].get('mean'),4)} | "
       f"{_fmt(fe['conditional_logit_within']['strict'].get('pooled'),4)} |")
     w(f"| within-dyad OLS (LPM) | {_fmt(fe['within_ols']['within']['p1'].get('within_auc'),4)} | "
       f"{_fmt(fe['within_ols']['within']['strict'].get('mean'),4)} | "
       f"{_fmt(fe['within_ols']['within']['strict'].get('pooled'),4)} |")
+    w("")
+    w("Strict mean = equal-dyad mean over the eligible dyads; strict pair-weighted = "
+      "pooled over all within-dyad pairs. The conditional-logit row is shown for "
+      "completeness only and is not used as evidence.")
     w("")
     w("**Verdict.** " + ("The conditional-logit check does not improve within-dyad "
       "discrimination; the claim is dyad-level propensity/calibration, not "

@@ -98,4 +98,4 @@ for path in sorted(Path("notebooks").glob("*.ipynb")):
 PY
 ```
 
-Run `make notebooks` for a full headless execution. `make verify` additionally checks that the committed outputs are present, error-free, aggregate-only, and free of absolute paths.
+Run `make notebooks` for a full headless execution. `make verify` additionally checks that the committed outputs are present, error-free and path-clean (executed code cells, no error output, no absolute home/temporary path, embedded PNGs where expected). It does not assert an aggregate-only property; that boundary is enforced by the shipped file list, the row-level scanners and `DATA_EXCLUSIONS.md`.

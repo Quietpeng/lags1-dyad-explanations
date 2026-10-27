@@ -20,6 +20,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Note: This license covers the source code only. ICEWS and other third-party
-data are not redistributed and remain subject to their original terms; see
-NOTICE.
+Note: This license covers the source code only. The aggregate results under
+`results/` are derived from ICEWS and are not MIT-licensed; they remain subject
+to the ICEWS research-and-teaching terms (see NOTICE and results/README.md).
+ICEWS and other third-party data are not redistributed.

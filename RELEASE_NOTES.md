@@ -1,5 +1,41 @@
 # Release notes
 
+## Public-text revision (R2C7; metadata, tests and documentation)
+
+Text, metadata and tests only; no analysis, refit, holdout rerun or number
+change. Freeze hashes stay in `manifest.json#/post_run_corrections`; the shipped
+bytes are tracked by `outputs`/`current_sha256` and `SHA256SUMS`.
+
+- `holdout/report.md` labels the strict within-dyad column **pair-weighted**
+  (0.5616) and states the strict equal-dyad mean (0.5139); 0.5266 remains the
+  distinct P1-centred value. No value changed.
+- `holdout/CORRECTIONS.md` adds the table convention (comparator − model;
+  positive = secondary better) and the manuscript-equivalent 29-feature
+  contrast (`−0.004510 [−0.00760, −0.00142]`). The frozen `+0.004510` is
+  unchanged.
+- Comparator and cache wording: the previous one-sided comparator label is
+  replaced by “unequal in two directions”, with the **holdout-zeroed**
+  confirmatory cache named separately from the **holdout-row-excluded** audit.
+- Year-fixed-effects status: the anchor is **plan-declared**; its promotion and
+  warm-history contrast are post-hoc, C-confounded and uncorrected; it remains
+  “not a prospective model” with the linear-extrapolation limitation.
+- Deposit metadata: `CITATION.cff` licence is `other-open`, matching
+  `.zenodo.json`; `pyproject.toml` and `LICENSE` keep MIT **code only**, and the
+  aggregates are explicitly not MIT. Author metadata stays pending; no DOI, tag
+  or ORCID is invented.
+- `tables/dyad_fe.csv` marks the non-converged conditional-logit row with
+  `converged=false` and `used_as_evidence=false`; values are unchanged.
+- `results/README.md` maps raw-panel support (6,344,160 / 317,208 / 311,638) to
+  the filtered rows (5,055,328 / 232,672 / 311,638), marks the raw counts and the
+  67,057 inner positives manuscript-only, and records the dual sign convention.
+  Table 1 is not reproduced or changed.
+- The metadata contract is folded into the existing 15-check verifier
+  (CFF/Zenodo licence equality, code-only MIT carve-out, pending author
+  metadata, title equality, nine required test modules and a 123-test floor).
+  New assertions extend `tests/test_metadata_contract.py` and
+  `tests/test_results_contract.py`; the three git-only dist checks skip in
+  archive mode.
+
 ## Manifest provenance repair (2026-10-27; metadata, tests and documentation)
 
 No result, figure, notebook output, data file or row-level policy changed.

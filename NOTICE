@@ -28,8 +28,9 @@ aggregate research outputs; they do not permit reconstruction of the event
 panel and must not be used to attempt re-identification. The exact removed and
 redacted paths are listed in `DATA_EXCLUSIONS.md`.
 
-The source code is released under the MIT license (see `LICENSE`). **The
-derived aggregate results are not MIT-licensed.** They remain subject to the
+The source code is released under the MIT license, **code only** (see
+`LICENSE`). **The derived aggregate results are not MIT-licensed.** They
+remain subject to the
 ICEWS research-and-teaching terms and are provided only for research and
 teaching. Redistribution outside those terms is not permitted. Cite ICEWS v37
 (doi:10.7910/DVN/28075) alongside this artifact.

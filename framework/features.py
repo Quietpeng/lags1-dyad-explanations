@@ -127,6 +127,15 @@ def assert_no_label(names) -> None:
 
 
 def feature_manifest() -> dict:
+    """Structural feature manifest for the paper path.
+
+    ``available_at: "t"`` is a structural tag, not a causal guarantee for every
+    training row. The dyad contract is 27 causal features plus two **train-only
+    statistics** (``br``, ``seen_tr``) encoded from training labels, so the tag
+    is inaccurate for training-row encoding. The same disclosure appears in
+    ``CODE_MAP.md`` and the manuscript (§4.2; Data availability). The tags are
+    frozen with the released outputs and are deliberately not rewritten here.
+    """
     assert_no_label(DYAD_FEATURES)
     assert_no_label(ACTOR_FEATURES)
     assert_no_label(GRAPH_FEATURES)

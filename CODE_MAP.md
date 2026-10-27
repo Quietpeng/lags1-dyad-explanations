@@ -16,7 +16,7 @@ or tested here.
 | `__init__.py` | Release version; no node-level or GraphSAGE claim. |
 | `config.py` | JSON defaults, recursive overrides, split invariants. No config file is required to import or test. |
 | `data.py` | DuckDB connection, ICEWS panel build, cache and tail mask. Restricted inputs are caller-supplied. |
-| `features.py` | Frozen 29-feature dyad contract (`27 causal + br + seen_tr`), 20-feature graph core, 35-feature graph bank, actor-month features; no labels; all features available at `t`. |
+| `features.py` | Frozen 29-feature dyad contract (`27 causal + br + seen_tr`), 20-feature graph core, 35-feature graph bank, actor-month features; no labels. The 29 dyad features are **27 causal features plus two train-only statistics** (`br`, `seen_tr`); the emitted manifest tag `available_at=t` is **inaccurate for training-row encoding** (manuscript §4.2; Data availability). |
 | `splits.py` | Temporal train/select/eval/test masks, actor/dyad/region holdouts, cold-start imputation and D2 windows. |
 | `models.py` | Standardised L2 logistic, HistGradientBoosting capacity control, temperature/isotonic calibration, persistence/global-transition/per-dyad Markov baselines, exact linear contributions and occlusion. |
 | `metrics.py` | Binary log-loss/Brier/ECE/accuracy/F1/AUC/AP, reliability slope, ICC/design effect and MDE. |
@@ -73,7 +73,7 @@ ICEWS v37 event panel (restricted)
 dyad-month / actor-month panels + feature cache
         │  features.py
         ▼
-29 dyad features + 20 graph features (= 49), train-only br/seen_tr
+29 dyad features (27 causal + train-only br/seen_tr) + 20 graph features (= 49)
         │  splits.py (unit-fresh 20% dyad holdout)
         ▼
 logistic49 (primary) / logistic29 (secondary) / HGB49 (capacity control)

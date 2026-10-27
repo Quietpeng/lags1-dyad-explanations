@@ -7,7 +7,8 @@ predictions, and it fails if any of those appear in the tree.
 
 Checks
 ------
-* required public files exist;
+* required public files exist, with matching CFF/Zenodo/pyproject licence and
+  title metadata, pending author metadata, and the required test modules/floor;
 * no ``paper/``, ``docs/``, ``configs/``, ``data/``, ``preds/``, caches or logs;
 * every ``results/**/*.json`` is strict JSON (no ``NaN``/``Infinity``);
 * ``results/framework_pilot/holdout/SHA256SUMS`` and
@@ -118,6 +119,8 @@ REQUIRED = [
     "tests/test_models.py",
     "tests/test_results_contract.py",
     "tests/test_notebooks.py",
+    "tests/test_inference_units.py",
+    "tests/test_metadata_contract.py",
     "notebooks/README.md",
     "notebooks/01_confirmatory_holdout.ipynb",
     "notebooks/02_stability_audit.ipynb",
@@ -204,6 +207,263 @@ def strict_load(path: Path) -> dict:
 def check_required(root: Path) -> list[str]:
     missing = [rel for rel in REQUIRED if not (root / rel).is_file()]
     return [f"required file missing: {rel}" for rel in missing]
+
+
+# ---------------------------------------------------------------------------
+# Citation / licence / test-suite contract (no PyYAML dependency)
+# ---------------------------------------------------------------------------
+RELEASE_TITLE = (
+    "Actor-role components of dyadic event forecasts: exact attribution, "
+    "near-collinearity, and a within-panel stability audit"
+)
+MIN_TEST_COUNT = 123
+ORCID_RE = re.compile(r"\b\d{4}-\d{4}-\d{4}-\d{3}[\dX]\b")
+DOI_RE = re.compile(r"\b10\.\d{4,9}/[^\s\"']+")
+CFF_LINE = re.compile(r"^([A-Za-z0-9_.-]+):\s*(.*)$")
+
+
+def _cff_scalar(value: str) -> str:
+    value = value.strip()
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+        return value[1:-1]
+    return value
+
+
+def _cff_sequence(block: list[str]) -> list:
+    items: list = []
+    current: dict | None = None
+    for line in block:
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        if stripped.startswith("- "):
+            rest = stripped[2:].strip()
+            if not rest:
+                raise ValueError("empty sequence item")
+            if ":" in rest and not rest.startswith(("'", '"')):
+                key, _, value = rest.partition(":")
+                current = {key.strip(): _cff_scalar(value)}
+                items.append(current)
+            else:
+                current = None
+                items.append(_cff_scalar(rest))
+        else:
+            if current is None:
+                raise ValueError(f"unsupported sequence continuation {stripped!r}")
+            key, sep, value = stripped.partition(":")
+            if not sep:
+                raise ValueError(f"unsupported sequence line {stripped!r}")
+            current[key.strip()] = _cff_scalar(value)
+    return items
+
+
+def parse_cff(path: Path) -> dict:
+    """Parse the YAML subset used by ``CITATION.cff``.
+
+    Supported: top-level block mappings, quoted/plain scalars, folded or literal
+    block scalars, and sequences of scalars or single-level mappings. Tabs, flow
+    style, anchors, nested mappings and multi-document files are rejected so a
+    malformed CFF edit cannot pass silently. This deliberately avoids a PyYAML
+    runtime dependency; the CFF is a flat metadata file.
+    """
+    lines = path.read_text(encoding="utf-8").splitlines()
+    top: dict = {}
+    i = 0
+    while i < len(lines):
+        raw = lines[i]
+        if "\t" in raw:
+            raise ValueError(f"line {i + 1}: tab indentation is not supported")
+        stripped = raw.strip()
+        if not stripped or stripped.startswith("#"):
+            i += 1
+            continue
+        if raw[:1].isspace():
+            raise ValueError(f"line {i + 1}: unexpected indentation")
+        if stripped in ("---", "..."):
+            raise ValueError("multi-document YAML is not supported")
+        match = CFF_LINE.match(stripped)
+        if not match:
+            raise ValueError(f"line {i + 1}: unsupported syntax {stripped!r}")
+        key, rest = match.group(1), match.group(2).strip()
+        i += 1
+        block: list[str] = []
+        while i < len(lines):
+            line = lines[i]
+            if not line.strip() or line.strip().startswith("#"):
+                i += 1
+                continue
+            if not line[:1].isspace():
+                break
+            if "\t" in line:
+                raise ValueError(f"line {i + 1}: tab indentation is not supported")
+            block.append(line)
+            i += 1
+        if rest in (">-", ">", "|", "|-"):
+            joiner = " " if rest.startswith(">") else "\n"
+            top[key] = joiner.join(line.strip() for line in block)
+        elif rest == "":
+            if not block:
+                top[key] = None
+            elif block[0].strip().startswith("- "):
+                top[key] = _cff_sequence(block)
+            else:
+                raise ValueError(f"key {key!r}: nested mappings are not supported")
+        else:
+            if block:
+                raise ValueError(f"key {key!r}: unexpected indented block")
+            if rest.startswith(("{", "[")) or rest[0] in "&*!":
+                raise ValueError(f"key {key!r}: flow/anchored scalars are not supported")
+            top[key] = _cff_scalar(rest)
+    return top
+
+
+def _count_tests(root: Path) -> int:
+    import ast
+
+    total = 0
+    for path in sorted((root / "tests").glob("test_*.py")):
+        try:
+            tree = ast.parse(path.read_text(encoding="utf-8"))
+        except SyntaxError as exc:
+            raise ValueError(f"{path.name}: {exc}") from exc
+        total += sum(
+            1 for node in ast.walk(tree)
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+            and node.name.startswith("test_")
+        )
+    return total
+
+
+def check_metadata_contract(root: Path) -> list[str]:
+    """CFF/Zenodo/pyproject/licence agreement and the test-suite floor.
+
+    The deposit licence is ``other-open`` because the tree mixes MIT code with
+    ICEWS-derived aggregates that are not MIT; ``pyproject.toml`` and ``LICENSE``
+    keep the explicit code-only MIT grant, the public title must match the
+    manuscript, author metadata stays marked pending, and the test suite keeps
+    its required modules and floor.
+    """
+    try:
+        import tomllib
+    except ImportError:  # pragma: no cover - Python < 3.11 is unsupported
+        return ["tomllib is unavailable; Python 3.11+ is required"]
+
+    errors: list[str] = []
+    try:
+        cff = parse_cff(root / "CITATION.cff")
+    except Exception as exc:
+        return [f"CITATION.cff does not parse: {exc}"]
+    try:
+        zenodo = strict_load(root / ".zenodo.json")
+    except Exception as exc:
+        return [f".zenodo.json does not parse: {exc}"]
+    try:
+        pyproject = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))
+    except Exception as exc:
+        return [f"pyproject.toml does not parse: {exc}"]
+
+    cff_license = cff.get("license")
+    zen_license = zenodo.get("license")
+    if cff_license != zen_license:
+        errors.append(
+            f"CITATION.cff license {cff_license!r} != Zenodo license {zen_license!r}"
+        )
+    if cff_license != "other-open":
+        errors.append(
+            f"CITATION.cff license must be 'other-open' for the mixed deposit, got {cff_license!r}"
+        )
+    project = pyproject.get("project", {})
+    code_license = project.get("license")
+    if isinstance(code_license, dict):
+        code_license = code_license.get("text")
+    if code_license != "MIT":
+        errors.append(f"pyproject.toml license must stay MIT, got {code_license!r}")
+
+    license_text = (root / "LICENSE").read_text(encoding="utf-8")
+    if "MIT License" not in license_text:
+        errors.append("LICENSE is not the MIT text")
+    if "covers the source code only" not in license_text.lower():
+        errors.append("LICENSE lacks the code-only carve-out")
+    if "not MIT-licensed" not in license_text:
+        errors.append("LICENSE does not exclude the ICEWS-derived aggregates")
+
+    notice = (root / "NOTICE").read_text(encoding="utf-8")
+    if "not MIT-licensed" not in notice:
+        errors.append("NOTICE does not exclude the ICEWS-derived aggregates")
+    if "doi:10.7910/DVN/28075" not in notice:
+        errors.append("NOTICE lacks the ICEWS v37 citation")
+
+    if cff.get("title") != RELEASE_TITLE:
+        errors.append(f"CITATION.cff title is not the manuscript title: {cff.get('title')!r}")
+    if zenodo.get("title") != RELEASE_TITLE:
+        errors.append(f".zenodo.json title is not the manuscript title: {zenodo.get('title')!r}")
+    if str(project.get("description", "")).rstrip(".") != RELEASE_TITLE:
+        errors.append(
+            f"pyproject.toml description is not the manuscript title: {project.get('description')!r}"
+        )
+    old_framing = "portability " + "audit"
+    for name in ("README.md", "CITATION.cff", ".zenodo.json", "pyproject.toml",
+                 "notebooks/README.md"):
+        path = root / name
+        if not path.is_file():
+            errors.append(f"{name} is missing")
+            continue
+        if old_framing in path.read_text(encoding="utf-8").lower():
+            errors.append(f"{name} retains the superseded title framing")
+
+    readme = (root / "README.md").read_text(encoding="utf-8")
+    readme_flat = " ".join(readme.lower().split())
+    if "near-collinearity, and a within-panel stability audit" not in readme_flat:
+        errors.append("README.md subtitle does not carry the current title framing")
+    versions = {
+        "CITATION.cff": cff.get("version"),
+        ".zenodo.json": zenodo.get("version"),
+        "pyproject.toml": project.get("version"),
+    }
+    for name, value in versions.items():
+        if value != "0.1.1":
+            errors.append(f"{name} version is {value!r}, expected '0.1.1'")
+    if "`v0.1.1` git tag" not in readme:
+        errors.append("README.md does not state that no v0.1.1 tag exists")
+    if "no doi has been minted" not in readme_flat:
+        errors.append("README.md does not state that no DOI exists")
+    if "do not cite this tree as an archival release" not in readme_flat:
+        errors.append("README.md does not flag the review candidate as non-archival")
+
+    cff_authors = [row.get("name") for row in cff.get("authors") or [] if isinstance(row, dict)]
+    zen_authors = [row.get("name") for row in zenodo.get("creators") or [] if isinstance(row, dict)]
+    if cff_authors != zen_authors:
+        errors.append(f"CFF authors {cff_authors} != Zenodo creators {zen_authors}")
+    if not cff_authors or not zen_authors:
+        errors.append("CFF/Zenodo author lists are empty")
+    if "pending" not in (cff.get("abstract") or "").lower():
+        errors.append("CITATION.cff does not mark author metadata as pending")
+    if "pending" not in (zenodo.get("notes") or "").lower():
+        errors.append(".zenodo.json notes do not mark author metadata as pending")
+    for name, payload in (("CITATION.cff", json.dumps(cff)),
+                          (".zenodo.json", json.dumps(zenodo))):
+        if ORCID_RE.search(payload):
+            errors.append(f"{name} contains an ORCID; author metadata is pending")
+        if DOI_RE.search(payload):
+            errors.append(f"{name} contains a DOI; no DOI has been minted")
+
+    expected_modules = sorted(rel for rel in REQUIRED if rel.startswith("tests/"))
+    present = sorted(
+        path.relative_to(root).as_posix()
+        for path in (root / "tests").glob("test_*.py")
+    )
+    if present != expected_modules:
+        errors.append(f"test modules changed: {present} != {expected_modules}")
+    count = None
+    try:
+        count = _count_tests(root)
+    except Exception as exc:
+        errors.append(f"cannot count the public test suite: {exc}")
+    if count is not None and count < MIN_TEST_COUNT:
+        errors.append(
+            f"public test suite shrank to {count} tests (minimum {MIN_TEST_COUNT})"
+        )
+    return errors
 
 
 def check_forbidden(root: Path) -> list[str]:
@@ -790,7 +1050,7 @@ def main(argv: list[str] | None = None) -> int:
     root = args.root.resolve()
 
     checks = [
-        ("required files", check_required(root)),
+        ("required files & metadata", check_required(root) + check_metadata_contract(root)),
         ("forbidden paths", check_forbidden(root)),
         ("row-level data", check_row_level_data(root)),
         ("strict JSON", check_strict_json(root)),

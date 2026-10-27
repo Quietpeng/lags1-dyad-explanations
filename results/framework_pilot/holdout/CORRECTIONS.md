@@ -1,5 +1,25 @@
 # Corrections / errata
 
+## 2026-10-27 — public wording and sign-convention clarification (no number changed)
+
+The public holdout report prints the 29-feature versus warm-history contrast as
+`+0.00451` under the frozen table convention **comparator − model; positive =
+secondary better**. The manuscript prints the same contrast under the opposite
+convention, **model − comparator**: **−0.004510, 95% CI [−0.00760, −0.00142]**.
+The two statements are the same interval with the sign flipped; no point
+estimate, interval endpoint or table value changed, and the CSV keeps
+`+0.004510` with CI `[0.001423, 0.007597]`.
+
+The same revision relabels the strict within-dyad column as **pair-weighted**
+(0.5616) and states the strict equal-dyad mean (0.5139) separately; marks the
+non-converged conditional-logit row in `tables/dyad_fe.csv` with
+`converged=false` and `used_as_evidence=false`; replaces the previous one-sided
+comparator wording with “unequal in two directions”; and
+adds the raw-panel versus filtered-row support footnote to `results/README.md`.
+Text and metadata only: no metric, prediction, label, model output or frozen
+number changed. `SHA256SUMS` and the manifest `current_sha256` annotations were
+regenerated for the annotated files only.
+
 ## 2026-10-26 — stability audit status relabelled (no number changed)
 
 `stability/summary.json` (`#/scope/audit_design`, `#/holdout/audit_design`) and
