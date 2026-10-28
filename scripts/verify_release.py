@@ -8,8 +8,8 @@ predictions, and it fails if any of those appear in the tree.
 Checks
 ------
 * required public files exist, with a split CFF/Zenodo/pyproject licence
-  contract, matching title metadata, pending author metadata, and the required
-  test modules/floor;
+  contract, matching title metadata, filled single-author metadata, and the
+  required test modules/floor;
 * no ``paper/``, ``docs/``, ``configs/``, ``data/``, ``preds/``, caches or logs;
 * every ``results/**/*.json`` is strict JSON (no ``NaN``/``Infinity``);
 * ``results/framework_pilot/holdout/SHA256SUMS`` and
@@ -19,9 +19,9 @@ Checks
 * ``experiments/STABILITY_VARIANT.md`` exists and no public document claims a
   five-seed audit or the legacy ``provisional_no_fresh_holdout`` status;
 * the pre-registration checksum uses a repo-relative path and matches;
-* reader-facing prose names the published ``review-r2c14`` snapshot, keeps
-  ``review-r2c13``, ``review-r2c12`` and ``review-r2c10`` as earlier published
-  ones, denies its own publication nowhere, and asserts no registration status;
+* reader-facing prose names ``review-r2c13`` as the published remote ``main``
+  snapshot and ``review-r2c14`` as a local, unpublished text-only revision, does
+  not present r2c14 as published, and asserts no registration status;
 * manifest entries for non-redistributed predictions/logs are marked
   ``redistributed: false`` and the files are absent;
 * every ``manifest.code`` entry has a ``code_annotations.current_sha256``
@@ -368,8 +368,9 @@ def check_metadata_contract(root: Path) -> list[str]:
     ICEWS carve-out in the abstract/message); ``.zenodo.json`` keeps the mixed
     deposit licence ``other-open`` with a deposit-level note. ``pyproject.toml``
     and ``LICENSE`` keep the explicit code-only MIT grant, the public title must
-    match the manuscript, author metadata stays marked pending, the plan-status
-    vocabulary stays qualified, and the test suite keeps its modules and floor.
+    match the manuscript, the single-author metadata must be filled (name,
+    ORCID, affiliation, no DOI), the plan-status vocabulary stays qualified, and
+    the test suite keeps its modules and floor.
     """
     try:
         import tomllib
@@ -511,51 +512,81 @@ def check_metadata_contract(root: Path) -> list[str]:
     if "do not cite this tree as an archival release" not in readme_flat:
         errors.append("README.md does not flag the review candidate as non-archival")
 
-    # U34: the paper cites the review snapshot this tree publishes. The release
-    # operator creates `review-r2c14` and moves `main` after the commit, so the
-    # README must name that tag as published; a text that denies its own
-    # publication, or that still advertises the superseded ref as current, fails
-    # here. R2C13, R2C12 and R2C10 stay valid as earlier published snapshots.
+    # U34 (V1 correction): the remote serves `review-r2c13`; `review-r2c14` at
+    # 2d27421 is a local text-only revision that was never pushed. The README
+    # must say so, and a text that presents r2c14 as published, or that
+    # advertises it as the current remote ref, fails here. R2C13, R2C12 and
+    # R2C10 stay valid as earlier published snapshots.
+    if "review-r2c13" not in readme_flat:
+        errors.append("README.md does not cite the published review-r2c13 snapshot")
     if "review-r2c14" not in readme_flat:
-        errors.append("README.md does not cite the published review-r2c14 snapshot")
-    if "published review snapshot" not in readme_flat:
-        errors.append("README.md does not call the review-r2c14 tree a published snapshot")
-    if ("`review-r2c10`, `review-r2c12`, `review-r2c13` and `review-r2c14` "
-            "are public" not in readme_flat):
+        errors.append("README.md does not cite the local review-r2c14 revision")
+    if "has not been pushed or published" not in readme_flat:
+        errors.append("README.md does not state that review-r2c14 is unpublished")
+    if "no remote `review-r2c14`" not in readme_flat:
+        errors.append("README.md does not deny a remote review-r2c14 ref")
+    if ("`review-r2c10`, `review-r2c12` and `review-r2c13` are public"
+            not in readme_flat):
         errors.append(
-            "README.md does not state that review-r2c10, review-r2c12, "
-            "review-r2c13 and review-r2c14 are public")
-    for denial in (
-        "no `review-r2c14` tag",
-        "no review-r2c14",
-        "review-r2c14` is local",
-        "review-r2c14 is local",
-        "review-r2c14` is **local",
+            "README.md does not state that review-r2c10, review-r2c12 and "
+            "review-r2c13 are public")
+    readme_norm = readme_flat.replace("`", "")
+    for claim in (
+        "review-r2c14 is published",
+        "review-r2c14 are public",
+        "review-r2c14 are the current published",
+        "review-r2c14 is the current published",
+        "published review-r2c14",
+        "review-r2c14` as the **published",
     ):
-        if denial in readme_flat:
-            errors.append(f"README.md denies its own publication: {denial!r}")
+        if claim in readme_norm:
+            errors.append(f"README.md presents the local revision as published: {claim!r}")
     for rel in ("DATA_EXCLUSIONS.md", "results/README.md"):
         path = root / rel
         if not path.is_file():
             errors.append(f"{rel} is missing")
             continue
-        if "review-r2c14" not in path.read_text(encoding="utf-8").lower():
-            errors.append(f"{rel} does not name the published review-r2c14 snapshot")
+        body = path.read_text(encoding="utf-8").lower()
+        if "review-r2c13" not in body:
+            errors.append(f"{rel} does not name the published review-r2c13 snapshot")
+        if "review-r2c14" not in body:
+            errors.append(f"{rel} does not name the local review-r2c14 revision")
 
-    cff_authors = [row.get("name") for row in cff.get("authors") or [] if isinstance(row, dict)]
-    zen_authors = [row.get("name") for row in zenodo.get("creators") or [] if isinstance(row, dict)]
-    if cff_authors != zen_authors:
-        errors.append(f"CFF authors {cff_authors} != Zenodo creators {zen_authors}")
-    if not cff_authors or not zen_authors:
-        errors.append("CFF/Zenodo author lists are empty")
-    if "pending" not in (cff.get("abstract") or "").lower():
-        errors.append("CITATION.cff does not mark author metadata as pending")
-    if "pending" not in (zenodo.get("notes") or "").lower():
-        errors.append(".zenodo.json notes do not mark author metadata as pending")
+    cff_authors = [row for row in cff.get("authors") or [] if isinstance(row, dict)]
+    zen_authors = [row for row in zenodo.get("creators") or [] if isinstance(row, dict)]
+
+    def _cff_name(row: dict) -> str:
+        return " ".join(
+            part for part in (row.get("given-names"), row.get("family-names")) if part
+        ) or str(row.get("name") or "")
+
+    def _zen_name(row: dict) -> str:
+        name = str(row.get("name") or "")
+        if "," in name:
+            family, given = (part.strip() for part in name.split(",", 1))
+            return f"{given} {family}".strip()
+        return name
+
+    cff_names = [_cff_name(row) for row in cff_authors]
+    zen_names = [_zen_name(row) for row in zen_authors]
+    if cff_names != zen_names:
+        errors.append(f"CFF authors {cff_names} != Zenodo creators {zen_names}")
+    if cff_names != ["Jingzhe Peng"]:
+        errors.append(f"CFF author list is not the single author: {cff_names}")
+    cff_orcids = [str(row.get("orcid") or "") for row in cff_authors]
+    zen_orcids = [str(row.get("orcid") or "") for row in zen_authors]
+    if cff_orcids != ["https://orcid.org/0009-0001-7037-6244"]:
+        errors.append(f"CITATION.cff ORCID is not the author ORCID: {cff_orcids}")
+    if zen_orcids != ["0009-0001-7037-6244"]:
+        errors.append(f".zenodo.json ORCID is not the author ORCID: {zen_orcids}")
+    cff_flat = " ".join((cff.get("abstract") or "").split()).lower()
+    if "author metadata" in cff_flat and "pending" in cff_flat:
+        errors.append("CITATION.cff still marks author metadata as pending")
+    if "author metadata" in (zenodo.get("notes") or "").lower() and "pending" in (
+            zenodo.get("notes") or "").lower():
+        errors.append(".zenodo.json notes still mark author metadata as pending")
     for name, payload in (("CITATION.cff", json.dumps(cff)),
                           (".zenodo.json", json.dumps(zenodo))):
-        if ORCID_RE.search(payload):
-            errors.append(f"{name} contains an ORCID; author metadata is pending")
         if DOI_RE.search(payload):
             errors.append(f"{name} contains a DOI; no DOI has been minted")
 

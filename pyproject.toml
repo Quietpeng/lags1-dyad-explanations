@@ -9,7 +9,7 @@ description = "Actor-role components of dyadic event forecasts: shared graph col
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
-authors = [{ name = "LAGS-1 authors" }]
+authors = [{ name = "Jingzhe Peng", email = "pengjingzhe_quiet@foxmail.com" }]
 keywords = [
   "dyadic event forecasting",
   "ICEWS",

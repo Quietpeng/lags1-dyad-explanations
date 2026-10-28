@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this attribution contract, its within-panel stability audit, or its public artifact, cite the manuscript. No archival release (git tag plus DOI) exists yet: this tree is a v0.1.1 release candidate. The source code is MIT-licensed, code only; the ICEWS-derived aggregate results are not MIT."
+message: "If you use this attribution contract, its within-panel stability audit, or its public artifact, cite the manuscript. Corresponding author: Jingzhe Peng, pengjingzhe_quiet@foxmail.com. No archival release (git tag plus DOI) exists yet: this tree is a v0.1.1 release candidate. The source code is MIT-licensed, code only; the ICEWS-derived aggregate results are not MIT."
 title: "Actor-role components of dyadic event forecasts: shared graph columns, near-collinearity in a 196-actor panel, and a within-panel stability audit"
 abstract: >-
   Public artifact and L0-L2 verification release for the actor-role
@@ -26,12 +26,12 @@ abstract: >-
   features, persistence or any corpus beyond this panel. Source code is
   MIT-licensed; ICEWS-derived aggregate results are not MIT and remain under
   the ICEWS research-and-teaching terms. This is a v0.1.1 release candidate:
-  the v0.1.1 git tag, the DOI and the author metadata (individual names,
-  affiliations, ORCIDs) are pending.
-# Author metadata pending: no individual author names, affiliations or ORCIDs
-# have been supplied. This collective label is a placeholder, not an ORCID claim.
+  the v0.1.1 git tag and the DOI are pending.
 authors:
-  - name: "LAGS-1 authors"
+  - family-names: "Peng"
+    given-names: "Jingzhe"
+    orcid: "https://orcid.org/0009-0001-7037-6244"
+    affiliation: "Independent researcher"
 version: "0.1.1"
 # SPDX MIT: the source code only. The ICEWS-derived aggregate results under
 # results/ are not MIT and remain under the ICEWS research-and-teaching terms;

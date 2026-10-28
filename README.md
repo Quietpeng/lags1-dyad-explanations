@@ -14,9 +14,14 @@ background.
 The ownership rule is an analysis convention applied after the fact, not a
 preregistered object: no pre-run record of it exists. The feature list is
 plan-declared and internally hash-timestamped, but only the split carries an
-independently written pre-run timestamp. The class shares (44.9% actor-owned,
-55.1% not actor-owned) are descriptive outputs of that convention, not a
-property of the actors.
+independently written pre-run timestamp. The class shares (44.9% actor-owned;
+55.1% not actor-owned, the maximum of the 38.1–55.1% range over three
+allocations, and 62.3% under a fourth that moves the dyad-specific
+neighbour-activity terms out of the actor class) are descriptive outputs of
+that convention, not a property of the actors. Only 4 of the 49 features are
+role-specific: six of the seven source/target column pairs are one function for
+the same actor (five undirected graph terms plus the log in-plus-out ego
+count).
 
 The public artifact is an **L0–L2 verification release**: reading the frozen
 aggregates, verifying their hashes and contracts, and re-rendering the
@@ -30,19 +35,21 @@ this repository.
 is `0.1.1`, but no `v0.1.1` git tag has been created and no DOI has been
 minted; until the tag and DOI exist, cite the repository URL and this candidate.
 Production replaces the review-candidate label with the `v0.1.1` tag and DOI; do
-not cite this tree as an archival release. `main` and annotated tag
-`review-r2c14` mark the commit that contains this paragraph as the **published
-review snapshot**: a frozen, fetchable record of the reviewed aggregate tree,
-not an archival release and not a DOI-bearing version. The previous published
-snapshots `review-r2c13` and `review-r2c12` remain fetchable, and
-`review-r2c10` remains fetchable at commit `95aa07b`, so `review-r2c10`,
-`review-r2c12`, `review-r2c13` and `review-r2c14` are public. The public tag
-inventory is `review-r2c2` … `review-r2c8` plus `review-r2c10`,
-`review-r2c12`, `review-r2c13` and `review-r2c14`.
-`review-r2c9` and `review-r2c11` were superseded and are **local only**: no
-remote tag or branch carries either, and their text is available from the
-authors on request. Use the published `review-r2c14` snapshot when you need a
-fetchable ref; this checkout carries the same wording. The confirmatory
+not cite this tree as an archival release. Remote `main` is `review-r2c13` at
+commit `1c3c8ae`, the current **published review snapshot**: a frozen, fetchable
+record of the reviewed aggregate tree, not an archival release and not a
+DOI-bearing version. `review-r2c12` and `review-r2c10` are earlier published
+snapshots (`review-r2c10` at commit `95aa07b`), so `review-r2c10`,
+`review-r2c12` and `review-r2c13` are public. `review-r2c14` at commit
+`2d27421` is a **local text-only revision that has not been pushed or
+published**: no remote `review-r2c14` tag, branch or commit exists, and its
+aggregate tree is byte-identical to `review-r2c13`. A later local, untagged
+commit carries the V1 factual and author-metadata corrections in
+`RELEASE_NOTES.md`; it is unpublished as well. The public tag inventory is
+`review-r2c2` … `review-r2c8` plus `review-r2c10`, `review-r2c12` and
+`review-r2c13`. `review-r2c9`, `review-r2c11` and `review-r2c14` are local
+only; their text is available from the author on request. Use the published
+`review-r2c13` snapshot when you need a fetchable ref. The confirmatory
 holdout is frozen. The stability audit is **provisional**: it was recomputed
 after excluding all eventual holdout dyads from fitting and aggregation, with C
 fixed at the primary value and 50 dyad-cluster bootstrap refits. The
@@ -244,13 +251,15 @@ only. See `NOTICE`, `DATA_EXCLUSIONS.md` and the “Derived-data terms” sectio
 Citation metadata is in `CITATION.cff` and `.zenodo.json`. This is a v0.1.1
 release candidate under review: the `v0.1.1` git tag and the DOI are pending, so
 cite the repository URL and this candidate until they exist; production replaces
-the review-candidate label with the `v0.1.1` tag and DOI. Author metadata
-(individual names, affiliations, ORCIDs) is **pending** and is not invented
-here. The stability audit is
+the review-candidate label with the `v0.1.1` tag and DOI. The single author is
+**Jingzhe Peng**, Independent researcher, ORCID `0009-0001-7037-6244`,
+corresponding e-mail `pengjingzhe_quiet@foxmail.com`; the same values are in
+`CITATION.cff`, `.zenodo.json` and the manuscript front matter. The stability
+audit is
 provisional (holdout-row-excluded, 50 refits); the public `experiments/` tree is a
 five-seed preview. The manuscript is under review and is not part of this
 repository. The public ref state is recorded under **Release status** above:
-`main` and annotated tag `review-r2c14` are the current published review
-snapshot, `review-r2c13` and `review-r2c12` are earlier published snapshots and
-`review-r2c10` remains fetchable, the R2C9 and R2C11 revisions are local and
-superseded, and there is no archival `v0.1.1` tag and no DOI.
+remote `main` is `review-r2c13`, the current published review snapshot;
+`review-r2c12` and `review-r2c10` are earlier published snapshots;
+`review-r2c14`, `review-r2c9` and `review-r2c11` are local and unpublished;
+there is no archival `v0.1.1` tag and no DOI.

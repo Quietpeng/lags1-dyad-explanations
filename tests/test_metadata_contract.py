@@ -10,10 +10,11 @@ Closes the documentation/metadata defects from the R2C3 repository review:
 
 The figure-geometry (m01) and world-line inventory (m02) contracts live next
 to the frozen results in ``test_results_contract.py``. The R2C14
-release-state contract (the published ``review-r2c14`` snapshot,
-``review-r2c13``, ``review-r2c12`` and ``review-r2c10`` as earlier published
-ones, post-hoc ownership provenance and no registration claim) is folded into
-the metadata contract.
+release-state contract (``review-r2c13`` as the published remote-``main``
+snapshot, ``review-r2c14`` as a local unpublished text-only revision,
+``review-r2c12`` and ``review-r2c10`` as earlier published ones, post-hoc
+ownership provenance and no registration claim) is folded into the metadata
+contract.
 """
 
 from __future__ import annotations
@@ -182,7 +183,7 @@ README_FLAT = " ".join(README.lower().split())
 
 
 class TestCitationLicenceContract(unittest.TestCase):
-    """P2.4/R2C9: split code/deposit licences, pending authors, title and floor."""
+    """P2.4/R2C9, V1: split code/deposit licences, filled author, title, floor."""
 
     def test_cff_code_licence_is_valid_spdx_mit(self):
         self.assertEqual(CFF["license"], "MIT")
@@ -286,14 +287,19 @@ class TestCitationLicenceContract(unittest.TestCase):
                       readme)
         self.assertIn("plan-declared primary", readme)
 
-    def test_author_metadata_is_pending_and_not_invented(self):
-        names = [row["name"] for row in CFF["authors"]]
-        zen_names = [row["name"] for row in ZENODO["creators"]]
-        self.assertEqual(names, zen_names)
-        self.assertIn("pending", CFF["abstract"].lower())
-        self.assertIn("pending", ZENODO["notes"].lower())
-        payload = json.dumps([CFF, ZENODO]) + README
-        self.assertIsNone(VERIFIER.ORCID_RE.search(payload))
+    def test_author_metadata_is_filled_and_consistent(self):
+        cff = CFF["authors"][0]
+        zen = ZENODO["creators"][0]
+        self.assertEqual(
+            f"{cff['given-names']} {cff['family-names']}", "Jingzhe Peng")
+        self.assertEqual(zen["name"], "Peng, Jingzhe")
+        self.assertEqual(cff["orcid"], "https://orcid.org/0009-0001-7037-6244")
+        self.assertEqual(zen["orcid"], "0009-0001-7037-6244")
+        self.assertEqual(zen["affiliation"], "Independent researcher")
+        self.assertNotIn("author metadata", CFF["abstract"].lower())
+        self.assertNotIn("author metadata (individual names",
+                         ZENODO["notes"].lower())
+        self.assertIsNotNone(VERIFIER.ORCID_RE.search(json.dumps([CFF, ZENODO])))
         self.assertIsNone(VERIFIER.DOI_RE.search(json.dumps([CFF, ZENODO])))
 
     def test_required_test_modules_and_floor(self):
@@ -309,7 +315,8 @@ class TestCitationLicenceContract(unittest.TestCase):
 
     def test_metadata_contract_is_clean(self):
         self.assertEqual(VERIFIER.check_metadata_contract(ROOT), [])
-        # U34: a tree whose README denies its own published snapshot fails.
+        # U34 (V1): a text that presents the local r2c14 revision as published
+        # fails; naming it as local and unpublished is required.
         with tempfile.TemporaryDirectory() as tmp:
             target = Path(tmp)
             for name in ("CITATION.cff", ".zenodo.json", "pyproject.toml",
@@ -326,7 +333,7 @@ class TestCitationLicenceContract(unittest.TestCase):
                             ignore=shutil.ignore_patterns("__pycache__"))
             readme = (target / "README.md").read_text(encoding="utf-8")
             (target / "README.md").write_text(
-                readme + "\nNo `review-r2c14` tag exists on the remote.\n",
+                readme + "\n`review-r2c14` is published on `main`.\n",
                 encoding="utf-8")
             errors = VERIFIER.check_metadata_contract(target)
             self.assertTrue(any("review-r2c14" in error for error in errors), errors)

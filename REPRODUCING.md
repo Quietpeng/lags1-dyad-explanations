@@ -181,7 +181,8 @@ in `results/README.md` and the notebooks rather than by a `paper/` build.
 
 - required public files and directories, with a split code/deposit licence
   contract (CITATION.cff `MIT`, code only; `.zenodo.json` `other-open`),
-  matching title metadata, pending author metadata, the nine required test
+  matching title metadata, the filled single-author metadata (Jingzhe Peng,
+  Independent researcher, ORCID 0009-0001-7037-6244), the nine required test
   modules and the 123-test floor;
 - absence of `paper/`, `docs/`, `configs/`, `data/`, `preds/`, caches and logs;
 - strict JSON (`NaN`/`Infinity` rejected) for every `results/**/*.json`;
