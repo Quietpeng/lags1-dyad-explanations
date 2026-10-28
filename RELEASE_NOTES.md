@@ -1,5 +1,38 @@
 # Release notes
 
+## Public-artifact revision (R2C12; publishing the reviewed snapshot)
+
+Documentation, metadata and tests only; no analysis, refit, label read, plan
+edit, code or aggregate change. The frozen plan `preregistration.json` stays
+byte-identical (`41bda0e3…`) and no metric, interval, sign, timestamp, split or
+scope literal changed. The title is unchanged and is the T1 string:
+
+> *Actor-role components of dyadic event forecasts: shared graph columns,
+> near-collinearity in a 196-actor panel, and a within-panel stability audit*
+
+- **Published snapshot.** `main` and annotated tag `review-r2c12` carry the
+  commit that contains these notes as the **published review snapshot**: a
+  frozen, fetchable record of the reviewed aggregate tree, not an archival
+  release and not a DOI-bearing version. The tag and `main` point at exactly
+  this commit; no other revision is published by this pass.
+- **Tag inventory.** Public review refs: `review-r2c2` … `review-r2c8`,
+  `review-r2c10` (the prior published snapshot, commit `95aa07b`) and
+  `review-r2c12`. `review-r2c9` and `review-r2c11` were superseded and remain
+  local only: no remote tag or branch carries either. No `v0.1.0` or `v0.1.1`
+  tag is public and no DOI has been minted.
+- **Availability statements scoped.** `README.md` (release status and citation
+  sections), `DATA_EXCLUSIONS.md` and `results/README.md` now name the published
+  `review-r2c12` tag as the fetchable ref, keep `review-r2c10` as the prior
+  published snapshot, and restrict the "on request" wording to the two local
+  revisions (`review-r2c9`, `review-r2c11`). No reader-facing surface claims an
+  external registration: the plan is plan-declared and internally
+  hash-timestamped, and only the split carries an independently written pre-run
+  timestamp.
+- **Unchanged contract.** CFF `license: MIT` (code only) and Zenodo
+  `other-open` (mixed deposit) are unchanged; the version stays `0.1.1`; the
+  full suite (144 tests), the verifier (15 checks), `cffconvert`, cold-cache
+  notebook execution and deterministic `make dist` all pass.
+
 ## Public-artifact revision (R2C11; release state, availability and title checks)
 
 Documentation and metadata prose only; no analysis, refit, label read, plan
@@ -17,14 +50,19 @@ scope literal changed. The title is unchanged and is the T1 string:
   annotated tag
   `review-r2c10` (tag object `13f654a3…`, peeled `95aa07b`), i.e. a **published
   review snapshot** of the reviewed aggregates — frozen and fetchable, but not
-  an archival release and not a DOI-bearing version. The tag inventory is
-  `review-r2c2` … `review-r2c8` plus `review-r2c10`; `review-r2c9` was
-  superseded and remains local; branch `review-r2c8` also remains public. No
-  `v0.1.1` tag and no DOI exist, and no `v0.1.0` tag is public.
-- **R2C11 is local.** This text revision is a local commit on branch
-  `review-r2c11`; no `review-r2c11` tag is created and none is pushed. Its
-  wording is available from the authors on request. Anyone needing a fetchable
-  ref should cite the published `review-r2c10` snapshot, not this branch.
+  an archival release and not a DOI-bearing version. At the R2C11 freeze the tag
+  inventory was
+  `review-r2c2` … `review-r2c8` plus `review-r2c10`; branch `review-r2c8` also
+  remains public; `review-r2c9` was
+  superseded and remains local. The R2C12 entry above gives the current
+  inventory and publishes this wording. No `v0.1.1` tag and
+  no DOI exist, and no `v0.1.0` tag is public.
+- **R2C11 is local and superseded by R2C12.** At the R2C11 freeze this text
+  revision was a local commit on branch `review-r2c11`; no `review-r2c11` tag
+  was created and none was pushed. The R2C12 revision publishes that wording
+  plus these notes, so the branch is superseded; its text remains available from
+  the authors on request, and anyone needing a fetchable ref should cite the
+  published `review-r2c12` snapshot.
 - **Availability statements scoped.** `README.md` (release status and citation
   sections) and `DATA_EXCLUSIONS.md` now name the fetchable tag and commit
   instead of an unscoped "on request", and state that only the R2C11 prose is
@@ -86,9 +124,11 @@ unchanged.
   earlier R2C7 commit, and remote review refs stopped at `review-r2c8`; that
   state is superseded.
   After the freeze, `main` was moved to `95aa07b` and annotated tag
-  `review-r2c10` was published, so the reviewed snapshot is now fetchable; the
-  `review-r2c9` snapshot remains local and unpublished; no `v0.1.1` tag and no
-  DOI exist. See the R2C11 entry above for the current statement.
+  `review-r2c10` was published, so that reviewed snapshot became fetchable;
+  `review-r2c9` remained local and unpublished. R2C12 later published this
+  wording as `review-r2c12`, which is now the current snapshot (R2C10 stays
+  fetchable as the prior one); no `v0.1.1` tag and no DOI exist. See the R2C12
+  entry above for the current statement.
 - **Unchanged contract.** CFF `license: MIT` (code only) and Zenodo
   `other-open` (mixed deposit) are unchanged; the version stays `0.1.1`; the
   full suite (144 tests), the verifier (15 checks), `cffconvert`, cold-cache
@@ -119,8 +159,9 @@ R2C8 (`41bda0e3…`), and no numeric, timestamp, split or scope field changed.
   metadata tests and the frozen title strings carried the R2C9 title, which is
   superseded at R2C10 (see above).
 - **Public-boundary notes.** `DATA_EXCLUSIONS.md` names the `review-r2c9` tree
-  (local then, superseded now); the tag inventory is `review-r2c2` …
-  `review-r2c8` plus `review-r2c10`, with `review-r2c9` local only;
+  (local then, superseded now); the tag inventory at R2C9 was `review-r2c2` …
+  `review-r2c8`, with `review-r2c9` local only (the R2C12 entry above gives the
+  current inventory);
   `results/README.md` and
   `DATA_EXCLUSIONS.md` document the 48-name `files[]` inventory versus the 47
   redistributed files plus `SHA256SUMS`; the audit/figure regeneration boundary
@@ -375,7 +416,8 @@ blob, `SHA256SUMS` entry or frozen number changed.
 
 This milestone is recorded in these notes only: no `v0.1.0` tag exists in the
 public repository, and the tag inventory is `review-r2c2` … `review-r2c8` plus
-`review-r2c10` (`review-r2c9` local only). Neither a `v0.1.0` nor a `v0.1.1`
+`review-r2c10` and `review-r2c12` (`review-r2c9` and `review-r2c11` local
+only). Neither a `v0.1.0` nor a `v0.1.1`
 tag has been pushed to the public remote.
 
 This was a curated public release of the code and non-restricted aggregate

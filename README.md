@@ -23,15 +23,17 @@ this repository.
 is `0.1.1`, but no `v0.1.1` git tag has been created and no DOI has been
 minted; until the tag and DOI exist, cite the repository URL and this candidate.
 Production replaces the review-candidate label with the `v0.1.1` tag and DOI; do
-not cite this tree as an archival release. `main` is at commit `95aa07b`, which
-annotated tag `review-r2c10` marks as a **published review snapshot**: a frozen,
-fetchable record of the reviewed aggregates, not an archival release and not a
-DOI-bearing version. The public tag inventory is `review-r2c2` … `review-r2c8`
-plus `review-r2c10`; `review-r2c9` was superseded and remains local. The R2C11
-text revision described in `RELEASE_NOTES.md` is **local only**: no
-`review-r2c11` tag exists on the remote, and that text is available from the
-authors on request. Use the published `review-r2c10` snapshot when you need a
-fetchable ref, and this checkout for the current wording. The confirmatory
+not cite this tree as an archival release. `main` and annotated tag
+`review-r2c12` mark the commit that contains this paragraph as the **published
+review snapshot**: a frozen, fetchable record of the reviewed aggregate tree,
+not an archival release and not a DOI-bearing version. The previous published
+snapshot `review-r2c10` remains fetchable at commit `95aa07b`, so both
+`review-r2c10` and `review-r2c12` are public. The public tag inventory is
+`review-r2c2` … `review-r2c8` plus `review-r2c10` and `review-r2c12`.
+`review-r2c9` and `review-r2c11` were superseded and are **local only**: no
+remote tag or branch carries either, and their text is available from the
+authors on request. Use the published `review-r2c12` snapshot when you need a
+fetchable ref; this checkout carries the same wording. The confirmatory
 holdout is frozen. The stability audit is **provisional**: it was recomputed
 after excluding all eventual holdout dyads from fitting and aggregation, with C
 fixed at the primary value and 50 dyad-cluster bootstrap refits. The
@@ -235,6 +237,7 @@ here. The stability audit is
 provisional (holdout-row-excluded, 50 refits); the public `experiments/` tree is a
 five-seed preview. The manuscript is under review and is not part of this
 repository. The public ref state is recorded under **Release status** above:
-`main` = `95aa07b` with annotated tag `review-r2c10` is a public review
-snapshot, the R2C11 text revision is local, and there is no `v0.1.1` tag and no
-DOI.
+`main` and annotated tag `review-r2c12` are the current published review
+snapshot, `review-r2c10` remains the prior published snapshot, the R2C9 and
+R2C11 revisions are local and superseded, and there is no archival `v0.1.1` tag
+and no DOI.

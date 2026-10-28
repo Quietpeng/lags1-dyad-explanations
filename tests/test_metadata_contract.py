@@ -9,7 +9,9 @@ Closes the documentation/metadata defects from the R2C3 repository review:
   never enters the archive and a modified tracked file aborts the build.
 
 The figure-geometry (m01) and world-line inventory (m02) contracts live next
-to the frozen results in ``test_results_contract.py``.
+to the frozen results in ``test_results_contract.py``. The R2C12 release-state
+contract (the published ``review-r2c12`` snapshot, ``review-r2c10`` as the prior
+one, and no registration claim) is folded into the metadata contract.
 """
 
 from __future__ import annotations
@@ -267,6 +269,11 @@ class TestCitationLicenceContract(unittest.TestCase):
             text = (ROOT / rel).read_text(encoding="utf-8").lower()
             offenders += [f"{rel}: {phrase}" for phrase in banned if phrase in text]
         self.assertEqual(offenders, [])
+        # Reader-facing release prose never asserts an external registration.
+        for rel in ("README.md", "RELEASE_NOTES.md", "DATA_EXCLUSIONS.md",
+                    "results/README.md", "REPRODUCING.md", "CODE_MAP.md"):
+            text = (ROOT / rel).read_text(encoding="utf-8").lower()
+            self.assertNotIn("pre-" + "registered", text, rel)
 
     def test_claim_boundary_carries_the_qualifier(self):
         readme = " ".join(
@@ -300,6 +307,27 @@ class TestCitationLicenceContract(unittest.TestCase):
 
     def test_metadata_contract_is_clean(self):
         self.assertEqual(VERIFIER.check_metadata_contract(ROOT), [])
+        # U34: a tree whose README denies its own published snapshot fails.
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp)
+            for name in ("CITATION.cff", ".zenodo.json", "pyproject.toml",
+                         "LICENSE", "NOTICE", "README.md", "RELEASE_NOTES.md",
+                         "DATA_EXCLUSIONS.md", "REPRODUCING.md", "CODE_MAP.md"):
+                shutil.copy2(ROOT / name, target / name)
+            (target / "notebooks").mkdir()
+            shutil.copy2(ROOT / "notebooks" / "README.md",
+                         target / "notebooks" / "README.md")
+            (target / "results").mkdir()
+            shutil.copy2(ROOT / "results" / "README.md",
+                         target / "results" / "README.md")
+            shutil.copytree(ROOT / "tests", target / "tests",
+                            ignore=shutil.ignore_patterns("__pycache__"))
+            readme = (target / "README.md").read_text(encoding="utf-8")
+            (target / "README.md").write_text(
+                readme + "\nNo `review-r2c12` tag exists on the remote.\n",
+                encoding="utf-8")
+            errors = VERIFIER.check_metadata_contract(target)
+            self.assertTrue(any("review-r2c12" in error for error in errors), errors)
 
     def test_metadata_contract_flags_a_licence_mismatch(self):
         with tempfile.TemporaryDirectory() as tmp:

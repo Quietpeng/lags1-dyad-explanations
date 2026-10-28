@@ -9,6 +9,12 @@ row-level trace; see [`../DATA_EXCLUSIONS.md`](../DATA_EXCLUSIONS.md). The
 confirmatory holdout was frozen on 2026-10-23; the stability audit is
 provisional. Read the status table before quoting a number.
 
+The shipped aggregates are the published review snapshot: annotated tag
+`review-r2c12` on `main` (prior published snapshot `review-r2c10` at commit
+`95aa07b`). `review-r2c9` and `review-r2c11` are superseded and local only; no
+`v0.1.1` tag and no DOI exist. The tag names the frozen bytes described below,
+not an archival release.
+
 ## Status at a glance
 
 | Artifact | Status | What it supports |

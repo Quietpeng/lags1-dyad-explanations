@@ -1,9 +1,9 @@
 # Data exclusions and privacy boundary
 
 **Applies to:** the public artifact `lags1-dyad-explanations`, release candidate
-0.1.1 (published `review-r2c10` tree at commit `95aa07b`; `review-r2c9`
-superseded and local only). The R2C11 documentation revision is a local commit
-and is not published. **Status:** the earlier row-level leak is closed (the
+0.1.1 (published `review-r2c12` tree; `review-r2c10` remains the prior published
+snapshot at commit `95aa07b`; `review-r2c9` and `review-r2c11` are superseded and
+local only). **Status:** the earlier row-level leak is closed (the
 contaminated history is quarantined in a private repository and is not reachable
 from this tree).
 

@@ -19,6 +19,9 @@ Checks
 * ``experiments/STABILITY_VARIANT.md`` exists and no public document claims a
   five-seed audit or the legacy ``provisional_no_fresh_holdout`` status;
 * the pre-registration checksum uses a repo-relative path and matches;
+* reader-facing prose names the published ``review-r2c12`` snapshot, keeps
+  ``review-r2c10`` as the prior published one, denies its own publication
+  nowhere, and asserts no registration status;
 * manifest entries for non-redistributed predictions/logs are marked
   ``redistributed: false`` and the files are absent;
 * every ``manifest.code`` entry has a ``code_annotations.current_sha256``
@@ -470,6 +473,34 @@ def check_metadata_contract(root: Path) -> list[str]:
     if "do not cite this tree as an archival release" not in readme_flat:
         errors.append("README.md does not flag the review candidate as non-archival")
 
+    # U34: the paper cites the review snapshot this tree publishes. The release
+    # operator creates `review-r2c12` and moves `main` after the commit, so the
+    # README must name that tag as published; a text that denies its own
+    # publication, or that still advertises the superseded ref as current, fails
+    # here. R2C10 stays valid as the prior published snapshot.
+    if "review-r2c12" not in readme_flat:
+        errors.append("README.md does not cite the published review-r2c12 snapshot")
+    if "published review snapshot" not in readme_flat:
+        errors.append("README.md does not call the review-r2c12 tree a published snapshot")
+    if "both `review-r2c10` and `review-r2c12` are public" not in readme_flat:
+        errors.append("README.md does not state that review-r2c10 and review-r2c12 are public")
+    for denial in (
+        "no `review-r2c12` tag",
+        "no review-r2c12",
+        "review-r2c12` is local",
+        "review-r2c12 is local",
+        "review-r2c12` is **local",
+    ):
+        if denial in readme_flat:
+            errors.append(f"README.md denies its own publication: {denial!r}")
+    for rel in ("DATA_EXCLUSIONS.md", "results/README.md"):
+        path = root / rel
+        if not path.is_file():
+            errors.append(f"{rel} is missing")
+            continue
+        if "review-r2c12" not in path.read_text(encoding="utf-8").lower():
+            errors.append(f"{rel} does not name the published review-r2c12 snapshot")
+
     cff_authors = [row.get("name") for row in cff.get("authors") or [] if isinstance(row, dict)]
     zen_authors = [row.get("name") for row in zenodo.get("creators") or [] if isinstance(row, dict)]
     if cff_authors != zen_authors:
@@ -517,6 +548,17 @@ def check_metadata_contract(root: Path) -> list[str]:
         for phrase in unqualified_status:
             if phrase in text:
                 errors.append(f"{rel} keeps an unqualified status phrase: {phrase!r}")
+    # Reader-facing release prose never asserts an external registration, even
+    # where a frozen result document uses the plan's own vocabulary for one
+    # declared BH family.
+    for rel in ("README.md", "RELEASE_NOTES.md", "DATA_EXCLUSIONS.md",
+                "results/README.md", "REPRODUCING.md", "CODE_MAP.md"):
+        path = root / rel
+        if not path.is_file():
+            errors.append(f"{rel} is missing")
+            continue
+        if "pre-" + "registered" in path.read_text(encoding="utf-8").lower():
+            errors.append(f"{rel} asserts a registration status")
     results_readme_path = root / "results" / "README.md"
     if not results_readme_path.is_file():
         errors.append("results/README.md is missing")
