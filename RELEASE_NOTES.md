@@ -1,5 +1,44 @@
 # Release notes
 
+## Public-artifact revision (R2C14; text-only trim, release-state roll-forward)
+
+Documentation, verifier and tests only; no analysis, refit, label read, plan
+edit, data change or aggregate edit. The R2C14 manuscript pass is a 28-word
+text trim and changes no number, table or figure. The frozen plan
+`preregistration.json` stays byte-identical (`41bda0e3…`); no metric, interval,
+sign, timestamp, split, class share or scope literal changed, and no
+`results/**` byte moved. The title is unchanged and is the T1 string:
+
+> *Actor-role components of dyadic event forecasts: shared graph columns,
+> near-collinearity in a 196-actor panel, and a within-panel stability audit*
+
+- **Published snapshot.** `main` and annotated tag `review-r2c14` carry the
+  commit that contains these notes as the **published review snapshot**: a
+  frozen, fetchable record of the reviewed aggregate tree, not an archival
+  release and not a DOI-bearing version. The release operator creates the tag
+  and moves `main` after this commit. `review-r2c13` and `review-r2c12` are
+  earlier published snapshots and `review-r2c10` remains fetchable at commit
+  `95aa07b`, so `review-r2c10`, `review-r2c12`, `review-r2c13` and
+  `review-r2c14` are public. `review-r2c9` and `review-r2c11` were superseded
+  and remain local only: no remote tag or branch carries either. No `v0.1.0` or
+  `v0.1.1` archival tag is public and no DOI has been minted. The CFF keeps
+  `license: MIT` (code only) and Zenodo keeps `other-open` (mixed deposit); the
+  version stays `0.1.1`.
+- **Unchanged qualifiers.** The ownership rule remains a **post-hoc** six-class
+  analysis convention over a plan-declared feature list with no pre-run record;
+  only the split carries an independently written pre-run timestamp. The
+  class shares stay 44.9% actor-owned / 55.1% not actor-owned. The world-line
+  preview stays a repository-only illustration of four anchors × 20 sampled
+  directed dyads (71 distinct, non-random, inner period 2016-01–2017-11), cited
+  once and analysed nowhere in the manuscript. The stability audit stays
+  provisional, holdout-row-excluded and 50-refit; `experiments/` stays a
+  five-seed preview.
+- **Verifier and tests.** The release-state checks carry the R2C14 inventory
+  and the previous public snapshots; the negative release-state fixture now
+  probes denial of `review-r2c14`. The suite stays at 144 tests and the
+  verifier at 15 checks. `cffconvert`, cold-cache notebook execution and
+  deterministic `make dist` pass.
+
 ## Public-artifact revision (R2C13; provenance, world-line disclosure and doc truth)
 
 Documentation, metadata, verifier and tests only; no analysis, refit, label
@@ -476,9 +515,10 @@ blob, `SHA256SUMS` entry or frozen number changed.
 ## v0.1.0 — first curated release (no git tag)
 
 This milestone is recorded in these notes only: no `v0.1.0` tag exists in the
-public repository, and the tag inventory is `review-r2c2` … `review-r2c8` plus
-`review-r2c10` and `review-r2c12` (`review-r2c9` and `review-r2c11` local
-only). Neither a `v0.1.0` nor a `v0.1.1`
+public repository, and the current tag inventory is `review-r2c2` …
+`review-r2c8` plus `review-r2c10`, `review-r2c12`, `review-r2c13` and
+`review-r2c14` (`review-r2c9` and `review-r2c11` local only). Neither a
+`v0.1.0` nor a `v0.1.1`
 tag has been pushed to the public remote.
 
 This was a curated public release of the code and non-restricted aggregate
