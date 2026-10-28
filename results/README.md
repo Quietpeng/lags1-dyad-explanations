@@ -73,6 +73,20 @@ context**: no public table, aggregate or test is derived from them, they are not
 redistributed, and Table 1 is neither reproduced nor changed here. `run_once.json`
 and `manifest.json#/counts` carry the filtered counts.
 
+**Plan-status and `train_rows` annotations (documentation only).**
+`holdout/preregistration.json#/status` reads
+`FROZEN_BEFORE_HOLDOUT_LABEL_READ`. Read that literal as the plan file's own
+internal hash-timestamp, not as an external registration or a reader-facing
+registration claim: only the split carries an independently written pre-run
+timestamp, the plan hash is first recorded in the post-run manifest, and the
+manuscript's Appendix B states the timing.
+`holdout/preregistration.json#/holdout/counts/train_rows`
+(1,262,398) is also not the training-set size: it counts the training-window
+rows (239 months) of the 5,282 held-out dyads, i.e. exactly the rows the fit
+excludes (5,282 × 239). The filtered training set is
+`manifest.json#/counts/train` (5,055,328), and the holdout count is
+`counts.eval` (311,638). No frozen `results/**` file is edited by either note.
+
 ### Stability audit (provisional)
 
 | File | Content |

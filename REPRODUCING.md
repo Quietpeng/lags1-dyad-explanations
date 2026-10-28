@@ -195,6 +195,12 @@ in `results/README.md` and the notebooks rather than by a `paper/` build.
 - no absolute home/temporary paths and no credential-like strings;
 - no forbidden path tracked by git (when run in a git tree).
 
+The path scan names four absolute-path prefixes — `/home`, `/tmp`, `/Users` and
+`C:` user directories — and the credential scan covers AWS key ids, GitHub and
+OpenAI token shapes, private-key blocks and inline secret assignments. Both are
+plain text scans over the shipped tree, so a copied local path or a pasted token
+in a document fails `make verify` exactly as it would in code.
+
 `cffconvert --validate -i CITATION.cff` is part of CI and runs in the metadata
 tests when the tool is installed; it must report schema 1.2.0 validity.
 

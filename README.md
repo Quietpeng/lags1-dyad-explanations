@@ -23,9 +23,15 @@ this repository.
 is `0.1.1`, but no `v0.1.1` git tag has been created and no DOI has been
 minted; until the tag and DOI exist, cite the repository URL and this candidate.
 Production replaces the review-candidate label with the `v0.1.1` tag and DOI; do
-not cite this tree as an archival release. Review snapshots after `review-r2c8`
-are local only and available from the authors on request; no `review-r2c9` or
-`review-r2c10` ref is published. The confirmatory
+not cite this tree as an archival release. `main` is at commit `95aa07b`, which
+annotated tag `review-r2c10` marks as a **published review snapshot**: a frozen,
+fetchable record of the reviewed aggregates, not an archival release and not a
+DOI-bearing version. The public tag inventory is `review-r2c2` … `review-r2c8`
+plus `review-r2c10`; `review-r2c9` was superseded and remains local. The R2C11
+text revision described in `RELEASE_NOTES.md` is **local only**: no
+`review-r2c11` tag exists on the remote, and that text is available from the
+authors on request. Use the published `review-r2c10` snapshot when you need a
+fetchable ref, and this checkout for the current wording. The confirmatory
 holdout is frozen. The stability audit is **provisional**: it was recomputed
 after excluding all eventual holdout dyads from fitting and aggregation, with C
 fixed at the primary value and 50 dyad-cluster bootstrap refits. The
@@ -104,7 +110,11 @@ make test
 
 `make test` runs the public suite. `make verify` checks hashes, strict JSON,
 notebook outputs, forbidden paths, absolute paths and credential-like strings.
-No restricted input is required by either target. The CFF is schema-validated in
+The absolute-path scan matches four prefixes — `/home`, `/tmp`, `/Users` and
+`C:` user directories — so a copied local path fails the release even when the
+rest of the text is clean; the credential scan covers AWS key ids, GitHub and
+OpenAI token shapes, private-key blocks and inline secret assignments. No
+restricted input is required by either target. The CFF is schema-validated in
 CI with `cffconvert --validate -i CITATION.cff`; it carries the MIT code licence
 and keeps the ICEWS aggregate carve-out.
 
@@ -177,7 +187,9 @@ side is dominated. The plan-declared
 beat the warm-history baseline on log-loss by 0.004510 (Δ = −0.004510; 95% CI
 −0.007597 to −0.001423; secondary, not in a BH family); its use for dyad-level
 probability ranking is **post-hoc**, not a new confirmatory test and not a
-primary swap. In the plan-declared 49-feature contract, under the
+primary swap. The 29-vs-warm contrast itself is **post hoc, nominal and
+unadjusted**: the plan declared the 29-feature model, not that comparison. In
+the plan-declared 49-feature contract, under the
 **holdout-zeroed** graph cache, the 20 graph features do not improve held-out
 log-loss. The confirmatory evaluation and the stability audit use distinct cache
 policies: the confirmatory numbers are **holdout-zeroed** (held-out edges zeroed
@@ -222,4 +234,7 @@ the review-candidate label with the `v0.1.1` tag and DOI. Author metadata
 here. The stability audit is
 provisional (holdout-row-excluded, 50 refits); the public `experiments/` tree is a
 five-seed preview. The manuscript is under review and is not part of this
-repository.
+repository. The public ref state is recorded under **Release status** above:
+`main` = `95aa07b` with annotated tag `review-r2c10` is a public review
+snapshot, the R2C11 text revision is local, and there is no `v0.1.1` tag and no
+DOI.

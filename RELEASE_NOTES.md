@@ -1,5 +1,52 @@
 # Release notes
 
+## Public-artifact revision (R2C11; release state, availability and title checks)
+
+Documentation and metadata prose only; no analysis, refit, label read, plan
+edit, code or aggregate change. The frozen plan `preregistration.json` stays
+byte-identical (`41bda0e3…`) and no metric, interval, sign, timestamp, split or
+scope literal changed. The title is unchanged and is the T1 string:
+
+> *Actor-role components of dyadic event forecasts: shared graph columns,
+> near-collinearity in a 196-actor panel, and a within-panel stability audit*
+
+- **Release state corrected.** The R2C10 notes said the `review-r2c10` branch
+  and tag were local and that `origin/main` still pointed at the earlier R2C7
+  commit. That is no longer true: publication happened outside the revision
+  agent, after the R2C10 freeze. The public remote now has `main = 95aa07b` and
+  annotated tag
+  `review-r2c10` (tag object `13f654a3…`, peeled `95aa07b`), i.e. a **published
+  review snapshot** of the reviewed aggregates — frozen and fetchable, but not
+  an archival release and not a DOI-bearing version. The tag inventory is
+  `review-r2c2` … `review-r2c8` plus `review-r2c10`; `review-r2c9` was
+  superseded and remains local; branch `review-r2c8` also remains public. No
+  `v0.1.1` tag and no DOI exist, and no `v0.1.0` tag is public.
+- **R2C11 is local.** This text revision is a local commit on branch
+  `review-r2c11`; no `review-r2c11` tag is created and none is pushed. Its
+  wording is available from the authors on request. Anyone needing a fetchable
+  ref should cite the published `review-r2c10` snapshot, not this branch.
+- **Availability statements scoped.** `README.md` (release status and citation
+  sections) and `DATA_EXCLUSIONS.md` now name the fetchable tag and commit
+  instead of an unscoped "on request", and state that only the R2C11 prose is
+  request-only. Claim wording is unchanged: the plan is
+  plan-declared and internally hash-timestamped, the split is pre-specified and
+  independently timestamped, and no reader-facing surface claims an external
+  registration.
+- **Superseded status note.** `results/README.md` keeps the single surviving
+  superseded stability status literal annotated as superseded and unused, and
+  now also annotates `preregistration.json#/status` and the `train_rows`
+  denominator (the plan counts the excluded held-out-dyad training rows; the
+  manifest counts the filtered training set). Both annotations are
+  documentation-only; no `results/**` JSON is edited.
+- **Title checks.** The T1 title is carried unchanged by `README.md`,
+  `CITATION.cff`, `.zenodo.json`, `pyproject.toml`, `notebooks/README.md`, the
+  verifier and the metadata tests; the metadata test suite still rejects the
+  superseded R2C9 title framing, and `cffconvert --validate` passes.
+- **Unchanged contract.** CFF `license: MIT` (code only) and Zenodo
+  `other-open` (mixed deposit) are unchanged; the version stays `0.1.1`; the
+  full suite (144 tests), the verifier (15 checks), `cffconvert`, cold-cache
+  notebook execution and deterministic `make dist` all pass.
+
 ## Public-artifact revision (R2C10; construction statement, status annotations and title)
 
 Text, public documentation, metadata and tests only; no analysis, refit, label
@@ -11,8 +58,9 @@ note in `results/framework_pilot/holdout/report.md`, whose digest is updated in
 `manifest.json#/release_annotations/current_sha256`; `summary.json` bytes are
 unchanged.
 
-- **Title corrected.** The R2C9 title carried the phrase "one actor signal" as
-  an empirical claim; that phrase is superseded, not current. The public title
+- **Title corrected (unchanged at R2C11).** The R2C9 title made an empirical
+  single-actor-signal claim; that framing is superseded, not current, and is
+  never used as a description of this release. The public title
   now reads *Actor-role components of dyadic event forecasts: shared graph
   columns, near-collinearity in a 196-actor panel, and a within-panel stability
   audit*. The manuscript-side replacement is the construction statement: five
@@ -33,12 +81,14 @@ unchanged.
   analysis plan is internally hash-timestamped. `summary.json` and
   `summary_decompose.json` bytes are unchanged; the annotation is
   documentation-only.
-- **No new public ref.** The `review-r2c10` branch remains local and no
-  `review-r2c10` tag was created, and the `review-r2c9` snapshot is not
-  published. No `review-r2c9` or `review-r2c10` ref exists on the remote;
-  `origin/main` remains `170f7c1…`; remote review refs stop at `review-r2c8`;
-  no `v0.1.1` tag and no DOI. The reviewed snapshot is available from the
-  authors on request.
+- **Public ref (superseded by external publication).** At R2C10 freeze the
+  `review-r2c10` branch and tag were still local, `origin/main` was still the
+  earlier R2C7 commit, and remote review refs stopped at `review-r2c8`; that
+  state is superseded.
+  After the freeze, `main` was moved to `95aa07b` and annotated tag
+  `review-r2c10` was published, so the reviewed snapshot is now fetchable; the
+  `review-r2c9` snapshot remains local and unpublished; no `v0.1.1` tag and no
+  DOI exist. See the R2C11 entry above for the current statement.
 - **Unchanged contract.** CFF `license: MIT` (code only) and Zenodo
   `other-open` (mixed deposit) are unchanged; the version stays `0.1.1`; the
   full suite (144 tests), the verifier (15 checks), `cffconvert`, cold-cache
@@ -68,8 +118,10 @@ R2C8 (`41bda0e3…`), and no numeric, timestamp, split or scope field changed.
   `.zenodo.json`, `pyproject.toml`, `notebooks/README.md`, the verifier, the
   metadata tests and the frozen title strings carried the R2C9 title, which is
   superseded at R2C10 (see above).
-- **Public-boundary notes.** `DATA_EXCLUSIONS.md` names the `review-r2c9` tree;
-  the tag inventory is `review-r2c2` … `review-r2c9`; `results/README.md` and
+- **Public-boundary notes.** `DATA_EXCLUSIONS.md` names the `review-r2c9` tree
+  (local then, superseded now); the tag inventory is `review-r2c2` …
+  `review-r2c8` plus `review-r2c10`, with `review-r2c9` local only;
+  `results/README.md` and
   `DATA_EXCLUSIONS.md` document the 48-name `files[]` inventory versus the 47
   redistributed files plus `SHA256SUMS`; the audit/figure regeneration boundary
   (private 50-refit tree versus the public five-seed preview) is stated; and the
@@ -322,8 +374,9 @@ blob, `SHA256SUMS` entry or frozen number changed.
 ## v0.1.0 — first curated release (no git tag)
 
 This milestone is recorded in these notes only: no `v0.1.0` tag exists in the
-public repository, and the tag inventory is `review-r2c2` … `review-r2c9`.
-Neither a `v0.1.0` nor a `v0.1.1` tag has been pushed to the public remote.
+public repository, and the tag inventory is `review-r2c2` … `review-r2c8` plus
+`review-r2c10` (`review-r2c9` local only). Neither a `v0.1.0` nor a `v0.1.1`
+tag has been pushed to the public remote.
 
 This was a curated public release of the code and non-restricted aggregate
 artifacts. Local absolute paths in copied reports/scripts were replaced with

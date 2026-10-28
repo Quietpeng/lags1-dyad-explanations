@@ -2,6 +2,10 @@
 
 **Status:** `ILLUSTRATIVE PREVIEW - NOT VALIDATED; NO MULTI-STEP ACCURACY CLAIM.`
 
+**Artifact-only illustration.** The manuscript does not analyse this preview
+(§6.4 discusses it as a repository-only illustration); no paper figure, table,
+appendix or number is derived from it, and it supports no claim in the release.
+
 > **Print version (2026-10-26).** `worldline_preview.pdf` is a standalone,
 > repo-only vector render: 425.2 × 330 pt (150 mm), Arimo, TrueType fonts, no
 > baked-in key. It is **not a manuscript exhibit** — the repository ships it as
