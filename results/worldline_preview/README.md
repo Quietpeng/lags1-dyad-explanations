@@ -2,9 +2,11 @@
 
 **Status:** `ILLUSTRATIVE PREVIEW - NOT VALIDATED; NO MULTI-STEP ACCURACY CLAIM.`
 
-**Artifact-only illustration.** The manuscript does not analyse this preview
-(§6.4 discusses it as a repository-only illustration); no paper figure, table,
+**Artifact-only illustration.** The manuscript cites this directory once as a
+repository-only illustration; it analyses nothing here. No paper figure, table,
 appendix or number is derived from it, and it supports no claim in the release.
+The sample is **four anchors × 20 directed dyads (71 distinct), non-random**,
+from the inner-validation period 2016-01–2017-11; it is not a paper result.
 
 > **Print version (2026-10-26).** `worldline_preview.pdf` is a standalone,
 > repo-only vector render: 425.2 × 330 pt (150 mm), Arimo, TrueType fonts, no

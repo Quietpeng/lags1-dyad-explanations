@@ -13,9 +13,12 @@ All commands assume the repository root and `python3` (>= 3.12; the pinned
 
 **What this artifact is.** What ships is the manuscript's actor-role
 attribution contract and its within-panel stability audit, released for
-verification: an ex ante feature-ownership rule that fixes unit and sign before
-results, an exact group-additive decomposition (the logistic identity, not a
-new estimator) and a separate stability audit. It is one paper path, not a
+verification: a post-hoc six-class ownership convention applied to a
+plan-declared feature list, fixing one owner per feature and the unit and sign,
+an exact group-additive decomposition (the logistic identity, not a new
+estimator) and a separate stability audit. The ownership convention has no
+pre-run record and is not a preregistered object; only the split carries an
+independently written pre-run timestamp. It is one paper path, not a
 reusable framework, and it makes no general claim about graph features,
 persistence or any corpus beyond this panel. The executable surface is L0–L2;
 L3–L4 are documented for context only. The 50-refit audit code is restricted

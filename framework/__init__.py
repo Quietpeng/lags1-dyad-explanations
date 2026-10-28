@@ -1,8 +1,10 @@
 """Public reference implementation of the actor-role attribution contract.
 
 This package is the artefact accompanying the manuscript. It implements one
-paper path — an ex ante feature-ownership contract and its audit — not a
-reusable framework and not a new estimator. It is deliberately
+paper path — a post-hoc six-class feature-ownership convention over a
+plan-declared feature list, and its audit — not a reusable framework and not a
+new estimator. The ownership convention has no pre-run record; only the split
+carries an independently written pre-run timestamp. It is deliberately
 dependency-light and CPU only:
 
 * numpy / pandas / duckdb / scikit-learn / scipy / matplotlib;

@@ -4,10 +4,12 @@ title: "Actor-role components of dyadic event forecasts: shared graph columns, n
 abstract: >-
   Public artifact and L0-L2 verification release for the actor-role
   attribution contract of this manuscript, together with a within-panel
-  stability audit. The contract fixes feature ownership, unit and sign
-  before results, so every logistic forecast carries an exact group-additive
-  decomposition into source-role, target-role, dyad and non-actor groups. It
-  is a design convention and audit, not a new estimator: the decomposition
+  stability audit. The contract applies a post-hoc six-class ownership
+  convention to a plan-declared feature list and fixes unit and sign, so every
+  logistic forecast carries an exact group-additive decomposition into
+  source-role, target-role, dyad and non-actor groups. The ownership convention
+  has no pre-run record. It is a design convention and audit, not a new
+  estimator: the decomposition
   is the logistic identity and coincides with linear SHAP under a
   training-mean background. The release is one paper path, not a reusable
   framework, and is executable at L0-L2 only (read the frozen aggregates,

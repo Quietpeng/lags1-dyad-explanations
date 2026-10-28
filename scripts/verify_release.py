@@ -19,9 +19,9 @@ Checks
 * ``experiments/STABILITY_VARIANT.md`` exists and no public document claims a
   five-seed audit or the legacy ``provisional_no_fresh_holdout`` status;
 * the pre-registration checksum uses a repo-relative path and matches;
-* reader-facing prose names the published ``review-r2c12`` snapshot, keeps
-  ``review-r2c10`` as the prior published one, denies its own publication
-  nowhere, and asserts no registration status;
+* reader-facing prose names the published ``review-r2c13`` snapshot, keeps
+  ``review-r2c12`` and ``review-r2c10`` as earlier published ones, denies its
+  own publication nowhere, and asserts no registration status;
 * manifest entries for non-redistributed predictions/logs are marked
   ``redistributed: false`` and the files are absent;
 * every ``manifest.code`` entry has a ``code_annotations.current_sha256``
@@ -197,6 +197,13 @@ IDENTIFIER_COLUMNS = {
     "dyad_label", "month",
 }
 RATE_JSON_KEYS = {"mean_p", "p_sum", "y_sum", "mean_y", "p_model"}
+# MN29: notebook outputs are reader-facing too. A rendered DataFrame can leak
+# the same row-level columns as a shipped CSV, so text/plain and text/html
+# outputs are scanned for these tokens (p1_summary/p2_summary stay allowed).
+NOTEBOOK_OUTPUT_TOKENS = (
+    "p_model", "mean_p", "p_sum", "y_sum", "mean_y",
+    "dyad_contributions", "preds/",
+)
 
 
 def sha256_file(path: Path) -> str:
@@ -458,6 +465,37 @@ def check_metadata_contract(root: Path) -> list[str]:
     readme_flat = " ".join(readme.lower().split())
     if RELEASE_SUBTITLE not in readme_flat:
         errors.append("README.md subtitle does not carry the current title framing")
+
+    # MJ01: ownership provenance. The six-class rule is a post-hoc analysis
+    # convention over a plan-declared feature list, not a pre-run object; no
+    # reader-facing surface may imply a run-time ownership record.
+    ownership_surfaces = (
+        "README.md", "REPRODUCING.md", "CITATION.cff", ".zenodo.json",
+        "framework/__init__.py",
+    )
+    for name in ownership_surfaces:
+        path = root / name
+        if not path.is_file():
+            errors.append(f"{name} is missing")
+            continue
+        body = " ".join(path.read_text(encoding="utf-8").lower().split())
+        for banned in ("ex " + "ante", "ex-" + "ante",
+                       "before " + "results", "declared " + "before"):
+            if banned in body:
+                errors.append(
+                    f"{name} presents feature ownership as {banned!r}")
+        if "post-hoc" not in body:
+            errors.append(f"{name} does not mark the ownership rule as post-hoc")
+        if "plan-declared" not in body and "plan declared" not in body:
+            errors.append(f"{name} does not name the feature list as plan-declared")
+
+    # MN31: figure numbering follows the manuscript's Figure 2/3/4 build; the
+    # retired holdout path must not reappear in reader-facing docs.
+    for name in ("README.md", "notebooks/README.md",
+                 "notebooks/01_confirmatory_holdout.ipynb"):
+        path = root / name
+        if path.is_file() and "fig4_holdout" in path.read_text(encoding="utf-8"):
+            errors.append(f"{name} cites the non-existent fig4_holdout.pdf")
     versions = {
         "CITATION.cff": cff.get("version"),
         ".zenodo.json": zenodo.get("version"),
@@ -474,22 +512,25 @@ def check_metadata_contract(root: Path) -> list[str]:
         errors.append("README.md does not flag the review candidate as non-archival")
 
     # U34: the paper cites the review snapshot this tree publishes. The release
-    # operator creates `review-r2c12` and moves `main` after the commit, so the
+    # operator creates `review-r2c13` and moves `main` after the commit, so the
     # README must name that tag as published; a text that denies its own
     # publication, or that still advertises the superseded ref as current, fails
-    # here. R2C10 stays valid as the prior published snapshot.
-    if "review-r2c12" not in readme_flat:
-        errors.append("README.md does not cite the published review-r2c12 snapshot")
+    # here. R2C12 and R2C10 stay valid as earlier published snapshots.
+    if "review-r2c13" not in readme_flat:
+        errors.append("README.md does not cite the published review-r2c13 snapshot")
     if "published review snapshot" not in readme_flat:
-        errors.append("README.md does not call the review-r2c12 tree a published snapshot")
-    if "both `review-r2c10` and `review-r2c12` are public" not in readme_flat:
-        errors.append("README.md does not state that review-r2c10 and review-r2c12 are public")
+        errors.append("README.md does not call the review-r2c13 tree a published snapshot")
+    if ("`review-r2c10`, `review-r2c12` and `review-r2c13` are public"
+            not in readme_flat):
+        errors.append(
+            "README.md does not state that review-r2c10, review-r2c12 and "
+            "review-r2c13 are public")
     for denial in (
-        "no `review-r2c12` tag",
-        "no review-r2c12",
-        "review-r2c12` is local",
-        "review-r2c12 is local",
-        "review-r2c12` is **local",
+        "no `review-r2c13` tag",
+        "no review-r2c13",
+        "review-r2c13` is local",
+        "review-r2c13 is local",
+        "review-r2c13` is **local",
     ):
         if denial in readme_flat:
             errors.append(f"README.md denies its own publication: {denial!r}")
@@ -498,8 +539,8 @@ def check_metadata_contract(root: Path) -> list[str]:
         if not path.is_file():
             errors.append(f"{rel} is missing")
             continue
-        if "review-r2c12" not in path.read_text(encoding="utf-8").lower():
-            errors.append(f"{rel} does not name the published review-r2c12 snapshot")
+        if "review-r2c13" not in path.read_text(encoding="utf-8").lower():
+            errors.append(f"{rel} does not name the published review-r2c13 snapshot")
 
     cff_authors = [row.get("name") for row in cff.get("authors") or [] if isinstance(row, dict)]
     zen_authors = [row.get("name") for row in zenodo.get("creators") or [] if isinstance(row, dict)]
@@ -916,8 +957,21 @@ def check_notebooks(root: Path) -> list[str]:
             for output in outputs:
                 if output.get("output_type") == "error":
                     errors.append(f"{rel}: code cell {index} has an error output")
-                if "image/png" in output.get("data", {}):
+                data = output.get("data", {})
+                if "image/png" in data:
                     image_outputs += 1
+                for mime in ("text/plain", "text/html"):
+                    payload = data.get(mime)
+                    if isinstance(payload, list):
+                        payload = "".join(str(part) for part in payload)
+                    if not isinstance(payload, str):
+                        continue
+                    lowered = payload.lower()
+                    for token in NOTEBOOK_OUTPUT_TOKENS:
+                        if token in lowered:
+                            errors.append(
+                                f"{rel}: code cell {index} output carries "
+                                f"row-level token {token!r}")
         if path.name in ("01_confirmatory_holdout.ipynb",
                          "03_worldline_preview.ipynb") and image_outputs == 0:
             errors.append(f"{rel}: expected an embedded PNG output")
@@ -1101,6 +1155,23 @@ def check_worldline_notice(root: Path) -> list[str]:
     if "not a manuscript exhibit" not in lowered:
         errors.append(
             "worldline README does not state that the preview is not a manuscript exhibit")
+    # MJ02: the §6.4 disclosure names the object and its limits; every shipped
+    # description must carry the same 4 x 20 non-random inner-period scope and
+    # state that the manuscript analyses nothing here.
+    for rel in ("README.md", "results/README.md",
+                "results/worldline_preview/README.md",
+                "notebooks/README.md", "notebooks/03_worldline_preview.ipynb"):
+        path = root / rel
+        if not path.is_file():
+            errors.append(f"{rel} is missing")
+            continue
+        body = " ".join(path.read_text(encoding="utf-8").lower().split())
+        if "6.4 discusses" in body:
+            errors.append(f"{rel} still claims that §6.4 discusses the preview")
+        for phrase in ("four anchors", "20", "non-random", "inner",
+                       "paper result", "analyses nothing"):
+            if phrase not in body:
+                errors.append(f"{rel} lacks the world-line disclosure phrase {phrase!r}")
     # m01 (R2C3): the two remaining docs that advertised the superseded
     # 164 mm / 465x380 pt geometry must now state the 150 mm paper-A1 geometry.
     docs = {}

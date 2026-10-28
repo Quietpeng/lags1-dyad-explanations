@@ -56,6 +56,31 @@ class TestNotebookSuite(unittest.TestCase):
                 self.assertNotIn(token, text, f"{path.name}: {token}")
             self.assertNotIn("Traceback (most recent call last)", text)
 
+        # MN29: text/plain and text/html outputs are scanned, not just errors.
+        import importlib.util
+        import shutil
+        import tempfile
+
+        spec = importlib.util.spec_from_file_location(
+            "check_notebooks_mn29", ROOT / "scripts" / "verify_release.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "notebooks"
+            shutil.copytree(NOTEBOOKS, target)
+            path = target / "03_worldline_preview.ipynb"
+            nb = load(path)
+            code = next(cell for cell in nb["cells"]
+                        if cell.get("cell_type") == "code")
+            code.setdefault("outputs", []).append({
+                "output_type": "display_data",
+                "data": {"text/plain": ["mean_p  0.123\n"]},
+                "metadata": {},
+            })
+            path.write_text(json.dumps(nb), encoding="utf-8")
+            errors = module.check_notebooks(Path(tmp))
+            self.assertTrue(any("mean_p" in error for error in errors), errors)
+
     def test_notebooks_do_not_read_restricted_inputs(self):
         forbidden = ("read_parquet", "duckdb", "data/icews", "preds/", ".npz")
         for path in sorted(NOTEBOOKS.glob("*.ipynb")):
@@ -88,8 +113,16 @@ class TestNotebookSuite(unittest.TestCase):
 
     def test_notebook_03_is_labelled_illustrative(self):
         source = sources(load(NOTEBOOKS / "03_worldline_preview.ipynb"))
+        lowered = " ".join(source.lower().split())
         self.assertIn("ILLUSTRATIVE PREVIEW - NOT VALIDATED", source)
-        self.assertIn("no multi-step accuracy claim", source.lower())
+        self.assertIn("no multi-step accuracy claim", lowered)
+        # MJ02: same 4 x 20 non-random inner-period scope as §6.4.
+        self.assertIn("four anchors", lowered)
+        self.assertIn("20 sampled", lowered)
+        self.assertIn("non-random", lowered)
+        self.assertIn("inner-validation", lowered)
+        self.assertIn("analyses nothing here", lowered)
+        self.assertIn("not a paper result", lowered)
 
     def test_figures_are_embedded_and_metadata_is_current(self):
         expected_images = {"01_confirmatory_holdout.ipynb", "03_worldline_preview.ipynb"}

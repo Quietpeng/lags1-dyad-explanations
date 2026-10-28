@@ -3,13 +3,20 @@
 **shared graph columns, near-collinearity in a 196-actor panel, and a within-panel stability audit.**
 
 Code, tests and aggregate results for the **actor-role attribution contract**
-and **within-panel stability audit** of the manuscript: an ex ante ownership
-rule that fixes unit and sign before results, exact additive source- and
-target-role components for binary dyad-month political event forecasts, and a
-separate stability audit. The deliverable is a contract plus audit, not a
+and **within-panel stability audit** of the manuscript: a post-hoc six-class
+ownership convention over a plan-declared feature list that fixes one owner per
+feature, unit and sign; exact additive source- and target-role components for
+binary dyad-month political event forecasts; and a separate stability audit. The deliverable is a contract plus audit, not a
 general-purpose framework and not a new estimator: the decomposition is the
 logistic identity and coincides with linear SHAP under a training-mean
 background.
+
+The ownership rule is an analysis convention applied after the fact, not a
+preregistered object: no pre-run record of it exists. The feature list is
+plan-declared and internally hash-timestamped, but only the split carries an
+independently written pre-run timestamp. The class shares (44.9% actor-owned,
+55.1% not actor-owned) are descriptive outputs of that convention, not a
+property of the actors.
 
 The public artifact is an **L0–L2 verification release**: reading the frozen
 aggregates, verifying their hashes and contracts, and re-rendering the
@@ -24,15 +31,16 @@ is `0.1.1`, but no `v0.1.1` git tag has been created and no DOI has been
 minted; until the tag and DOI exist, cite the repository URL and this candidate.
 Production replaces the review-candidate label with the `v0.1.1` tag and DOI; do
 not cite this tree as an archival release. `main` and annotated tag
-`review-r2c12` mark the commit that contains this paragraph as the **published
+`review-r2c13` mark the commit that contains this paragraph as the **published
 review snapshot**: a frozen, fetchable record of the reviewed aggregate tree,
 not an archival release and not a DOI-bearing version. The previous published
-snapshot `review-r2c10` remains fetchable at commit `95aa07b`, so both
-`review-r2c10` and `review-r2c12` are public. The public tag inventory is
-`review-r2c2` … `review-r2c8` plus `review-r2c10` and `review-r2c12`.
+snapshot `review-r2c12` remains fetchable, and `review-r2c10` remains
+fetchable at commit `95aa07b`, so `review-r2c10`, `review-r2c12` and
+`review-r2c13` are public. The public tag inventory is `review-r2c2` …
+`review-r2c8` plus `review-r2c10`, `review-r2c12` and `review-r2c13`.
 `review-r2c9` and `review-r2c11` were superseded and are **local only**: no
 remote tag or branch carries either, and their text is available from the
-authors on request. Use the published `review-r2c12` snapshot when you need a
+authors on request. Use the published `review-r2c13` snapshot when you need a
 fetchable ref; this checkout carries the same wording. The confirmatory
 holdout is frozen. The stability audit is **provisional**: it was recomputed
 after excluding all eventual holdout dyads from fitting and aggregation, with C
@@ -77,7 +85,11 @@ confirmatory holdout completed later and was not used. The shipped
 - `results/worldline_preview/` — illustrative two-step preview; not a validated
   multi-step forecast. It is a standalone, repo-only illustration, not a
   manuscript exhibit: no paper figure or appendix is derived from it. The
-  shipped PDF is a 150 mm vector render (Arimo/TrueType); the PNG is a 300 dpi
+  sample is four anchors × 20 directed dyads (71 distinct), non-random, from
+  the inner-validation period 2016-01–2017-11; the manuscript cites this
+  directory once as a repository-only illustration and analyses nothing here,
+  so no paper result or number derives from it. The shipped PDF is a 150 mm
+  vector render (Arimo/TrueType); the PNG is a 300 dpi
   preview. Only the rendered figure and aggregate JSON summaries ship: the
   per-row trace CSVs were removed, so the directory carries no row-level
   probability file (see `DATA_EXCLUSIONS.md`).
@@ -237,7 +249,7 @@ here. The stability audit is
 provisional (holdout-row-excluded, 50 refits); the public `experiments/` tree is a
 five-seed preview. The manuscript is under review and is not part of this
 repository. The public ref state is recorded under **Release status** above:
-`main` and annotated tag `review-r2c12` are the current published review
-snapshot, `review-r2c10` remains the prior published snapshot, the R2C9 and
-R2C11 revisions are local and superseded, and there is no archival `v0.1.1` tag
-and no DOI.
+`main` and annotated tag `review-r2c13` are the current published review
+snapshot, `review-r2c12` is the previous published snapshot and `review-r2c10`
+remains fetchable, the R2C9 and R2C11 revisions are local and superseded, and
+there is no archival `v0.1.1` tag and no DOI.

@@ -9,9 +9,10 @@ Closes the documentation/metadata defects from the R2C3 repository review:
   never enters the archive and a modified tracked file aborts the build.
 
 The figure-geometry (m01) and world-line inventory (m02) contracts live next
-to the frozen results in ``test_results_contract.py``. The R2C12 release-state
-contract (the published ``review-r2c12`` snapshot, ``review-r2c10`` as the prior
-one, and no registration claim) is folded into the metadata contract.
+to the frozen results in ``test_results_contract.py``. The R2C13 release-state
+contract (the published ``review-r2c13`` snapshot, ``review-r2c12`` and
+``review-r2c10`` as earlier published ones, post-hoc ownership provenance and
+no registration claim) is folded into the metadata contract.
 """
 
 from __future__ import annotations
@@ -324,10 +325,18 @@ class TestCitationLicenceContract(unittest.TestCase):
                             ignore=shutil.ignore_patterns("__pycache__"))
             readme = (target / "README.md").read_text(encoding="utf-8")
             (target / "README.md").write_text(
-                readme + "\nNo `review-r2c12` tag exists on the remote.\n",
+                readme + "\nNo `review-r2c13` tag exists on the remote.\n",
                 encoding="utf-8")
             errors = VERIFIER.check_metadata_contract(target)
-            self.assertTrue(any("review-r2c12" in error for error in errors), errors)
+            self.assertTrue(any("review-r2c13" in error for error in errors), errors)
+            # MJ01: a pre-run ownership claim is rejected on a public surface.
+            (target / "README.md").write_text(
+                readme.replace("a post-hoc six-class",
+                               "an " + "ex " + "ante" + " six-class"),
+                encoding="utf-8")
+            errors = VERIFIER.check_metadata_contract(target)
+            self.assertTrue(
+                any(("ex " + "ante") in error for error in errors), errors)
 
     def test_metadata_contract_flags_a_licence_mismatch(self):
         with tempfile.TemporaryDirectory() as tmp:

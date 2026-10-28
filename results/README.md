@@ -10,10 +10,10 @@ confirmatory holdout was frozen on 2026-10-23; the stability audit is
 provisional. Read the status table before quoting a number.
 
 The shipped aggregates are the published review snapshot: annotated tag
-`review-r2c12` on `main` (prior published snapshot `review-r2c10` at commit
-`95aa07b`). `review-r2c9` and `review-r2c11` are superseded and local only; no
-`v0.1.1` tag and no DOI exist. The tag names the frozen bytes described below,
-not an archival release.
+`review-r2c13` on `main`. `review-r2c12` is the previous published snapshot and
+`review-r2c10` remains fetchable at commit `95aa07b`; `review-r2c9` and
+`review-r2c11` are superseded and local only. No `v0.1.1` tag and no DOI exist.
+The tag names the frozen bytes described below, not an archival release.
 
 ## Status at a glance
 
@@ -21,7 +21,7 @@ not an archival release.
 |---|---|---|
 | `framework_pilot/holdout/` | **Frozen, one-shot, completed** | The plan-declared 49-feature primary, plan-declared 29-feature secondary, baselines, within/between-dyad checks, feature-group LOO and sensitivity tables. |
 | `framework_pilot/stability/` | **Provisional; holdout-excluded 50-refit rerun** | Exactness, source/target aggregation, seed/regime/window stability, top-k and decision proxy, HGB occlusion. `audit_design = frozen_during_confirmatory_run_holdout_rows_excluded`: the grid was frozen at 06:31:40Z, after the confirmatory read began at 05:26:55Z and before it completed at 07:45:19Z; the rerun is non-confirmatory and every eventual holdout dyad is excluded at row level. The public `experiments/` tree is a five-seed preview, not this audit; see `experiments/STABILITY_VARIANT.md`. |
-| `worldline_preview/` | **Illustrative only** | A two-step communication preview; no multi-step accuracy claim. Ships a standalone 150 mm vector illustration (Arimo/TrueType; a repo-only render, not a manuscript exhibit) and a 300 dpi PNG plus aggregate JSON; no row-level trace file. |
+| `worldline_preview/` | **Illustrative only** | A two-step communication preview from four anchors × 20 sampled dyads (71 distinct, non-random, inner period 2016-01–2017-11); no multi-step accuracy claim, no paper result. Ships a standalone 150 mm vector illustration (Arimo/TrueType; a repo-only render, not a manuscript exhibit) and a 300 dpi PNG plus aggregate JSON; no row-level trace file. The manuscript cites the directory once and analyses nothing here. |
 
 The stability status is recorded machine-readably in `stability/summary.json`:
 
@@ -197,8 +197,10 @@ private 50-refit tree that produced these aggregates and the manuscript figures
 50-replicate guard by design, so it cannot reproduce the shipped stability
 tables or the manuscript figures byte-for-byte. The public commands therefore
 pin and check the shipped aggregates (`make stability-check`, `make verify`)
-rather than regenerate them; no figure-generation script ships here. Preview
-output can be redirected with `NEUROSIM_STABILITY_OUT`; writing into
+rather than regenerate them; no figure-generation script or shared palette
+module ships here. The reproducible unit is the aggregate, not the manuscript
+exhibit. Preview output can be redirected with `NEUROSIM_STABILITY_OUT`;
+writing into
 `results/framework_pilot/stability/` requires `NEUROSIM_ALLOW_OVERWRITE=1` and
 is not a supported public path. Figures 3–4 are not byte-reproducible from this
 repository.
@@ -243,19 +245,17 @@ digest of the bytes shipped at this tag for every entry, and
 and `make stability-check` recompute both sides and fail on a missing
 annotation or a mismatched digest.
 
-The freeze bundle's `hashes.figures_manifest` is a **normalized** digest, not
-the SHA-256 of the `figures.sha256` wrapper file. It is the SHA-256 of the 14
-sorted lines produced by removing the leading `repo/` from each wrapper path
-(so each line is `<digest>  paper/figures/<name>`), newline-terminated:
+The freeze bundle's `hashes.figures_manifest` **is** the SHA-256 of the
+`figures.sha256` wrapper file in this freeze. The wrapper's 14 lines already
+carry `paper/figures/` paths, so the historical `repo/`-prefix normalisation is
+a no-op; both commands below return the recorded digest:
 
 ```bash
+sha256sum figures.sha256
 sed 's|  repo/|  |' figures.sha256 | sha256sum
 ```
 
-Both forms describe the same 14 figure files, and
-`sha256sum -c figures.sha256` verifies the wrapper. The `repo/`-prefix
-normalisation is historical: in this freeze the wrapper paths already carry
-`paper/figures/`, so the `sed` substitution is a no-op. The published aggregate
+`sha256sum -c figures.sha256` verifies the wrapper. The published aggregate
 tree does not ship either file; this note only explains the freeze identity.
 
 All four stability summaries — including the nested `summary_stability.json`

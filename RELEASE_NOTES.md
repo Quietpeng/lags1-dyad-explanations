@@ -1,5 +1,66 @@
 # Release notes
 
+## Public-artifact revision (R2C13; provenance, world-line disclosure and doc truth)
+
+Documentation, metadata, verifier and tests only; no analysis, refit, label
+read, plan edit, data change or aggregate edit. The frozen plan
+`preregistration.json` stays byte-identical (`41bda0e3…`); no metric, interval,
+sign, timestamp, split, class share or scope literal changed. The title is
+unchanged and is the T1 string:
+
+> *Actor-role components of dyadic event forecasts: shared graph columns,
+> near-collinearity in a 196-actor panel, and a within-panel stability audit*
+
+- **Published snapshot.** `main` and annotated tag `review-r2c13` carry the
+  commit that contains these notes as the **published review snapshot**: a
+  frozen, fetchable record of the reviewed aggregate tree, not an archival
+  release and not a DOI-bearing version. `review-r2c12` is the previous
+  published snapshot and `review-r2c10` remains fetchable at commit `95aa07b`,
+  so `review-r2c10`, `review-r2c12` and `review-r2c13` are public.
+  `review-r2c9` and `review-r2c11` were superseded and remain local only: no
+  remote tag or branch carries either. No `v0.1.0` or `v0.1.1` archival tag is
+  public and no DOI has been minted. The CFF keeps `license: MIT` (code only)
+  and Zenodo keeps `other-open` (mixed deposit); the version stays `0.1.1`.
+- **Ownership provenance corrected (MJ01).** `README.md`, `REPRODUCING.md`,
+  `CITATION.cff`, `.zenodo.json` and `framework/__init__.py` no longer present
+  the six-class ownership rule as a pre-run object that fixed ownership in
+  advance. They state the defensible provenance: the feature list is
+  plan-declared and internally hash-timestamped, the six-class ownership rule
+  is a **post-hoc analysis convention** with no pre-run record, and only the
+  split carries an independently written pre-run timestamp. The 44.9%
+  actor-owned / 55.1% not-actor-owned shares are unchanged and remain
+  descriptive outputs of the convention, not a property of the actors.
+- **World-line preview disclosed (MJ02).** `README.md`,
+  `results/README.md`, `results/worldline_preview/README.md`,
+  `notebooks/README.md`, notebook 03 and the Zenodo description now state the
+  same scope as the manuscript's §6.4 disclosure: a repository-only
+  illustrative preview, four anchors × 20 sampled directed dyads (71 distinct),
+  **non-random**, inner period 2016-01–2017-11, step 2 a state-lag-only
+  approximation, no accuracy computed. The manuscript cites the directory once
+  as a repository-only illustration and analyses nothing here; it is not a
+  paper result, exhibit or number. The previous README claim that §6.4
+  "discusses it" is removed; no preview file, digest or manifest entry changed.
+- **Doc truth repaired.** Notebook 01 and `notebooks/README.md` cite the
+  holdout figure as Figure 2 (`fig2_holdout.pdf`) and the audit as Figure 3
+  (`fig3_stability.pdf`); the non-existent `fig4_holdout.pdf` reference is
+  retired (the R2C8 note is historical and superseded here).
+  `results/README.md` now states that `hashes.figures_manifest` **is** the
+  SHA-256 of the shipped `figures.sha256` wrapper in this freeze, because its
+  paths already carry `paper/figures/`; the false "normalized digest, not the
+  wrapper" clause is gone. The regeneration boundary names the missing figure
+  generators and shared palette, and `DATA_EXCLUSIONS.md` resolves the
+  four-names/seven-slots wording.
+- **Verifier and tests.** The notebook check now scans `text/plain` and
+  `text/html` outputs for row-level prediction/rate tokens, not just execution
+  errors; the existing negative-output contract is exercised inside the
+  notebook suite rather than as a new test. The release-state checks carry the
+  R2C13 inventory, and the metadata contract rejects any reintroduced pre-run
+  ownership claim. The suite stays at 144 tests and the verifier at 15 checks.
+- **Unchanged contract.** `cffconvert`, cold-cache notebook execution and
+  deterministic `make dist` pass; holdout 30/30 and stability 47/47 digests are
+  unchanged. No `results/**` byte, `DATA_EXCLUSIONS` boundary, licence split or
+  plan hash moved.
+
 ## Public-artifact revision (R2C12; publishing the reviewed snapshot)
 
 Documentation, metadata and tests only; no analysis, refit, label read, plan

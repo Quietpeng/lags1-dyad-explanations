@@ -1,11 +1,11 @@
 # Data exclusions and privacy boundary
 
 **Applies to:** the public artifact `lags1-dyad-explanations`, release candidate
-0.1.1 (published `review-r2c12` tree; `review-r2c10` remains the prior published
-snapshot at commit `95aa07b`; `review-r2c9` and `review-r2c11` are superseded and
-local only). **Status:** the earlier row-level leak is closed (the
-contaminated history is quarantined in a private repository and is not reachable
-from this tree).
+0.1.1 (published `review-r2c13` tree; `review-r2c12` is the previous published
+snapshot and `review-r2c10` remains fetchable at commit `95aa07b`; `review-r2c9`
+and `review-r2c11` are superseded and local only). **Status:** the earlier
+row-level leak is closed (the contaminated history is quarantined in a private
+repository and is not reachable from this tree).
 
 This file is the authoritative inventory of what the public tree removes or
 redacts, and why. It records file paths, schemas, row counts and reasons only.
@@ -44,10 +44,11 @@ release history rewrite (`review-r2c2`); `git ls-files` and
 ## 2. Redacted actor tables
 
 Thirteen shipped actor tables remain as **aggregate attribution and exposure**
-tables. Four distinct column names were removed in total — three from the six
-actor-month tables, two from the six actor tables and two from the
-all-periods table — and no other column was changed. No value in a retained
-column was recomputed.
+tables. Seven column slots were removed across the three schemas — three in the
+actor-month schema (`p_sum`, `y_sum`, `mean_p`), two in the actor schema
+(`mean_p`, `mean_y`) and two in the all-periods schema (`mean_p`, `mean_y`) —
+covering four distinct names. No other column was changed, and no value in a
+retained column was recomputed.
 
 | Files | Rows | Removed columns | Retained content |
 |---|---|---|---|
