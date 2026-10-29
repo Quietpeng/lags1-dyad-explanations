@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Execute the three read-only notebooks from the repository root.
+"""Execute the five read-only notebooks from the repository root.
 
 The notebooks read only shipped aggregate files. Execution is headless
 (``MPLBACKEND=Agg``) and CPU only. Outputs are written back into the notebook
@@ -24,6 +24,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+EXPECTED_NOTEBOOKS = 5
 
 FONT_CACHE_DIR = Path("build") / "mplconfig"
 FONT_CACHE_NOTICE = "Matplotlib is building the font cache"
@@ -158,8 +159,9 @@ def main(argv: list[str] | None = None) -> int:
     warm_font_cache(root)
 
     paths = sorted((root / "notebooks").glob("*.ipynb"))
-    if len(paths) != 3:
-        print(f"expected 3 notebooks, found {len(paths)}", file=sys.stderr)
+    if len(paths) != EXPECTED_NOTEBOOKS:
+        print(f"expected {EXPECTED_NOTEBOOKS} notebooks, found {len(paths)}",
+              file=sys.stderr)
         return 1
 
     problems = []

@@ -26,7 +26,7 @@ Checks
   ``redistributed: false`` and the files are absent;
 * every ``manifest.code`` entry has a ``code_annotations.current_sha256``
   digest equal to the shipped bytes, and any post-freeze change is annotated;
-* all three notebooks contain executed, error-free, aggregate-only outputs;
+* all five notebooks contain executed, error-free, aggregate-only outputs;
 * no absolute home/temporary path or credential-like string appears in text;
 * no forbidden path is tracked by git (when the verifier runs in a git tree).
 
@@ -130,6 +130,10 @@ REQUIRED = [
     "notebooks/01_confirmatory_holdout.ipynb",
     "notebooks/02_stability_audit.ipynb",
     "notebooks/03_worldline_preview.ipynb",
+    "notebooks/04_exact_attribution.ipynb",
+    "notebooks/05_training_pipeline.ipynb",
+    "experiments/sprint_c_v2.py",
+    "experiments/sprint_c_v2_fit_repro.py",
     "results/README.md",
     str(HOLDOUT_REL / "SHA256SUMS"),
     str(HOLDOUT_REL / "manifest.json"),
@@ -1044,8 +1048,8 @@ def check_text(root: Path) -> list[str]:
 def check_notebooks(root: Path) -> list[str]:
     errors = []
     paths = sorted((root / "notebooks").glob("*.ipynb"))
-    if len(paths) != 3:
-        return [f"expected 3 notebooks, found {len(paths)}"]
+    if len(paths) != 5:
+        return [f"expected 5 notebooks, found {len(paths)}"]
     for path in paths:
         rel = path.relative_to(root).as_posix()
         nb = strict_load(path)

@@ -1,5 +1,42 @@
 # Release notes
 
+## v0.1.2 — V2 code and notebooks (local, unpublished)
+
+Additive documentation/code-completeness change; no new fit, no holdout read,
+no plan edit, no change to any V1 or V2 aggregate. **Local annotated tag
+`v0.1.2` only**: no `v0.1.2` ref exists on the remote, `v0.1.1` at `13b96db`
+remains the published code release, the packaged metadata version stays `0.1.1`
+and no DOI has been minted. The paper is still cited by its arXiv link (to be
+added); there is no `paper/` directory.
+
+- **V2 code published.** `experiments/sprint_c_v2.py` (the matched-vintage
+  runner behind `results/framework_pilot_v2/`) and its archival copy
+  `experiments/sprint_c_v2_fit_repro.py` are added. The port is path-sanitised:
+  the header and two input paths changed (`NEUROSIM_V2_PROTOCOL_DIR`,
+  `NEUROSIM_V2_SCRATCH`); no fit, contrast, table or number changed. Every stage
+  starts with a protocol hash gate that fails closed, because the licensed
+  panel, restricted caches, frozen protocol and row-level predictions are not
+  redistributed. The pre-port `code_sha256` (`a8f83417…`) recorded in
+  `results/framework_pilot_v2/manifest.json` therefore no longer matches the
+  shipped file; the aggregate tree and its `SHA256SUMS` remain the record.
+- **Two new notebooks.** `notebooks/04_exact_attribution.ipynb` displays the
+  exact additive decomposition, the six ownership classes and the seven-class
+  view (55.1/62.3 in V1, 54.8/63.2 recomputed), the allocation range,
+  source/target near-collinearity, top-k churn and the decision-lift panel.
+  `notebooks/05_training_pipeline.ipynb` displays the feature contract
+  (27 + 20 + 2 → 49/47/29/25), the split and embargo arithmetic, the
+  matched-vintage versus original-vintage comparators, `C = 1.0` logistic
+  training and calibration, the P1/H0 cache factor and the A0–A7 arms, and
+  re-runs the mechanics on synthetic arrays only. Both read aggregates only.
+- **V1 labelled historical.** `sprint_a_*` and `sprint_b_*` are documented as
+  the historical V1 confirmatory and five-seed-preview scripts; the V1 results
+  remain the plan-declared primary of record, and V2 cannot upgrade them.
+- **Verifier and tests.** `make verify` now requires both V2 scripts and exactly
+  five executed, error-free notebooks; `tests/test_smoke.py` pins the V2 feature
+  counts, the fail-closed gate, the absence of host paths and the byte-identical
+  body of the archival copy. `tests/test_notebooks.py` pins the content
+  contracts of notebooks 04 and 05. No aggregate byte changed.
+
 ## v0.1.1 — V2 code release (current)
 
 Documentation, metadata and aggregate-release change; no new fit, no holdout

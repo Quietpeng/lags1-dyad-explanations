@@ -22,12 +22,14 @@ def sources(nb: dict) -> str:
 
 
 class TestNotebookSuite(unittest.TestCase):
-    def test_three_notebooks_are_present_and_strict_json(self):
+    def test_five_notebooks_are_present_and_strict_json(self):
         paths = sorted(NOTEBOOKS.glob("*.ipynb"))
         self.assertEqual([p.name for p in paths], [
             "01_confirmatory_holdout.ipynb",
             "02_stability_audit.ipynb",
             "03_worldline_preview.ipynb",
+            "04_exact_attribution.ipynb",
+            "05_training_pipeline.ipynb",
         ])
         for path in paths:
             nb = load(path)
@@ -124,8 +126,44 @@ class TestNotebookSuite(unittest.TestCase):
         self.assertIn("analyses nothing here", lowered)
         self.assertIn("not a paper result", lowered)
 
+    def test_notebook_04_states_the_ownership_convention(self):
+        source = " ".join(
+            sources(load(NOTEBOOKS / "04_exact_attribution.ipynb")).split())
+        lowered = source.lower()
+        for phrase in ("six ownership classes", "seven-class",
+                       "actor-dyad interaction", "55.1 / 62.3",
+                       "post-hoc secondary", "near-collinearity"):
+            self.assertIn(phrase, lowered, phrase)
+        # the six-class table and the 62.3 seven-class view are both present
+        self.assertIn("a8_ownership.csv", source)
+        self.assertIn("a8_allocations.csv", source)
+        self.assertIn("decision_impact_dyad.csv", source)
+        # the exact additive identity is stated, with its tolerance
+        self.assertIn("logit(p_i)", source)
+        self.assertIn("1e-5", source)
+
+    def test_notebook_05_states_the_pipeline_and_the_restriction(self):
+        source = " ".join(
+            sources(load(NOTEBOOKS / "05_training_pipeline.ipynb")).split())
+        lowered = source.lower()
+        for phrase in ("27 + 20 + 2", "49", "47", "29", "25",
+                       "matched-vintage", "holdout-zeroed",
+                       "c = 1.0", "logistic", "calibration",
+                       "a0", "a7", "synthetic"):
+            self.assertIn(phrase.lower(), lowered, phrase)
+        self.assertIn("icews v37", lowered)
+        self.assertIn("not redistributed", lowered)
+        # the demo is synthetic and says so, next to the fit it runs
+        self.assertIn("SYNTHETIC", source)
+        self.assertIn("framework.models.fit_logistic", source)
+
     def test_figures_are_embedded_and_metadata_is_current(self):
-        expected_images = {"01_confirmatory_holdout.ipynb", "03_worldline_preview.ipynb"}
+        expected_images = {
+            "01_confirmatory_holdout.ipynb",
+            "03_worldline_preview.ipynb",
+            "04_exact_attribution.ipynb",
+            "05_training_pipeline.ipynb",
+        }
         for path in sorted(NOTEBOOKS.glob("*.ipynb")):
             nb = load(path)
             images = [

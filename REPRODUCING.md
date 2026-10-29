@@ -32,8 +32,8 @@ preview — and row-level predictions and labels are withheld.
 |---|---|---|---|---|
 | **L0 — Read** | What do the frozen aggregates say? | Nothing beyond the files | open `results/README.md`, `notebooks/*.ipynb` on the repository page | Available |
 | **L1 — Verify** | Do the shipped bytes, JSON and tests hold? | Python 3.12+, `requirements.txt` | `make doctor && make test && make verify` | Available; no data/GPU |
-| **L2 — Re-render** | Can the notebooks be executed from the aggregates? | L1 + `nbclient`/`ipykernel` | `make notebooks` | Available; rewrites notebook outputs in place, byte-stable from a cold cache |
-| **L3 — Restricted regeneration** | Can the aggregate tables be rebuilt? | licensed ICEWS v37, restricted feature and contribution caches, local experiment configuration, row-level holdout predictions for post-processing; no public cache-build entry point | `experiments/*.py` with local inputs | **Not runnable here**; the public Sprint-B scripts are a five-seed preview and do not regenerate the 50-refit tables |
+| **L2 — Re-render** | Can the notebooks be executed from the aggregates? | L1 + `nbclient`/`ipykernel` | `make notebooks` | Available for all five notebooks (01–03 V1, 04–05 V2); rewrites outputs in place, byte-stable from a cold cache |
+| **L3 — Restricted regeneration** | Can the aggregate tables be rebuilt? | licensed ICEWS v37, restricted feature and contribution caches, local experiment configuration, the frozen V2 protocol, row-level holdout predictions for post-processing; no public cache-build entry point | `experiments/*.py` with local inputs | **Not runnable here**; the V1 Sprint-B scripts are a five-seed preview of the 50-refit tables, and the V2 runner fails closed without the protocol |
 | **L4 — Confirmatory holdout** | Can the one-shot holdout be re-run? | the burned 2018–22 labels and a new pre-specified split/plan (there is no external registration; the existing plan is internally hash-timestamped) | — | **Not reproducible by design**; labels were read once, `run_once.json` locks the run and row-level predictions are excluded |
 
 `make test` and `make verify` pass without `data/`, `configs/`, `paper/`,
@@ -74,10 +74,12 @@ forbidden paths, extracted to `build/dist/verify/` and passed through
 make notebooks
 ```
 
-The executor starts each kernel in the repository root, runs all cells
-top-to-bottom with `MPLBACKEND=Agg`, writes the outputs back into the notebook
-JSON, and fails on an execution error, an absolute path or a credential-like
-string. It warms the matplotlib font cache before the kernel starts (honouring
+The executor starts each kernel in the repository root, runs all five
+notebooks cell-by-cell with `MPLBACKEND=Agg`, writes the outputs back into the
+notebook JSON, and fails on an execution error, an absolute path or a
+credential-like string. Notebooks 01–03 re-render the V1 holdout, stability and
+world-line aggregates; 04 displays the V2 ownership decomposition; 05 displays
+the training pipeline and re-runs its mechanics on synthetic arrays only. It warms the matplotlib font cache before the kernel starts (honouring
 `MPLCONFIGDIR` if set, otherwise `build/mplconfig`) and absorbs the known
 one-time font-cache stream, so a run from an empty cache leaves the tracked
 notebooks unchanged and `git status` clean. Notebook 01 degrades gracefully
@@ -119,6 +121,20 @@ caches are absent, `generated_utc` would change and last-bit floating-point
 differences are possible. L3 therefore documents the method; the frozen
 aggregates and their `SHA256SUMS` are the authoritative record.
 
+The **V2 runner** (`experiments/sprint_c_v2.py`, archival copy
+`experiments/sprint_c_v2_fit_repro.py`) is the code that produced
+`results/framework_pilot_v2/`. It is shipped for audit and is **not runnable
+from this tree**: it needs the licensed panel and caches above, the frozen
+protocol and, for the `compare`, `a8` and `a9` stages, the withheld row-level
+predictions. Every stage begins with `verify_protocol()`, which exits with an
+explicit message when `reviews/round2/v2_protocol.md` is absent; a licensed
+working copy re-enables it through `NEUROSIM_V2_PROTOCOL_DIR` (and
+`NEUROSIM_V2_SCRATCH` for `--dry-run` output). The port changes only the header
+and those two paths, so the shipped file's digest differs from the pre-port
+`code_sha256` in `results/framework_pilot_v2/manifest.json`; the aggregate tree
+and its `SHA256SUMS` are the record, and `tests/test_smoke.py` pins the feature
+counts, the fail-closed gate and the byte-identical body of the archival copy.
+
 The preview defaults to refusing writes into
 `results/framework_pilot/stability/`. Use
 `NEUROSIM_STABILITY_OUT=results/framework_pilot/stability_preview` to redirect
@@ -152,6 +168,9 @@ not a fresh fit.
 | Stability audit (provisional) | `stability/report.md`, `stability/summary*.json`, `stability/tables/*.csv` | notebook 02 |
 | Stability scope and preview deltas | `stability/summary.json` scope block, `stability/SHA256SUMS`, `experiments/STABILITY_VARIANT.md` | README, `make stability-check` |
 | World-line preview (illustrative) | `worldline_preview/worldline_trace.json`, `worldline_preview.pdf`, `worldline_preview.png` (no row-level CSV ships) | notebook 03 |
+| V2 ownership decomposition (6/7 classes, 55.1/62.3, allocation range, near-collinearity) | `framework_pilot_v2/tables/a8_ownership.csv`, `a8_allocations.csv`, `a8_structural.csv`, `parts/a8_ownership.json` | notebook 04 |
+| V2 arms, cache factor and reconciliation | `framework_pilot_v2/tables/arms_main.csv`, `arms_contrasts.csv`, `a7_cache_matrix.csv`, `reconciliation.csv`, `summary.json` | notebook 05 |
+| Top-k churn and decision lift | `framework_pilot_v2/tables/a9_stability.csv`, `a9_crosscache.csv`; `framework_pilot/stability/tables/decision_impact_dyad.csv` | notebook 04 |
 | Data exclusions and privacy boundary | `DATA_EXCLUSIONS.md`, `results/README.md` | `make verify`, `make stability-check`, `make worldline-check`, contract tests |
 | One-shot integrity | `holdout/run_once.json`, `test_access_log.json`, `preregistration.json` | README, `results/README.md` |
 | Release integrity | `holdout/SHA256SUMS`, `holdout/manifest.json` | `make verify` |
@@ -171,6 +190,10 @@ in `results/README.md` and the notebooks rather than by a `paper/` build.
 - A byte-identical copy of the stability tree, even with the five-delta variant
   applied: restricted caches, timestamps and floating-point last bits differ.
   Verify the shipped bytes with `stability/SHA256SUMS` instead.
+- The V2 fit stage: the shipped runner needs the licensed panel, the restricted
+  caches, the frozen protocol and the withheld row-level predictions, so it
+  exits at `verify_protocol()` in this tree. Verify the shipped V2 aggregates
+  with `framework_pilot_v2/SHA256SUMS`, not by re-fitting.
 - Manuscript Figures 3–4 or a byte-identical stability table from the public
   tree: the default path is the private 50-refit tree, while the public
   five-seed preview fails the 50-replicate guard by design and no
@@ -210,7 +233,7 @@ in a document fails `make verify` exactly as it would in code.
 tests when the tool is installed; it must report schema 1.2.0 validity.
 
 The suite has no coverage threshold: `make test` runs the full public suite
-(144 tests at this revision) and `make verify` enforces a 123-test floor, so a
+(156 tests at this revision) and `make verify` enforces a 123-test floor, so a
 shrinking suite fails the release even though no line-coverage percentage is
 reported.
 

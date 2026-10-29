@@ -142,6 +142,23 @@ The V2 tables carry no `y`, `p`, `p_model`, `mean_p`, `p_sum`, `y_sum` or
 themselves are not redistributed. V2 is a post-hoc secondary analysis of a
 burned holdout; its ship does not re-open the holdout or change the V1 primary.
 
+**Shipped V2 code.** `experiments/sprint_c_v2.py` and its archival copy
+`experiments/sprint_c_v2_fit_repro.py` are the code that produced this tree.
+They are audit material only: every stage starts with a protocol hash gate that
+exits with an explicit message because the frozen protocol, the licensed panel,
+the restricted caches and the row-level predictions above are not redistributed.
+The public port differs from the frozen file only in its header and in two
+parameterised input paths (`NEUROSIM_V2_PROTOCOL_DIR`, `NEUROSIM_V2_SCRATCH`),
+so its digest differs from the `code_sha256` recorded in
+`results/framework_pilot_v2/manifest.json`.
+
+**V2 notebooks.** `notebooks/04_exact_attribution.ipynb` and
+`notebooks/05_training_pipeline.ipynb` read the shipped aggregate tables and
+`parts/a8_ownership.json` only. They contain no per-row value, no actor
+probability or observed rate, and no identifier join key; notebook 05 re-runs
+the pipeline mechanics on synthetic arrays, which are generated in the kernel
+and are not written to disk.
+
 ## 7. Never released
 
 - ICEWS raw or derived event panels, parquet files and feature/graph caches.
@@ -162,6 +179,9 @@ make test              # contract + negative tests
 sha256sum -c results/framework_pilot/stability/SHA256SUMS
 sha256sum -c results/framework_pilot_v2/SHA256SUMS
 ```
+
+`make verify` also requires both V2 scripts to be present and the notebook
+executor to find exactly five executed, error-free notebooks.
 
 `scripts/verify_release.py`'s row-level/named-rate check fails if any
 distributed CSV:

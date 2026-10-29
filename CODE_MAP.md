@@ -41,20 +41,36 @@ data, configuration or predictions.
 | `make doctor` | Python/dependency/forbidden-path preflight | no |
 | `make test` | Unit and contract suite | no |
 | `make verify` | Release verifier (hashes, strict JSON, notebooks, scope, paths) | no |
-| `make notebooks` | Execute the three read-only notebooks | no |
+| `make notebooks` | Execute the five read-only notebooks (01–03 V1, 04–05 V2) | no |
 | `make stability-check` | Verify shipped stability aggregates, 50-refit scope and hashes | no |
 | `make worldline-check` | Verify the worldline illustration/aggregate boundary (no CSV) | no |
 | `make dist` | Build and verify a `git archive HEAD` release tarball; untracked files never enter the archive and a modified tracked file aborts the build | no |
-| `experiments/sprint_a_prereg.py` | Freeze the holdout plan (`preregistration.json`) | ICEWS + cache |
-| `experiments/sprint_a_run.py` | One-shot holdout evaluation (refuses a second completed run) | ICEWS + cache |
-| `experiments/sprint_a_holdout_extras.py` | Post-holdout diagnostics from saved predictions | row-level predictions |
-| `experiments/sprint_b_*.py` | Five-seed preview of exactness, stability, HGB occlusion and report generation; not the 50-refit audit runner | ICEWS + cache + (post-hoc) row-level predictions |
+| `experiments/sprint_a_prereg.py` | *Historical V1.* Freeze the holdout plan (`preregistration.json`) | ICEWS + cache |
+| `experiments/sprint_a_run.py` | *Historical V1.* One-shot holdout evaluation (refuses a second completed run) | ICEWS + cache |
+| `experiments/sprint_a_holdout_extras.py` | *Historical V1.* Post-holdout diagnostics from saved predictions | row-level predictions |
+| `experiments/sprint_b_*.py` | *Historical V1.* Five-seed preview of exactness, stability, HGB occlusion and report generation; not the 50-refit audit runner | ICEWS + cache + (post-hoc) row-level predictions |
+| `experiments/sprint_c_v2.py` | **V2.** Matched-vintage runner behind `results/framework_pilot_v2/` (stages `selftest`, `fits_p1`, `fits_h0`, `compare`, `a8`, `a9`, `report`; 10 fits, 14 contrasts). Fails closed without the frozen protocol | ICEWS + cache + frozen protocol + row-level predictions (compare/a8/a9) |
+| `experiments/sprint_c_v2_fit_repro.py` | **V2.** Archival code copy deposited beside the frozen results; body byte-identical to `sprint_c_v2.py` (enforced by `tests/test_smoke.py`) | as above |
 | `experiments/worldline_preview.py` | Illustrative two-step preview | ICEWS + cache |
 
 The experiment scripts are audit material. They are not invoked by any public
 `make` target, and the public tree does not contain their inputs or local
-configuration. The code that produced the restricted 50-refit audit is not
-shipped. The shipped Sprint-B scripts are a **five-seed preview**: five
+configuration.
+
+**V1 versus V2 code.** `sprint_a_*` and `sprint_b_*` are the **historical V1**
+confirmatory and stability scripts: they produced the V1 holdout artifacts (the
+plan-declared primary of record) and the five-seed stability preview. They are
+not the V2 audit runner. `sprint_c_v2.py` / `sprint_c_v2_fit_repro.py` are the
+**V2 matched-vintage runners**; the public port differs from the frozen file
+only in its header and in two parameterised input paths
+(`NEUROSIM_V2_PROTOCOL_DIR`, `NEUROSIM_V2_SCRATCH`), so its digest differs from
+the pre-port `code_sha256` in `results/framework_pilot_v2/manifest.json`. Every
+stage starts with `verify_protocol()`, which exits with an explicit message when
+the frozen protocol is absent: the aggregate-only release cannot re-run the V2
+fits, and no substitute path is provided.
+
+The code that produced the restricted 50-refit audit is not shipped. The
+shipped Sprint-B scripts are a **five-seed preview**: five
 seed replicates, no holdout-dyad exclusion, `C` re-selected on the selection
 window, 1,000 stability bootstrap replicates and a fixed `rep0`–`rep4` loader.
 They do not regenerate the 50-refit, C=1.0, holdout-excluded aggregates behind
@@ -86,7 +102,7 @@ frozen holdout aggregates (summary.json, tables/*.csv, report.md)
 exact source/target actor contributions + within-panel stability audit (provisional)
         │
         ▼
-read-only notebooks 01–03
+read-only notebooks 01–05 (01–03 V1, 04–05 V2)
 ```
 
 ## Results tree

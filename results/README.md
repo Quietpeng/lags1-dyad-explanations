@@ -10,7 +10,10 @@ confirmatory holdout was frozen on 2026-10-23; the stability audit is
 provisional. Read the status table before quoting a number.
 
 The shipped aggregates are part of the **`v0.1.1` code release** at commit
-`13b96db` (annotated tag `v0.1.1`; `main` at the same commit). The repository
+`13b96db` (annotated tag `v0.1.1`; `main` at the same commit). A **local,
+unpushed** annotated tag `v0.1.2` adds the V2 code
+(`experiments/sprint_c_v2*.py`) and notebooks 04–05; it is not published and
+changes no aggregate byte. The repository
 contains **code and aggregates only**: there is no paper PDF, source, figure or
 bibliography in this tree. The paper is cited by its **arXiv link (to be
 added)**. **No Zenodo DOI has been minted.**
@@ -118,7 +121,26 @@ V2 ships aggregates only: `preds/v2_preds.npz`, `parts/preds_{p1,h0}.npz`,
 `parts/a9_attributions.npz`, `parts/warm_counts.npz`, `parts/fit_mu_sd.npz` and
 `run.log` are excluded (see [`../DATA_EXCLUSIONS.md`](../DATA_EXCLUSIONS.md) §6).
 The V2 fit stage cannot be re-executed from this tree; it needs the licensed
-ICEWS panel and restricted caches. The aggregate tables are the public unit.
+ICEWS panel, restricted caches and the frozen protocol. The aggregate tables are
+the public unit.
+
+**Where to read these numbers.** `notebooks/04_exact_attribution.ipynb` displays
+the A8 ownership tables (six classes, the seven-class `g_nra` view, the
+36.6–54.8% allocation range, the structural near-collinearity checks) and the
+A9/top-k/decision-lift aggregates. `notebooks/05_training_pipeline.ipynb`
+displays the arms, cache matrix and reconciliation, and re-runs the pipeline
+mechanics on synthetic arrays. The code that produced this tree is
+`experiments/sprint_c_v2.py` (archival copy
+`experiments/sprint_c_v2_fit_repro.py`); it ships for audit, fails closed
+without the frozen protocol, and is not runnable here — see
+[`../REPRODUCING.md`](../REPRODUCING.md) L3.
+
+**Provenance note.** `manifest.json#/code_path` names
+`experiments/sprint_c_v2.py` and `code_sha256` records the digest of the bytes
+run at freeze time (`a8f83417…`). The shipped copy was path-sanitised for the
+public tree: the header and two input paths changed, so its digest differs and
+`sha256sum` of the shipped script will not match that field. No fit, contrast,
+table or number changed; the aggregates and `SHA256SUMS` above are the record.
 
 ### Stability audit (provisional)
 

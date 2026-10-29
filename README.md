@@ -46,7 +46,11 @@ figures, bibliography or any `paper/` directory. The paper will be cited by its
 published code release; `main` points at the same commit. The metadata version
 is `0.1.1`. `v0.1.1` carries the V2 aggregate tree
 (`results/framework_pilot_v2/`, aggregates only) alongside the V1 confirmatory
-and stability aggregates. The paper's arXiv identifier will be added to this
+and stability aggregates. A **local, unpushed** annotated tag `v0.1.2` records
+this revision — the V2 code (`experiments/sprint_c_v2*.py`) and notebooks 04–05.
+It is **not** a published release: no `v0.1.2` ref exists on the remote, no DOI
+is minted, and the packaged metadata version stays `0.1.1` because the archival
+release itself is unchanged. The paper's arXiv identifier will be added to this
 README, `CITATION.cff` and `.zenodo.json` when it is assigned; no DOI is
 claimed.
 
@@ -76,22 +80,29 @@ confirmatory holdout completed later and was not used. The shipped
   actor views, metrics and cluster-bootstrap inference. The package contains
   the paper path only; the directory and import name are retained for
   compatibility and do not imply a reusable framework.
-- `experiments/` — scripts for the plan-declared, internally hash-timestamped
-  one-shot confirmatory holdout, a five-seed preview of the stability audit and
-  the illustrative world-line preview. They require the licensed ICEWS panel and
+- `experiments/` — the historical V1 scripts (`sprint_a_*`: the plan-declared,
+  internally hash-timestamped one-shot confirmatory holdout; `sprint_b_*`: the
+  five-seed stability preview; `worldline_preview.py`: the illustrative
+  preview) **and** the V2 matched-vintage runners `sprint_c_v2.py` /
+  `sprint_c_v2_fit_repro.py`. All of them require the licensed ICEWS panel and
   local caches; post-hoc holdout diagnostics additionally need row-level
-  predictions. None of those inputs is redistributed. The Sprint-B preview does
-  not regenerate the shipped
+  predictions. None of those inputs is redistributed, and the V2 runner also
+  needs the frozen protocol and fails closed without it. The Sprint-B preview
+  does not regenerate the shipped
   50-refit, holdout-excluded aggregates: `experiments/STABILITY_VARIANT.md`
   lists the exact five differences. The preview refuses to write into
   `results/framework_pilot/stability/` unless `NEUROSIM_ALLOW_OVERWRITE=1` (or
   `--allow-overwrite`) is set; `NEUROSIM_STABILITY_OUT` redirects output to a
-  preview directory.
+  preview directory. See **V2 code and notebooks** below for what the V2 ports
+  can and cannot do.
 - `tests/` — unit and contract tests for features, splits, models, attribution,
   frozen results and notebooks. They run without data, configuration or cache.
-- `notebooks/` — three executed, read-only notebooks that display the frozen
-  aggregate artifacts. They do not fit models, read the ICEWS event panel or
-  load row-level predictions.
+- `notebooks/` — five executed, read-only notebooks that display the frozen
+  aggregate artifacts: 01–03 for the V1 holdout, stability audit and world-line
+  preview, 04–05 for the V2 ownership decomposition and the training pipeline.
+  They do not fit models on real data, read the ICEWS event panel or load
+  row-level predictions; notebook 05 runs the shipped estimator on synthetic
+  arrays only.
 - `results/framework_pilot/holdout/` — one-shot unit-fresh 20% dyad-holdout
   report, summary, tables, the frozen plan (`preregistration.json`), manifest
   and access log. Row-level
@@ -282,6 +293,53 @@ cutoff (`t < 239`).
 and provenance note behind these numbers. The V2 fit-stage certification is
 behavioural (the frozen current script reproduces all 10 fits bit-for-bit), not
 archival; Appendix B of the manuscript states this.
+
+## V2 code and notebooks
+
+The **V2 code** is now in the public tree, next to the V1 scripts:
+
+| File | What it is | Runnable here? |
+|---|---|---|
+| `experiments/sprint_c_v2.py` | The V2 matched-vintage runner behind `results/framework_pilot_v2/`: stages `selftest`, `fits_p1`, `fits_h0`, `compare`, `a8`, `a9`, `report`; 10 fits (F1–F9, D1), 14 canonical contrasts, the A8 ownership recomputation and the A9 50-refit stability pass. | **No.** |
+| `experiments/sprint_c_v2_fit_repro.py` | The archival code copy the fit stage deposited beside the frozen results. Its body is byte-identical to `sprint_c_v2.py`; only the header differs, and `tests/test_smoke.py` enforces that. | **No.** |
+
+**Why they cannot run here.** The aggregate-only release does not redistribute
+the licensed ICEWS v37 panel, the restricted feature/graph caches, the local
+experiment configuration, the frozen protocol (`reviews/round2/v2_protocol.md`)
+or the row-level predictions read by the `compare`, `a8` and `a9` stages.
+`verify_protocol()` is therefore the first gate in every stage and **fails
+closed** with an explicit message instead of building a partial run. No
+runnable path is faked: point `NEUROSIM_V2_PROTOCOL_DIR` at a licensed copy of
+the frozen protocol and supply the licensed caches to re-enable it. The
+`v0.1.2` port changes the header and two input paths only — the protocol
+directory and the scratch directory are environment variables
+(`NEUROSIM_V2_PROTOCOL_DIR`, `NEUROSIM_V2_SCRATCH`) rather than host paths. No
+fit, contrast, table or number changed, so the shipped file necessarily hashes
+differently from the pre-port digest recorded in
+`results/framework_pilot_v2/manifest.json`
+(`a8f83417dfc7670740571ff19b3df8a65031e92dfd3459b6b7faaedd22bc0843`); the
+aggregate tree and its `SHA256SUMS` remain the authoritative record.
+
+The **V2 notebooks** are read-only and aggregate-only:
+
+- `notebooks/04_exact_attribution.ipynb` — the exact additive decomposition and
+  its 1.15e-14 round-trip, the six ownership classes and the seven-class view
+  (55.1 / 62.3 in V1, 54.8 / 63.2 recomputed), the 36.6–54.8% allocation range,
+  source/target near-collinearity (5 duplicated graph pairs, 4 role-unique
+  columns, 12 of 14 partner-blind), top-k churn and the decision-lift panel.
+- `notebooks/05_training_pipeline.ipynb` — the feature contract (27 + 20 + 2 →
+  49 / 47 / 29 / 25), the split and embargo arithmetic, matched-vintage versus
+  original-vintage warm comparators, `C = 1.0` logistic training and
+  calibration, the P1/H0 cache factor and the A0–A7 arms. The mechanics are
+  re-run on **synthetic arrays** only and labelled as such; the real panel is
+  restricted.
+
+**V1 stays the record.** The V1 scripts are labelled historical in the sense
+that they produced the V1 confirmatory and stability artifacts and are not the
+V2 audit runner; the V1 **results** remain the plan-declared primary of record,
+and V2 cannot upgrade them. Both notebook sets read frozen aggregates and
+neither regenerates a paper figure: `paper/` is not part of this repository and
+the paper is cited by its arXiv link (to be added).
 
 ## Data and license
 
