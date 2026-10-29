@@ -1,32 +1,40 @@
 cff-version: 1.2.0
-message: "If you use this attribution contract, its within-panel stability audit, or its public artifact, cite the manuscript. Corresponding author: Jingzhe Peng, pengjingzhe_quiet@foxmail.com. No archival release (git tag plus DOI) exists yet: this tree is a v0.1.1 release candidate. The source code is MIT-licensed, code only; the ICEWS-derived aggregate results are not MIT."
-title: "Actor-role components of dyadic event forecasts: shared graph columns, near-collinearity in a 196-actor panel, and a within-panel stability audit"
+message: "If you use this ownership decomposition, its matched-vintage audit, its within-panel stability audit, or the public artifact, cite the manuscript and this v0.1.1 archival release. Corresponding author: Jingzhe Peng, pengjingzhe_quiet@foxmail.com. The v0.1.1 git tag is the archival release; no DOI has been minted yet. The source code is MIT-licensed, code only; the ICEWS-derived aggregate results are not MIT."
+title: "Actor-side components of dyadic event forecasts: an ownership decomposition, specification dependence, and a matched-vintage audit in a 196-actor ICEWS panel"
 abstract: >-
-  Public artifact and L0-L2 verification release for the actor-role
-  attribution contract of this manuscript, together with a within-panel
-  stability audit. The contract applies a post-hoc six-class ownership
-  convention to a plan-declared feature list and fixes unit and sign, so every
-  logistic forecast carries an exact group-additive decomposition into
-  source-role, target-role, dyad and non-actor groups. The ownership convention
-  has no pre-run record. It is a design convention and audit, not a new
-  estimator: the decomposition
-  is the logistic identity and coincides with linear SHAP under a
-  training-mean background. The release is one paper path, not a reusable
-  framework, and is executable at L0-L2 only (read the frozen aggregates,
-  verify their hashes and contracts, re-render the notebooks). The
-  restricted 50-refit audit code and all ICEWS inputs are not redistributed;
-  row-level predictions and labels are withheld. The confirmatory evaluation
-  is a plan-declared, internally hash-timestamped, one-shot, unit-fresh 20%
-  dyad holdout whose split alone carries an independently written pre-run
-  timestamp; it is retrospective, not time-fresh. The stability audit is
-  provisional, holdout-row-excluded and based on 50 dyad-cluster bootstrap
-  refits; it is not a holdout-side stability test. The public experiment scripts are a
-  five-seed preview of the audit method and do not regenerate the 50-refit
-  holdout-row-excluded aggregates. No general claim is made about graph
-  features, persistence or any corpus beyond this panel. Source code is
-  MIT-licensed; ICEWS-derived aggregate results are not MIT and remain under
-  the ICEWS research-and-teaching terms. This is a v0.1.1 release candidate:
-  the v0.1.1 git tag and the DOI are pending.
+  Public artifact and L0-L2 verification release for the V2 manuscript on
+  actor-side components of dyadic event forecasts in a 196-actor ICEWS panel,
+  1995-2023. The release ships code, tests, the V1 confirmatory and stability
+  aggregates, and the V2 matched-vintage aggregate tree. The analysis applies a
+  post-hoc six-class ownership convention to a plan-declared feature list and
+  fixes unit and sign, so every logistic forecast carries an exact
+  group-additive decomposition into source-role, target-role, dyad and
+  non-actor groups. The ownership convention has no pre-run record. It is a
+  design convention and audit, not a new estimator: the decomposition is the
+  logistic identity and coincides with linear SHAP under a training-mean
+  background. The class shares on the V2 training window are 45.2% actor-owned
+  and 54.8% not actor-owned; only 4 of 49 features are role-specific. The V1
+  49-feature model loses to a 2017-vintage warm baseline on the one-shot
+  unit-fresh 20% dyad holdout (0.217875 vs 0.209729 log-loss). A post-hoc
+  matched-vintage audit on the same burned holdout finds that the 47-feature
+  model beats a 2014-vintage warm baseline by 0.020954 (95% CI
+  0.015443-0.026465), a 25-feature model with no actor-owned column beats it by
+  0.017743, and the 22 added columns contribute 0.003211. The as-specified 49
+  is null against the matched comparator under the H0 cache. The V2 analysis is
+  post hoc and secondary; the V1 49-feature result remains the plan-declared
+  primary. The release is one paper path, not a reusable framework, and is
+  executable at L0-L2 only (read the frozen aggregates, verify their hashes and
+  contracts, re-render the notebooks). The restricted 50-refit audit code and
+  all ICEWS inputs are not redistributed; row-level predictions, fitted
+  coefficients and labels are withheld. The confirmatory evaluation is
+  retrospective, not time-fresh. The stability audit is provisional,
+  holdout-row-excluded and based on 50 dyad-cluster bootstrap refits. The
+  public experiment scripts are a five-seed preview of the audit method and do
+  not regenerate the 50-refit holdout-row-excluded aggregates. No general claim
+  is made about graph features, persistence or any corpus beyond this panel.
+  Source code is MIT-licensed; ICEWS-derived aggregate results are not MIT and
+  remain under the ICEWS research-and-teaching terms. This is the v0.1.1
+  archival release; no DOI has been minted.
 authors:
   - family-names: "Peng"
     given-names: "Jingzhe"
@@ -39,9 +47,10 @@ version: "0.1.1"
 license: MIT
 keywords:
   - dyadic event forecasting
-  - ICEWS
-  - explainability
-  - stability audit
+  - ownership decomposition
+  - actor-role attribution
   - calibration
+  - matched-vintage audit
+  - ICEWS
   - reproducibility
 repository-code: "https://github.com/Quietpeng/lags1-dyad-explanations"

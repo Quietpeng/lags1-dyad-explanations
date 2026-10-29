@@ -1,0 +1,7 @@
+{
+ "status": "completed",
+ "attempts": 1,
+ "started_utc": "2026-10-28T18:37:45+00:00",
+ "note": "driven stage-by-stage (selftest -> fits_p1 -> fits_h0 -> compare -> a8 -> a9 -> report)",
+ "completed_utc": "2026-10-28T21:04:11.230351+00:00"
+}

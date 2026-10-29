@@ -9,12 +9,12 @@ Closes the documentation/metadata defects from the R2C3 repository review:
   never enters the archive and a modified tracked file aborts the build.
 
 The figure-geometry (m01) and world-line inventory (m02) contracts live next
-to the frozen results in ``test_results_contract.py``. The R2C14
-release-state contract (``review-r2c13`` as the published remote-``main``
-snapshot, ``review-r2c14`` as a local unpublished text-only revision,
-``review-r2c12`` and ``review-r2c10`` as earlier published ones, post-hoc
-ownership provenance and no registration claim) is folded into the metadata
-contract.
+to the frozen results in ``test_results_contract.py``. The V2
+release-state contract (``v0.1.1`` as the archival release, ``review-r2c13`` as
+the preceding published remote-``main`` snapshot, ``review-r2c14`` as a local
+unpublished text-only revision, ``review-r2c12`` and ``review-r2c10`` as earlier
+published ones, post-hoc ownership provenance and no registration claim) is
+folded into the metadata contract.
 """
 
 from __future__ import annotations
@@ -230,13 +230,14 @@ class TestCitationLicenceContract(unittest.TestCase):
         self.assertEqual(pyproject()["project"]["description"].rstrip("."),
                          VERIFIER.RELEASE_TITLE)
         self.assertEqual(
-            "Actor-role components of dyadic event forecasts: shared graph "
-            "columns, near-collinearity in a 196-actor panel, and a "
-            "within-panel stability audit",
+            "Actor-side components of dyadic event forecasts: an ownership "
+            "decomposition, specification dependence, and a matched-vintage "
+            "audit in a 196-actor ICEWS panel",
             VERIFIER.RELEASE_TITLE,
         )
-        self.assertIn("shared graph columns, near-collinearity in a 196-actor "
-                      "panel, and a within-panel stability audit", README_FLAT)
+        self.assertIn("an ownership decomposition, specification dependence, "
+                      "and a matched-vintage audit in a 196-actor icews panel",
+                      README_FLAT)
 
     def test_no_superseded_title_framing(self):
         old_framings = (

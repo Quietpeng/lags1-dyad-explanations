@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "results"
 HOLDOUT = RESULTS / "framework_pilot" / "holdout"
 STABILITY = RESULTS / "framework_pilot" / "stability"
+V2 = RESULTS / "framework_pilot_v2"
 sys.path.insert(0, str(ROOT))
 
 
@@ -95,6 +96,50 @@ class TestFrozenHeadlines(unittest.TestCase):
         for phrase in ("provisional", "no node-level", "not time-fresh"):
             self.assertIn(phrase, readme)
 
+
+class TestV2Aggregates(unittest.TestCase):
+    """V2 ships aggregates, a checksum manifest and no row-level state."""
+
+    def test_v2_sha256sums_cover_every_shipped_file(self):
+        entries = {}
+        for line in (V2 / "SHA256SUMS").read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            digest, rel = line.split("  ", 1)
+            entries[rel] = digest
+        self.assertNotIn("SHA256SUMS", " ".join(entries))
+        actual = {
+            path.relative_to(ROOT).as_posix()
+            for path in V2.rglob("*")
+            if path.is_file() and path.name != "SHA256SUMS"
+        }
+        self.assertEqual(actual, set(entries))
+        for rel, digest in entries.items():
+            self.assertEqual(sha256(ROOT / rel), digest, rel)
+
+    def test_v2_ships_no_row_level_or_fitted_state(self):
+        self.assertFalse(list(V2.rglob("preds")))
+        self.assertFalse(list(V2.rglob("*.npz")))
+        self.assertFalse((V2 / "run.log").exists())
+        for path in V2.rglob("*.csv"):
+            with path.open(encoding="utf-8", newline="") as handle:
+                header = {column.strip().lower() for column in
+                          next(csv.reader(handle), [])}
+            self.assertFalse({"y", "p"} <= header, path.name)
+            self.assertFalse(header & {"mean_p", "p_sum", "y_sum", "mean_y",
+                                       "p_model"}, path.name)
+
+    def test_v2_headline_contrasts_match_the_summary(self):
+        summary = strict_load(V2 / "summary.json")
+        contrasts = summary["arm_results"]["contrasts"]
+        self.assertAlmostEqual(contrasts["A2_F3_vs_warm_match_markov"]["d_log_loss"],
+                               0.020954, places=6)
+        self.assertAlmostEqual(contrasts["A5_F5_vs_warm_match_markov"]["d_log_loss"],
+                               0.017743, places=6)
+        self.assertAlmostEqual(contrasts["NESTED_F5_base_vs_F3_model"]["d_log_loss"],
+                               0.003211, places=6)
+        self.assertTrue(summary["post_hoc"])
+        self.assertEqual(summary["protocol_status"], "FROZEN_BEFORE_V2_FIT")
 
 class TestProvenance(unittest.TestCase):
     def test_sha256sums_cover_every_distributed_holdout_file(self):

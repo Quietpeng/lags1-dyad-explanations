@@ -1,0 +1,264 @@
+{
+ "periods": {
+  "F2@ev": {
+   "class_sum": {
+    "source_actor": 1.2045038288365248,
+    "target_actor": 1.3089935874684278,
+    "dyad": 1.5951805824493712,
+    "calendar": 0.22080509753041744,
+    "graph": 1.0106369478528179,
+    "train_stats": 0.0
+   },
+   "shares_pct": {
+    "source_actor": 22.555744419244693,
+    "target_actor": 24.512437485472915,
+    "dyad": 29.871624032133465,
+    "calendar": 4.1348339682517,
+    "graph": 18.92536009489723,
+    "train_stats": 0.0
+   },
+   "total": 5.340120044137559,
+   "n_rows": 311638,
+   "n_features": 49
+  },
+  "F2@inn": {
+   "class_sum": {
+    "source_actor": 1.1854256545494541,
+    "target_actor": 1.2859329843746459,
+    "dyad": 1.5877513723852064,
+    "calendar": 0.1764685325530181,
+    "graph": 0.9929971245762761,
+    "train_stats": 0.23786912498094825
+   },
+   "shares_pct": {
+    "source_actor": 21.685495771885552,
+    "target_actor": 23.524119111614173,
+    "dyad": 29.04541127528674,
+    "calendar": 3.228213934684736,
+    "graph": 18.1653188151033,
+    "train_stats": 4.351441091425504
+   },
+   "total": 5.466444793419549,
+   "n_rows": 607982,
+   "n_features": 49
+  },
+  "F3@ev": {
+   "class_sum": {
+    "source_actor": 1.3616289080258135,
+    "target_actor": 1.4824632390226347,
+    "dyad": 2.6288617243953354,
+    "calendar": 0.2026529493963736,
+    "graph": 2.4915804435746347,
+    "train_stats": 0.0
+   },
+   "shares_pct": {
+    "source_actor": 16.671944256238124,
+    "target_actor": 18.151453995451618,
+    "dyad": 32.18809168059039,
+    "calendar": 2.4813065114761317,
+    "graph": 30.50720355624373,
+    "train_stats": 0.0
+   },
+   "total": 8.167187264414792,
+   "n_rows": 311638,
+   "n_features": 47
+  }
+ },
+ "v1_targets": {
+  "shares_pct": {
+   "source_actor": 21.58,
+   "target_actor": 23.35,
+   "dyad": 29.74,
+   "graph": 16.96,
+   "calendar": 2.8,
+   "train_stats": 5.57
+  },
+  "shares_pct_protocol_literal": {
+   "source_actor": 21.58,
+   "target_actor": 23.35,
+   "dyad": 29.74,
+   "calendar": 16.96,
+   "graph": 2.8,
+   "train_stats": 5.57
+  },
+  "not_actor_pct": 55.07,
+  "order_note": "V1 16.96 is the graph class and 2.80 the calendar class; the protocol lists the six numbers without labelling that pair.  The V2 recomputation (graph 18.17, calendar 3.23) identifies it."
+ },
+ "delta_vs_v1_F2inn": {
+  "source_actor": 0.10549577188555403,
+  "target_actor": 0.17411911161417137,
+  "dyad": -0.6945887247132596,
+  "calendar": 0.42821393468473623,
+  "graph": 1.2053188151033005,
+  "train_stats": -1.2185589085744963
+ },
+ "train_rows_v1": 6344160,
+ "train_rows_v2": 5055328,
+ "train_row_delta": -1288832,
+ "g_nra_reclassification_F2inn": {
+  "shares_pct": {
+   "source_actor": 17.48190229976425,
+   "target_actor": 19.350793792928048,
+   "dyad": 29.04541127528674,
+   "calendar": 3.228213934684736,
+   "graph": 18.1653188151033,
+   "train_stats": 4.351441091425504,
+   "actor_dyad_interaction": 8.376918790807423
+  },
+  "actor_owned_pct": 36.8326960926923,
+  "not_actor_pct": 63.16730390730771,
+  "n_actor_owned_features": 12,
+  "v1_not_actor_target": 62.27,
+  "delta_vs_v1": 0.8973039073077089
+ },
+ "allocation_range_F2inn": {
+  "a_graph_unowned_not_actor": 54.790385116500275,
+  "b_graph_all_actor_not_actor": 36.625066301396984,
+  "c_graph_half_not_actor": 45.70772570894864,
+  "v1_triple": [
+   55.07,
+   38.11,
+   46.59
+  ],
+  "span_pct": 18.16531881510329
+ },
+ "role_counts": {
+  "n_actor_owned": {
+   "value": 14,
+   "of": 49,
+   "definition": "SOURCE_OWN + TARGET_OWN columns"
+  },
+  "n_duplicate_graph_pairs": {
+   "value": 5,
+   "definition": "deg, wdeg, deg12, eig, pr: g_X_s(i,j,t)=g_X_t(j,i,t)"
+  },
+  "n_role_unique": {
+   "value": 4,
+   "of": 49,
+   "features": [
+    "g_nra_s",
+    "g_nra_t",
+    "src_ev",
+    "tgt_ev"
+   ],
+   "definition": "actor-owned columns not in one of the five duplicate pairs"
+  },
+  "n_partner_blind": {
+   "value": 12,
+   "of": 14,
+   "definition": "actor-owned columns constant across partners at fixed (actor, month); only g_nra_* varies"
+  }
+ },
+ "structural": {
+  "partner_blindness_t200": {
+   "rows": 21152,
+   "actors_ge20_partners": 195,
+   "features": {
+    "src_ev": {
+     "cells": 195,
+     "cells_gt1": 0,
+     "max_distinct": 1,
+     "median_distinct": 1.0,
+     "total_distinct_values": 132
+    },
+    "g_deg_s": {
+     "cells": 195,
+     "cells_gt1": 0,
+     "max_distinct": 1,
+     "median_distinct": 1.0,
+     "total_distinct_values": 114
+    },
+    "g_wdeg_s": {
+     "cells": 195,
+     "cells_gt1": 0,
+     "max_distinct": 1,
+     "median_distinct": 1.0,
+     "total_distinct_values": 195
+    },
+    "g_deg12_s": {
+     "cells": 195,
+     "cells_gt1": 0,
+     "max_distinct": 1,
+     "median_distinct": 1.0,
+     "total_distinct_values": 105
+    },
+    "g_eig_s": {
+     "cells": 195,
+     "cells_gt1": 0,
+     "max_distinct": 1,
+     "median_distinct": 1.0,
+     "total_distinct_values": 196
+    },
+    "g_pr_s": {
+     "cells": 195,
+     "cells_gt1": 0,
+     "max_distinct": 1,
+     "median_distinct": 1.0,
+     "total_distinct_values": 196
+    },
+    "g_nra_s": {
+     "cells": 195,
+     "cells_gt1": 195,
+     "max_distinct": 137,
+     "median_distinct": 100.0,
+     "total_distinct_values": 1027
+    }
+   },
+   "statement": "6 of 7 source-side features are actor-level; g_nra_s is dyad-level"
+  },
+  "reversal_invariance": {
+   "sample_rows": 4000,
+   "features": {
+    "g_deg_s=g_deg_t": {
+     "matched": 3798,
+     "pass": 3798,
+     "rate": 1.0
+    },
+    "g_wdeg_s=g_wdeg_t": {
+     "matched": 3798,
+     "pass": 3798,
+     "rate": 1.0
+    },
+    "g_deg12_s=g_deg12_t": {
+     "matched": 3798,
+     "pass": 3798,
+     "rate": 1.0
+    },
+    "g_eig_s=g_eig_t": {
+     "matched": 3798,
+     "pass": 3798,
+     "rate": 1.0
+    },
+    "g_pr_s=g_pr_t": {
+     "matched": 3798,
+     "pass": 3798,
+     "rate": 1.0
+    },
+    "g_nra_s=g_nra_t": {
+     "matched": 3798,
+     "pass": 3798,
+     "rate": 1.0
+    },
+    "src_ev=tgt_ev": {
+     "matched": 3798,
+     "pass": 3798,
+     "rate": 1.0
+    }
+   },
+   "statement": "7 of 7 pairs role-blind at the input level"
+  },
+  "g_nra_symmetry_t200": {
+   "mean_abs_g_nra_s_minus_t": 0.9659191559430962,
+   "max_abs": 4.870095252990723,
+   "n_rows": 21152
+  }
+ },
+ "exactness": {
+  "n_rows": 50000,
+  "raw_max_abs_error": 1.1546319456101628e-14,
+  "raw_mean_abs_error": 7.027209055539968e-17,
+  "rows_above_tol": 0,
+  "pass": true
+ },
+ "note": "V1 shares came from a 6,344,160-row Sprint-B fit that included held-out rows; V2 does not reproduce them and does not re-fit to do so (D-5)."
+}

@@ -1,0 +1,8 @@
+arm,quantity,observed,expected,delta,status,schema
+A0,F1 log_loss,0.217964,0.217875,8.9e-05,PASS_WITH_NOTE,v2/reconciliation/1
+A0,warm_orig_markov log_loss,0.209729,0.209729,0,PASS,v2/reconciliation/1
+A7,F8 log_loss,0.19385,0.19385,0,PASS,v2/reconciliation/1
+A7,F9 log_loss,0.197078,0.197023,5.5e-05,PASS_WITH_NOTE,v2/reconciliation/1
+A0,warm_orig_rate log_loss,0.214682,0.214682,0,PASS,v2/reconciliation/1
+D1,"D1 log_loss (C=0.3,T=1.1)",0.205219,0.205219,0,PASS,v2/reconciliation/1
+A7,warm_orig_markov - F8 (gain),0.015879,0.015879,3.469446952e-18,PASS,v2/reconciliation/1

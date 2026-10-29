@@ -1,0 +1,8 @@
+{
+ "rows": 5816800,
+ "pos": 649094,
+ "dyads": 21152,
+ "stats_rows": 5816800,
+ "months": 275,
+ "assertion": "t<=274, holdout excluded; t=239 and t=251 kept, t=275 dropped"
+}

@@ -1,9 +1,9 @@
-"""Public reference implementation of the actor-role attribution contract.
+"""Public reference implementation of the actor-side ownership decomposition.
 
-This package is the artefact accompanying the manuscript. It implements one
+This package is the artefact accompanying the V2 manuscript. It implements one
 paper path — a post-hoc six-class feature-ownership convention over a
-plan-declared feature list, and its audit — not a reusable framework and not a
-new estimator. The ownership convention has no pre-run record; only the split
+plan-declared feature list, its matched-vintage audit and its within-panel
+stability audit — not a reusable framework and not a new estimator. The ownership convention has no pre-run record; only the split
 carries an independently written pre-run timestamp. It is deliberately
 dependency-light and CPU only:
 

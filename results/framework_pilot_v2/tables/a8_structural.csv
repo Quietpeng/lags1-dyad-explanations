@@ -1,0 +1,16 @@
+check,feature,cells,cells_gt1,max_distinct,median_distinct,total_distinct_values,matched,pass,rate,mean_abs,schema
+partner_blindness,src_ev,195,0,1,1,132,,,,,v2/a8_structural/1
+partner_blindness,g_deg_s,195,0,1,1,114,,,,,v2/a8_structural/1
+partner_blindness,g_wdeg_s,195,0,1,1,195,,,,,v2/a8_structural/1
+partner_blindness,g_deg12_s,195,0,1,1,105,,,,,v2/a8_structural/1
+partner_blindness,g_eig_s,195,0,1,1,196,,,,,v2/a8_structural/1
+partner_blindness,g_pr_s,195,0,1,1,196,,,,,v2/a8_structural/1
+partner_blindness,g_nra_s,195,195,137,100,1027,,,,,v2/a8_structural/1
+reversal_invariance,g_deg_s=g_deg_t,,,,,,3798,3798,1,,v2/a8_structural/1
+reversal_invariance,g_wdeg_s=g_wdeg_t,,,,,,3798,3798,1,,v2/a8_structural/1
+reversal_invariance,g_deg12_s=g_deg12_t,,,,,,3798,3798,1,,v2/a8_structural/1
+reversal_invariance,g_eig_s=g_eig_t,,,,,,3798,3798,1,,v2/a8_structural/1
+reversal_invariance,g_pr_s=g_pr_t,,,,,,3798,3798,1,,v2/a8_structural/1
+reversal_invariance,g_nra_s=g_nra_t,,,,,,3798,3798,1,,v2/a8_structural/1
+reversal_invariance,src_ev=tgt_ev,,,,,,3798,3798,1,,v2/a8_structural/1
+g_nra_symmetry,g_nra_s - g_nra_t,,,,,,,,,0.9659191559,v2/a8_structural/1

@@ -1,27 +1,31 @@
-# Actor-role components of dyadic event forecasts: shared graph columns, near-collinearity in a 196-actor panel, and a within-panel stability audit
+# Actor-side components of dyadic event forecasts: an ownership decomposition, specification dependence, and a matched-vintage audit in a 196-actor ICEWS panel
 
-**shared graph columns, near-collinearity in a 196-actor panel, and a within-panel stability audit.**
+**an ownership decomposition, specification dependence, and a matched-vintage audit in a 196-actor ICEWS panel.**
 
-Code, tests and aggregate results for the **actor-role attribution contract**
-and **within-panel stability audit** of the manuscript: a post-hoc six-class
-ownership convention over a plan-declared feature list that fixes one owner per
-feature, unit and sign; exact additive source- and target-role components for
-binary dyad-month political event forecasts; and a separate stability audit. The deliverable is a contract plus audit, not a
-general-purpose framework and not a new estimator: the decomposition is the
+Code, tests and aggregate results for the **ownership decomposition**,
+**specification-dependence analysis** and **matched-vintage audit** of the V2
+manuscript: a post-hoc six-class ownership convention over a plan-declared
+feature list that fixes one owner per feature, unit and sign; exact additive
+source- and target-role components for binary dyad-month political event
+forecasts; a post-hoc matched-vintage audit of the three asymmetries in the
+pre-specified comparison; and a separate within-panel stability audit. The
+deliverable is a contract plus audit, not a general-purpose framework and not a
+new estimator: the decomposition is the
 logistic identity and coincides with linear SHAP under a training-mean
 background.
 
 The ownership rule is an analysis convention applied after the fact, not a
 preregistered object: no pre-run record of it exists. The feature list is
 plan-declared and internally hash-timestamped, but only the split carries an
-independently written pre-run timestamp. The class shares (44.9% actor-owned;
-55.1% not actor-owned, the maximum of the 38.1–55.1% range over three
-allocations, and 62.3% under a fourth that moves the dyad-specific
-neighbour-activity terms out of the actor class) are descriptive outputs of
-that convention, not a property of the actors. Only 4 of the 49 features are
-role-specific: six of the seven source/target column pairs are one function for
-the same actor (five undirected graph terms plus the log in-plus-out ego
-count).
+independently written pre-run timestamp. The V2 recomputation on the
+5.06 M-row training window gives 45.2% actor-owned and 54.8% not actor-owned
+(the maximum of a 36.6–54.8% allocation range; 63.2% if the dyad-specific
+neighbour-activity terms leave the actor class). The V1 6.34 M-row fit gave
+44.9/55.1 and 62.3; the difference is at most 1.2 percentage points. These
+shares are descriptive outputs of the convention, not properties of the
+actors. Only 4 of the 49 features are role-specific: six of the seven
+source/target column pairs are one function for the same actor (five
+undirected graph terms plus the log in-plus-out ego count).
 
 The public artifact is an **L0–L2 verification release**: reading the frozen
 aggregates, verifying their hashes and contracts, and re-rendering the
@@ -31,26 +35,26 @@ predictions and labels are withheld. The aggregate results do not redistribute
 event rows and remain subject to the ICEWS terms. The manuscript is not part of
 this repository.
 
-**Release status:** v0.1.1 release candidate under review; the metadata version
-is `0.1.1`, but no `v0.1.1` git tag has been created and no DOI has been
-minted; until the tag and DOI exist, cite the repository URL and this candidate.
-Production replaces the review-candidate label with the `v0.1.1` tag and DOI; do
-not cite this tree as an archival release. Remote `main` is `review-r2c13` at
-commit `1c3c8ae`, the current **published review snapshot**: a frozen, fetchable
-record of the reviewed aggregate tree, not an archival release and not a
-DOI-bearing version. `review-r2c12` and `review-r2c10` are earlier published
-snapshots (`review-r2c10` at commit `95aa07b`), so `review-r2c10`,
-`review-r2c12` and `review-r2c13` are public. `review-r2c14` at commit
-`2d27421` is a **local text-only revision that has not been pushed or
-published**: no remote `review-r2c14` tag, branch or commit exists, and its
-aggregate tree is byte-identical to `review-r2c13`. A later local, untagged
-commit carries the V1 factual and author-metadata corrections in
-`RELEASE_NOTES.md`; it is unpublished as well. The public tag inventory is
-`review-r2c2` … `review-r2c8` plus `review-r2c10`, `review-r2c12` and
-`review-r2c13`. `review-r2c9`, `review-r2c11` and `review-r2c14` are local
-only; their text is available from the author on request. Use the published
-`review-r2c13` snapshot when you need a fetchable ref. The confirmatory
-holdout is frozen. The stability audit is **provisional**: it was recomputed
+**Release status:** this is the **`v0.1.1` archival release** of the V2
+artifact. The annotated `v0.1.1` tag and remote `main` point at the commit that
+contains this README. The metadata version is `0.1.1`; **no DOI has been
+minted**, so cite the repository URL and the `v0.1.1` tag until a DOI exists.
+`v0.1.1` carries the V2 aggregate tree
+(`results/framework_pilot_v2/`, aggregates only) alongside the V1 confirmatory
+and stability aggregates.
+
+The earlier review snapshot `review-r2c13` at commit `1c3c8ae` remains
+**published** and fetchable; `review-r2c12` and `review-r2c10` (commit
+`95aa07b`) are earlier published snapshots, so `review-r2c10`, `review-r2c12`
+and `review-r2c13` are public. `review-r2c14` at commit `2d27421`
+is a **local text-only revision that has not been pushed or published**: no
+remote `review-r2c14` tag, branch or commit exists, and its aggregate tree is
+byte-identical to `review-r2c13`. It is retained in local history below the
+`v0.1.1` commit, not advertised as a public release. `review-r2c9` and
+`review-r2c11` are local only. The public review-tag inventory is `review-r2c2`
+… `review-r2c8` plus `review-r2c10`, `review-r2c12` and `review-r2c13`; none of
+those review tags is the archival release, and `v0.1.1` supersedes them as the
+version of record. The confirmatory holdout is frozen. The stability audit is **provisional**: it was recomputed
 after excluding all eventual holdout dyads from fitting and aggregation, with C
 fixed at the primary value and 50 dyad-cluster bootstrap refits. The
 confirmatory holdout completed later and was not used. The shipped
@@ -85,6 +89,13 @@ confirmatory holdout completed later and was not used. The shipped
   report, summary, tables, the frozen plan (`preregistration.json`), manifest
   and access log. Row-level
   predictions and run logs are not redistributed.
+- `results/framework_pilot_v2/` — **V2 aggregate tree**: the post-hoc
+  matched-vintage audit (`tables/arms_contrasts.csv`, `arms_main.csv`,
+  `a7_cache_matrix.csv`, `a8_*.csv`, `a9_*.csv`, `mde.csv`), the machine-readable
+  `summary.json` / `v2_manifest.json`, the provenance note and a `SHA256SUMS`
+  manifest. Row-level predictions, fitted coefficients and caches are withheld
+  (see `DATA_EXCLUSIONS.md`). V2 is a post-hoc secondary analysis of a burned
+  holdout; the V1 49-feature result remains the plan-declared primary of record.
 - `results/framework_pilot/stability/` — **provisional** stability audit on
   inner-validation and burned-retrospective periods, with a `SHA256SUMS`
   manifest covering every distributed stability file. Actor tables are
@@ -232,6 +243,39 @@ The public `experiments/` scripts are a five-seed preview and do not reproduce
 those 50-refit estimates. We make no node-level, causal, lifecycle or
 state-of-the-art claim.
 
+## V2 matched-vintage audit
+
+V2 is a **post-hoc secondary analysis on the same burned holdout**; it cannot
+upgrade the plan-declared V1 result and did not re-open the holdout. It removes
+the three asymmetries one at a time: the two future-inclusive train-only columns
+(`br`, `seen_tr`), the 35-month vintage advantage of the warm comparator, and the
+H0 cache. All arms fix `C = T = 1.0`; the matched warm comparator uses a 2014-11
+cutoff (`t < 239`).
+
+- **A0 replication:** 49@H0 vs the original 2017-vintage warm baseline loses
+  **−0.008235** (95% CI −0.014198 to −0.002272; p = 6.8e−3), 8.9e−5 from the V1
+  −0.008146.
+- **A2 primary (post hoc):** 47@P1 beats matched persistence by **+0.020954**
+  (95% CI 0.015443 to 0.026465; q = 1.4e−13).
+- **A5 key secondary:** the 25-feature model with no actor-owned column beats
+  matched persistence by **+0.017743** (95% CI 0.013118 to 0.022368;
+  q = 1.1e−13), 84.7% of the A2 gain.
+- **Nested 47 vs 25:** the 22 added columns contribute **+0.003211**
+  (95% CI 0.001772 to 0.004650; q = 1.6e−5), 15.3% of the gain. They are 12
+  actor-owned graph terms, 2 ego counts and 8 symmetric graph terms; the
+  contrast cannot separate actor from graph content.
+- **Cache factor:** material only for the 49-feature fit (+0.014783,
+  p = 1.3e−16); null for 47 (−0.000017, p = 0.96) and mechanically zero for 25.
+- **Claim boundary:** the as-specified 49 loses only under H0 against the
+  2017-vintage comparator. The supported statement is that the 47-feature
+  contract beats matched persistence and the nested contrast excludes zero; it
+  is not a claim that actor-role content drives the gain.
+
+`results/framework_pilot_v2/` ships the aggregate tables, summaries, manifests
+and provenance note behind these numbers. The V2 fit-stage certification is
+behavioural (the frozen current script reproduces all 10 fits bit-for-bit), not
+archival; Appendix B of the manuscript states this.
+
 ## Data and license
 
 ICEWS v37 is available from the Harvard Dataverse
@@ -248,18 +292,19 @@ only. See `NOTICE`, `DATA_EXCLUSIONS.md` and the “Derived-data terms” sectio
 
 ## Citation and status
 
-Citation metadata is in `CITATION.cff` and `.zenodo.json`. This is a v0.1.1
-release candidate under review: the `v0.1.1` git tag and the DOI are pending, so
-cite the repository URL and this candidate until they exist; production replaces
-the review-candidate label with the `v0.1.1` tag and DOI. The single author is
-**Jingzhe Peng**, Independent researcher, ORCID `0009-0001-7037-6244`,
-corresponding e-mail `pengjingzhe_quiet@foxmail.com`; the same values are in
-`CITATION.cff`, `.zenodo.json` and the manuscript front matter. The stability
-audit is
-provisional (holdout-row-excluded, 50 refits); the public `experiments/` tree is a
-five-seed preview. The manuscript is under review and is not part of this
-repository. The public ref state is recorded under **Release status** above:
-remote `main` is `review-r2c13`, the current published review snapshot;
-`review-r2c12` and `review-r2c10` are earlier published snapshots;
-`review-r2c14`, `review-r2c9` and `review-r2c11` are local and unpublished;
-there is no archival `v0.1.1` tag and no DOI.
+Citation metadata is in `CITATION.cff` and `.zenodo.json`. This is the
+**`v0.1.1` archival release**: the annotated `v0.1.1` tag points at the commit
+that contains this README. **No DOI has been minted**, so cite the repository
+URL and the `v0.1.1` tag until one exists; a DOI, when minted, will be added to
+`CITATION.cff`, `.zenodo.json` and the manuscript's data-availability
+statement. The single author is **Jingzhe Peng**, Independent researcher,
+ORCID `0009-0001-7037-6244`, corresponding e-mail
+`pengjingzhe_quiet@foxmail.com`; the same values are in `CITATION.cff`,
+`.zenodo.json` and the manuscript front matter. The stability audit is
+provisional (holdout-row-excluded, 50 refits); the public `experiments/` tree is
+a five-seed preview. The manuscript is a separate V2 candidate and is not part
+of this repository. The public ref state is recorded under **Release status**
+above: `main` and `v0.1.1` are the current release; `review-r2c13` is the
+preceding published review snapshot; `review-r2c12` and `review-r2c10` are
+earlier published snapshots; `review-r2c14`, `review-r2c9` and `review-r2c11`
+remain local and unpublished; there is no DOI.

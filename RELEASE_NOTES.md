@@ -1,6 +1,49 @@
 # Release notes
 
-## Local V1 factual and author-metadata correction (R2C14-local; NOT published)
+## v0.1.1 — V2 archival release (current)
+
+Documentation, metadata and aggregate-release change; no new fit, no holdout
+read, no plan edit and no change to any V1 result. This is the **archival
+release**: `main` and the annotated tag `v0.1.1` point at the commit carrying
+this file. No DOI has been minted.
+
+- **V2 docs and metadata.** The public title, abstract, CITATION.cff,
+  .zenodo.json, pyproject description, README, results inventory and this note
+  now describe the V2 manuscript: *Actor-side components of dyadic event
+  forecasts: an ownership decomposition, specification dependence, and a
+  matched-vintage audit in a 196-actor ICEWS panel*. Author metadata is the
+  single author Jingzhe Peng, Independent researcher, ORCID
+  `0009-0001-7037-6244`, `pengjingzhe_quiet@foxmail.com`.
+- **V2 aggregate tree shipped.** `results/framework_pilot_v2/` now carries the
+  V2 aggregate tables, `summary.json`, manifests, provenance note and a
+  `SHA256SUMS`. Row-level predictions (`preds/v2_preds.npz`,
+  `parts/preds_{p1,h0}.npz`, `parts/a9_attributions.npz`), fitted state
+  (`parts/warm_counts.npz`, `parts/fit_mu_sd.npz`) and `run.log` are withheld.
+  `DATA_EXCLUSIONS.md` §6 records the boundary.
+- **V2 results stated truthfully.** V2 is a post-hoc secondary analysis on the
+  burned holdout. The V1 49-feature result remains the plan-declared primary:
+  0.217875 vs 0.209729 log-loss against the 2017-vintage warm baseline. A0
+  replicates the loss (−0.008235, 8.9e−5 from V1). A2 (47@P1 vs 2014-vintage
+  matched warm) is +0.020954 [0.015443, 0.026465]; A5 (25@P1, no actor-owned
+  column) is +0.017743; the nested 47-vs-25 contrast is +0.003211 (15.3%).
+  The as-specified 49 is null against the matched comparator under H0
+  (−0.003143, q = 0.398). No number is promoted.
+- **Release state.** `review-r2c13` at `1c3c8ae` remains the preceding
+  published review snapshot; `review-r2c12` and `review-r2c10` are earlier
+  published snapshots. `review-r2c14` at `2d27421` is local, unpublished and
+  retained only as history below the `v0.1.1` commit; its aggregate bytes are
+  identical to `review-r2c13`. `review-r2c9` and `review-r2c11` remain local.
+  The `v0.1.1` tag supersedes the review tags as the version of record.
+- **Verification.** `make test` (144 tests, skipped=1), `make verify` (15
+  checks), `cffconvert --validate`, cold-cache notebooks and `make dist` pass;
+  the clean PDF is rebuilt from `092702e0…` with 12 tables / 4 figures, dated
+  29 October 2026 and without review line numbers.
+
+The earlier sections below are retained as history. Their statements that
+`v0.1.1`/the archival release were "pending" describe the state at those
+revisions and are superseded by this section.
+
+## Local V1 factual and author-metadata correction (R2C14-local; historical, not published)
 
 Text and metadata only; no analysis, refit, label read, plan edit, data change
 or aggregate edit. No `results/**` byte moved and the frozen plan stays

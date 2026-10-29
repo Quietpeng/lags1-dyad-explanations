@@ -11,12 +11,13 @@ plan's split commitment and the one-shot lock.
 All commands assume the repository root and `python3` (>= 3.12; the pinned
 `numpy==2.5.4` and `scipy==1.18.1` have no cp311 wheels). CPU only.
 
-**What this artifact is.** What ships is the manuscript's actor-role
-attribution contract and its within-panel stability audit, released for
-verification: a post-hoc six-class ownership convention applied to a
+**What this artifact is.** What ships is the manuscript's ownership
+decomposition, its post-hoc matched-vintage audit and its within-panel
+stability audit, released for verification: a post-hoc six-class ownership convention applied to a
 plan-declared feature list, fixing one owner per feature and the unit and sign,
 an exact group-additive decomposition (the logistic identity, not a new
-estimator) and a separate stability audit. The ownership convention has no
+estimator), a V2 matched-vintage aggregate audit and a separate stability
+audit. The ownership convention has no
 pre-run record and is not a preregistered object; only the split carries an
 independently written pre-run timestamp. It is one paper path, not a
 reusable framework, and it makes no general claim about graph features,

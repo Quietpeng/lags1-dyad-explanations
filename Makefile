@@ -1,6 +1,8 @@
 # Public release tasks. CPU only; no restricted data is required by any target
 # except the documented, non-default experiment scripts under experiments/.
-PY ?= python3
+# Prefer a local virtualenv when present; a fresh checkout still uses python3
+# and the README documents `python3 -m venv .venv` plus the pinned install.
+PY ?= $(if $(wildcard .venv/bin/python),.venv/bin/python,python3)
 VERSION ?= 0.1.1
 
 export PYTHONDONTWRITEBYTECODE := 1

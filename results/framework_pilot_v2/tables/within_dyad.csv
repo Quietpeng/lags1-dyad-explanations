@@ -1,0 +1,15 @@
+predictor,within_auc_strict_mean,within_auc_strict_pooled,within_eligible_dyads,n_pairs,schema
+F1,0.514531,0.561735,3310,997142,v2/within_dyad/1
+F2,0.514761,0.563521,3310,997142,v2/within_dyad/1
+F3,0.506233,0.55625,3310,997142,v2/within_dyad/1
+F4,0.47159,0.541577,3310,997142,v2/within_dyad/1
+F5,0.406802,0.506424,3310,997142,v2/within_dyad/1
+F6,0.511929,0.561372,3310,997142,v2/within_dyad/1
+F7,0.502496,0.554544,3310,997142,v2/within_dyad/1
+F8,0.501453,0.553789,3310,997142,v2/within_dyad/1
+F9,0.406802,0.506424,3310,997142,v2/within_dyad/1
+D1,0.47159,0.541576,3310,997142,v2/within_dyad/1
+warm_orig_markov,0.517875,0.536405,3310,997142,v2/within_dyad/1
+warm_orig_rate,0.5,0.5,3310,997142,v2/within_dyad/1
+warm_match_markov,0.517575,0.535787,3310,997142,v2/within_dyad/1
+warm_match_rate,0.5,0.5,3310,997142,v2/within_dyad/1

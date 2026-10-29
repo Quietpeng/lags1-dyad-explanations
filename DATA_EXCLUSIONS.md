@@ -1,11 +1,13 @@
 # Data exclusions and privacy boundary
 
-**Applies to:** the public artifact `lags1-dyad-explanations`, release candidate
-0.1.1 (`review-r2c13` is the published tree at remote-`main` commit `1c3c8ae`;
-`review-r2c12` is an earlier published snapshot and `review-r2c10` remains
-fetchable at commit `95aa07b`; `review-r2c9`, `review-r2c11` and `review-r2c14`
-are local and unpublished, and `review-r2c14` at `2d27421` is a text-only
-revision whose aggregates are byte-identical to `review-r2c13`).
+**Applies to:** the public artifact `lags1-dyad-explanations`, **v0.1.1
+archival release** (the annotated `v0.1.1` tag and `main` point at the commit
+carrying this file). `review-r2c13` at commit `1c3c8ae` is the preceding
+published review snapshot; `review-r2c12` is an earlier published snapshot and
+`review-r2c10` remains fetchable at commit `95aa07b`; `review-r2c9`,
+`review-r2c11` and `review-r2c14` are local and unpublished, and
+`review-r2c14` at `2d27421` is a local text-only revision whose aggregates are
+byte-identical to `review-r2c13`. No DOI has been minted.
 **Status:** the earlier
 row-level leak is closed (the contaminated history is quarantined in a private
 repository and is not reachable from this tree).
@@ -116,14 +118,39 @@ threat score and not a node-level forecast. See `NOTICE` and
 The redistributed stability set is 47 files plus `SHA256SUMS`: the 48th name,
 `run.log`, was not redistributed and carries no separate exclusion annotation.
 
-## 6. Never released
+## 6. V2 aggregate tree — shipped and withheld
+
+`results/framework_pilot_v2/` ships the V2 **aggregate** outputs only: the
+`tables/*.csv` contrasts, cache matrix, ownership and stability tables, `mde.csv`,
+`summary.json`, `v2_manifest.json`, `manifest.json`, `once/run_once_v2.json`,
+the `parts/*.json` summaries and the provenance report. These contain
+model/period/feature/role aggregates, intervals and p/q values, not event rows.
+
+Withheld from the V2 tree:
+
+| File | Why it is withheld |
+|---|---|
+| `preds/v2_preds.npz` | Row-level holdout predictions and labels for the 311,638 evaluation rows. |
+| `parts/preds_p1.npz`, `parts/preds_h0.npz` | The same row-level predictions split by cache. |
+| `parts/a9_attributions.npz` | Row-level attribution arrays behind the 50-refit stability audit. |
+| `parts/warm_counts.npz`, `parts/fit_mu_sd.npz` | Fitted/comparator state and scaling arrays. |
+| `run.log` | Operational log; may contain local paths. |
+
+The V2 tables carry no `y`, `p`, `p_model`, `mean_p`, `p_sum`, `y_sum` or
+`mean_y` column and no dyad-month identifier. The exactness diagnostic
+(max |ε| = 1.15e−14) is an aggregate over 50,000 evaluation rows; the rows
+themselves are not redistributed. V2 is a post-hoc secondary analysis of a
+burned holdout; its ship does not re-open the holdout or change the V1 primary.
+
+## 7. Never released
 
 - ICEWS raw or derived event panels, parquet files and feature/graph caches.
-- Row-level holdout predictions and labels (`results/framework_pilot/holdout/preds/*.npz`).
+- Row-level holdout predictions and labels (`results/framework_pilot/holdout/preds/*.npz`;
+  `results/framework_pilot_v2/preds/v2_preds.npz`).
 - Run logs, experiment configuration and the manuscript.
 - Any 2018–2022 confirmatory label or dyad-month row.
 
-## 7. Enforcement
+## 8. Enforcement
 
 From the repository root:
 
@@ -133,6 +160,7 @@ make stability-check   # scope, hashes and aggregate-only tables
 make worldline-check   # no row-level file, period bound, manifest hashes
 make test              # contract + negative tests
 sha256sum -c results/framework_pilot/stability/SHA256SUMS
+sha256sum -c results/framework_pilot_v2/SHA256SUMS
 ```
 
 `scripts/verify_release.py`'s row-level/named-rate check fails if any
@@ -149,7 +177,7 @@ or `mean_y` key, and if either removed world-line export
 repeats the positive checks and adds synthetic negative tests for the CSV rule
 and for a reappearing world-line trace.
 
-## 8. What did not change
+## 9. What did not change
 
 No model, fit, holdout evaluation, stability refit, bootstrap or aggregate
 metric was recomputed. No frozen headline metric changed; BH family D

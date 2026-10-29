@@ -1,0 +1,104 @@
+{
+ "partner_blindness_t200": {
+  "rows": 21152,
+  "actors_ge20_partners": 195,
+  "features": {
+   "src_ev": {
+    "cells": 195,
+    "cells_gt1": 0,
+    "max_distinct": 1,
+    "median_distinct": 1.0,
+    "total_distinct_values": 132
+   },
+   "g_deg_s": {
+    "cells": 195,
+    "cells_gt1": 0,
+    "max_distinct": 1,
+    "median_distinct": 1.0,
+    "total_distinct_values": 114
+   },
+   "g_wdeg_s": {
+    "cells": 195,
+    "cells_gt1": 0,
+    "max_distinct": 1,
+    "median_distinct": 1.0,
+    "total_distinct_values": 195
+   },
+   "g_deg12_s": {
+    "cells": 195,
+    "cells_gt1": 0,
+    "max_distinct": 1,
+    "median_distinct": 1.0,
+    "total_distinct_values": 105
+   },
+   "g_eig_s": {
+    "cells": 195,
+    "cells_gt1": 0,
+    "max_distinct": 1,
+    "median_distinct": 1.0,
+    "total_distinct_values": 196
+   },
+   "g_pr_s": {
+    "cells": 195,
+    "cells_gt1": 0,
+    "max_distinct": 1,
+    "median_distinct": 1.0,
+    "total_distinct_values": 196
+   },
+   "g_nra_s": {
+    "cells": 195,
+    "cells_gt1": 195,
+    "max_distinct": 137,
+    "median_distinct": 100.0,
+    "total_distinct_values": 1027
+   }
+  },
+  "statement": "6 of 7 source-side features are actor-level; g_nra_s is dyad-level"
+ },
+ "reversal_invariance": {
+  "sample_rows": 4000,
+  "features": {
+   "g_deg_s=g_deg_t": {
+    "matched": 3798,
+    "pass": 3798,
+    "rate": 1.0
+   },
+   "g_wdeg_s=g_wdeg_t": {
+    "matched": 3798,
+    "pass": 3798,
+    "rate": 1.0
+   },
+   "g_deg12_s=g_deg12_t": {
+    "matched": 3798,
+    "pass": 3798,
+    "rate": 1.0
+   },
+   "g_eig_s=g_eig_t": {
+    "matched": 3798,
+    "pass": 3798,
+    "rate": 1.0
+   },
+   "g_pr_s=g_pr_t": {
+    "matched": 3798,
+    "pass": 3798,
+    "rate": 1.0
+   },
+   "g_nra_s=g_nra_t": {
+    "matched": 3798,
+    "pass": 3798,
+    "rate": 1.0
+   },
+   "src_ev=tgt_ev": {
+    "matched": 3798,
+    "pass": 3798,
+    "rate": 1.0
+   }
+  },
+  "statement": "7 of 7 pairs role-blind at the input level"
+ },
+ "g_nra_symmetry_t200": {
+  "mean_abs_g_nra_s_minus_t": 0.9659191559430962,
+  "max_abs": 4.870095252990723,
+  "n_rows": 21152
+ }
+}

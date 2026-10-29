@@ -49,6 +49,7 @@ from pathlib import Path
 
 HOLDOUT_REL = Path("results/framework_pilot/holdout")
 STABILITY_REL = Path("results/framework_pilot/stability")
+V2_REL = Path("results/framework_pilot_v2")
 STABILITY_VARIANT_REL = Path("experiments/STABILITY_VARIANT.md")
 STABILITY_DOCS = (
     "README.md",
@@ -146,6 +147,8 @@ REQUIRED = [
     "results/framework_pilot/stability/summary_decompose.json",
     "results/framework_pilot/stability/summary_hgb.json",
     "results/framework_pilot/stability/summary_stability.json",
+    "results/framework_pilot_v2/README.md",
+    "results/framework_pilot_v2/SHA256SUMS",
     "results/worldline_preview/README.md",
     "results/worldline_preview/run_manifest.json",
     "results/worldline_preview/worldline_trace.json",
@@ -232,12 +235,13 @@ def check_required(root: Path) -> list[str]:
 # Citation / licence / test-suite contract (no PyYAML dependency)
 # ---------------------------------------------------------------------------
 RELEASE_TITLE = (
-    "Actor-role components of dyadic event forecasts: shared graph columns, "
-    "near-collinearity in a 196-actor panel, and a within-panel stability audit"
+    "Actor-side components of dyadic event forecasts: an ownership "
+    "decomposition, specification dependence, and a matched-vintage audit in "
+    "a 196-actor ICEWS panel"
 )
 RELEASE_SUBTITLE = (
-    "shared graph columns, near-collinearity in a 196-actor panel, and a "
-    "within-panel stability audit"
+    "an ownership decomposition, specification dependence, and a "
+    "matched-vintage audit in a 196-actor ICEWS panel"
 )
 # The frozen plan is byte-pinned to the paper's Appendix B hash. Reader-facing
 # surfaces are qualified, but the plan file itself is never rewritten: a drift
@@ -464,7 +468,7 @@ def check_metadata_contract(root: Path) -> list[str]:
 
     readme = (root / "README.md").read_text(encoding="utf-8")
     readme_flat = " ".join(readme.lower().split())
-    if RELEASE_SUBTITLE not in readme_flat:
+    if RELEASE_SUBTITLE.lower() not in readme_flat:
         errors.append("README.md subtitle does not carry the current title framing")
 
     # MJ01: ownership provenance. The six-class rule is a post-hoc analysis
@@ -505,18 +509,18 @@ def check_metadata_contract(root: Path) -> list[str]:
     for name, value in versions.items():
         if value != "0.1.1":
             errors.append(f"{name} version is {value!r}, expected '0.1.1'")
-    if "`v0.1.1` git tag" not in readme:
-        errors.append("README.md does not state that no v0.1.1 tag exists")
+    if "v0.1.1" not in readme_flat:
+        errors.append("README.md does not name the v0.1.1 archival release")
+    if "archival release" not in readme_flat:
+        errors.append("README.md does not describe v0.1.1 as the archival release")
     if "no doi has been minted" not in readme_flat:
-        errors.append("README.md does not state that no DOI exists")
-    if "do not cite this tree as an archival release" not in readme_flat:
-        errors.append("README.md does not flag the review candidate as non-archival")
+        errors.append("README.md does not state that no DOI has been minted")
 
-    # U34 (V1 correction): the remote serves `review-r2c13`; `review-r2c14` at
-    # 2d27421 is a local text-only revision that was never pushed. The README
-    # must say so, and a text that presents r2c14 as published, or that
-    # advertises it as the current remote ref, fails here. R2C13, R2C12 and
-    # R2C10 stay valid as earlier published snapshots.
+    # V2 release state: `v0.1.1` is the archival release carried by the
+    # commit that contains this README; `review-r2c13` is the preceding
+    # published snapshot; `review-r2c14` at 2d27421 is local and unpublished;
+    # r2c10/r2c12/r2c13 remain public. A text that presents r2c14 as published
+    # fails here.
     if "review-r2c13" not in readme_flat:
         errors.append("README.md does not cite the published review-r2c13 snapshot")
     if "review-r2c14" not in readme_flat:
@@ -1306,7 +1310,8 @@ def main(argv: list[str] | None = None) -> int:
         ("row-level data", check_row_level_data(root)),
         ("strict JSON", check_strict_json(root)),
         ("holdout checksums", check_tree_sums(root, HOLDOUT_REL, "holdout")),
-        ("stability checksums", check_tree_sums(root, STABILITY_REL, "stability")),
+        ("aggregate checksums", check_tree_sums(root, STABILITY_REL, "stability")
+         + check_tree_sums(root, V2_REL, "v2")),
         ("pre-registration checksum", check_prereg_checksum(root)),
         ("manifest exclusions", check_manifest(root)),
         ("manifest code hashes", check_manifest_code(root)),

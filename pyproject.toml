@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "lags1-dyad-explanations"
 version = "0.1.1"
-description = "Actor-role components of dyadic event forecasts: shared graph columns, near-collinearity in a 196-actor panel, and a within-panel stability audit"
+description = "Actor-side components of dyadic event forecasts: an ownership decomposition, specification dependence, and a matched-vintage audit in a 196-actor ICEWS panel"
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
@@ -13,7 +13,8 @@ authors = [{ name = "Jingzhe Peng", email = "pengjingzhe_quiet@foxmail.com" }]
 keywords = [
   "dyadic event forecasting",
   "ICEWS",
-  "explainability",
+  "ownership decomposition",
+  "actor-role attribution",
   "stability audit",
   "calibration",
   "reproducibility",

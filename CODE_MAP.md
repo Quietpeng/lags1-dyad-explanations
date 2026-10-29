@@ -1,7 +1,8 @@
 # Code map
 
-The public package contains the paper path only: the actor-role attribution
-contract and its audit, not a reusable framework and not a new estimator. The
+The public package contains the paper path only: the ownership decomposition,
+the V2 matched-vintage audit and the within-panel stability audit, not a
+reusable framework and not a new estimator. The
 directory and import name `framework/` are retained for compatibility (tests and
 the installed package import `framework`); they do not imply general-purpose
 abstractions. Earlier pilot, synthetic/T1, graph-encoder, operator and reporting

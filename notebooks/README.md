@@ -1,8 +1,8 @@
-# Notebooks — actor-level explanations of dyadic event forecasts
+# Notebooks — actor-side components of dyadic event forecasts
 
 Read-only, CPU-only companion notebooks for:
 
-> **Actor-role components of dyadic event forecasts: shared graph columns, near-collinearity in a 196-actor panel, and a within-panel stability audit**
+> **Actor-side components of dyadic event forecasts: an ownership decomposition, specification dependence, and a matched-vintage audit in a 196-actor ICEWS panel**
 
 The notebooks display frozen aggregate artifacts. They do **not** fit models, read the ICEWS event panel, or load row-level predictions. Some shipped aggregates contain actor-level **aggregate attribution and exposure** (not predicted probabilities or observed outcome rates); those are ICEWS-derived and remain under the ICEWS terms. The world-line preview ships no row-level trace: only the rendered figure and aggregate summaries. See `NOTICE`, `DATA_EXCLUSIONS.md` and `results/README.md`.
 

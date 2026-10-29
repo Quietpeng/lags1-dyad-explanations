@@ -1,0 +1,8 @@
+metric,value,schema
+spearman_source,0.933536804,v2/a9_crosscache/1
+spearman_target,0.9315334412,v2/a9_crosscache/1
+jaccard10_source,0.5384615385,v2/a9_crosscache/1
+jaccard10_target,0.5384615385,v2/a9_crosscache/1
+coef_sign_flips,2,v2/a9_crosscache/1
+n_coef,47,v2/a9_crosscache/1
+delta_not_actor_share,-1.181177379,v2/a9_crosscache/1

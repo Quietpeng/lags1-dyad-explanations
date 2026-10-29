@@ -9,19 +9,22 @@ row-level trace; see [`../DATA_EXCLUSIONS.md`](../DATA_EXCLUSIONS.md). The
 confirmatory holdout was frozen on 2026-10-23; the stability audit is
 provisional. Read the status table before quoting a number.
 
-The shipped aggregates are the published review snapshot: `review-r2c13` at
-remote-`main` commit `1c3c8ae`. `review-r2c12` is an earlier published snapshot
-and `review-r2c10` remains fetchable at commit `95aa07b`; `review-r2c9`,
-`review-r2c11` and `review-r2c14` are local and unpublished, and `review-r2c14`
-at `2d27421` is a text-only revision whose aggregate bytes are identical to
-`review-r2c13`. No `v0.1.1` tag and no DOI exist.
-The tag names the frozen bytes described below, not an archival release.
+The shipped aggregates are the **`v0.1.1` archival release**: the annotated
+`v0.1.1` tag and `main` point at the commit carrying this file. The preceding
+published review snapshot is `review-r2c13` at commit `1c3c8ae`;
+`review-r2c12` is an earlier published snapshot and `review-r2c10` remains
+fetchable at commit `95aa07b`. `review-r2c9`, `review-r2c11` and
+`review-r2c14` are local and unpublished; `review-r2c14` at `2d27421` is a
+text-only revision whose aggregate bytes are identical to `review-r2c13`. The
+`v0.1.1` tag adds the V2 aggregate tree (`framework_pilot_v2/`). **No DOI has
+been minted.**
 
 ## Status at a glance
 
 | Artifact | Status | What it supports |
 |---|---|---|
 | `framework_pilot/holdout/` | **Frozen, one-shot, completed** | The plan-declared 49-feature primary, plan-declared 29-feature secondary, baselines, within/between-dyad checks, feature-group LOO and sensitivity tables. |
+| `framework_pilot_v2/` | **Post-hoc secondary on a burned holdout; aggregates only** | The V2 matched-vintage audit: A0–A7 arms, 14 contrasts, cache matrix, ownership recomputation, provisional 50-refit stability and the fit/provenance reports. Row-level predictions and fitted state are withheld. V2 cannot upgrade the V1 primary. |
 | `framework_pilot/stability/` | **Provisional; holdout-excluded 50-refit rerun** | Exactness, source/target aggregation, seed/regime/window stability, top-k and decision proxy, HGB occlusion. `audit_design = frozen_during_confirmatory_run_holdout_rows_excluded`: the grid was frozen at 06:31:40Z, after the confirmatory read began at 05:26:55Z and before it completed at 07:45:19Z; the rerun is non-confirmatory and every eventual holdout dyad is excluded at row level. The public `experiments/` tree is a five-seed preview, not this audit; see `experiments/STABILITY_VARIANT.md`. |
 | `worldline_preview/` | **Illustrative only** | A two-step communication preview from four anchors × 20 sampled dyads (71 distinct, non-random, inner period 2016-01–2017-11); no multi-step accuracy claim, no paper result. Ships a standalone 150 mm vector illustration (Arimo/TrueType; a repo-only render, not a manuscript exhibit) and a 300 dpi PNG plus aggregate JSON; no row-level trace file. The manuscript cites the directory once and analyses nothing here. |
 
@@ -95,6 +98,25 @@ excludes (5,282 × 239). The filtered training set is
 `manifest.json#/counts/train` (5,055,328), and the holdout count is
 `counts.eval` (311,638). No frozen `results/**` file is edited by either note.
 
+### V2 matched-vintage audit (post hoc secondary)
+
+| File | Content |
+|---|---|
+| `framework_pilot_v2/README.md` | Scope, shipped/withheld inventory, headline numbers and verification. |
+| `framework_pilot_v2/summary.json` | Machine-readable fits, contrasts, BH families, counts and post-hoc status. |
+| `framework_pilot_v2/v2_manifest.json`, `manifest.json` | Protocol/script hashes, inputs, packages, arm table, checks and runtimes. |
+| `framework_pilot_v2/once/run_once_v2.json` | One-shot record for the V2 pass. |
+| `framework_pilot_v2/tables/*.csv` | All 14 contrasts, per-fit metrics, cache matrix, ownership, stability, MDE, AUC/AP, comparator and reconciliation tables. |
+| `framework_pilot_v2/parts/*.json` | A6/A8/A9 summaries, fit and comparison tables, runtimes, self-test and warm-count hash. |
+| `framework_pilot_v2/v2_report.md`, `v2_fit_provenance.md` | Execution report and fit-stage provenance (behavioural replication, F9 anchor, thread sensitivity). |
+| `framework_pilot_v2/SHA256SUMS` | `sha256sum -c` compatible checksums for every shipped V2 file. |
+
+V2 ships aggregates only: `preds/v2_preds.npz`, `parts/preds_{p1,h0}.npz`,
+`parts/a9_attributions.npz`, `parts/warm_counts.npz`, `parts/fit_mu_sd.npz` and
+`run.log` are excluded (see [`../DATA_EXCLUSIONS.md`](../DATA_EXCLUSIONS.md) §6).
+The V2 fit stage cannot be re-executed from this tree; it needs the licensed
+ICEWS panel and restricted caches. The aggregate tables are the public unit.
+
 ### Stability audit (provisional)
 
 | File | Content |
@@ -134,6 +156,11 @@ redistributed**. The manifest marks each as `redistributed: false` with an
 | `holdout/preds/holdout_fe_scores.npz` | Row-level dyad fixed-effects scores derived from the same predictions. |
 | `holdout/run.log` | Run log; may contain local paths and operational detail. |
 | `holdout/run_blind_quick_aborted.log` | Aborted blind/quick smoke log; operational detail. |
+| `framework_pilot_v2/preds/v2_preds.npz` | Row-level V2 holdout predictions and labels. |
+| `framework_pilot_v2/parts/preds_p1.npz`, `parts/preds_h0.npz` | Row-level V2 predictions by cache. |
+| `framework_pilot_v2/parts/a9_attributions.npz` | Row-level attribution arrays behind the provisional stability audit. |
+| `framework_pilot_v2/parts/warm_counts.npz`, `parts/fit_mu_sd.npz` | Fitted/comparator state and scaling arrays. |
+| `framework_pilot_v2/run.log` | Operational log; may contain local paths. |
 
 No `preds/` directory, `*.npz`, `*.parquet`, cache, log or `data/` tree is part
 of the release. `make verify` fails if one appears.
@@ -218,6 +245,9 @@ sha256sum -c results/framework_pilot/holdout/SHA256SUMS
 # every distributed stability file
 sha256sum -c results/framework_pilot/stability/SHA256SUMS
 
+# every distributed V2 file
+sha256sum -c results/framework_pilot_v2/SHA256SUMS
+
 # full public-release verifier (strict JSON, notebooks, paths, secrets)
 make verify
 
@@ -289,6 +319,11 @@ the current status and the holdout-excluded audit literal.
   freeze. Dropping the graph block is a post-hoc
   candidate for dyad-level probability ranking, not a new confirmatory test and
   not a primary swap.
+- V2 is a **post-hoc secondary analysis on the same burned holdout**. It does
+  not re-open the holdout, does not change the V1 primary, and cannot upgrade
+  it. The V2 primary (47@P1 vs matched persistence) and key secondary (25@P1)
+  are reported with multiway intervals; the as-specified 49 remains the
+  plan-declared result of record.
 - No causal, actor-lifecycle, state-of-the-art, sim-to-real, human-decision or
   validated multi-step claim.
 - Stability is provisional and not holdout-side. The public `experiments/`
