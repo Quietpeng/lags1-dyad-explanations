@@ -34,7 +34,7 @@ this file. No DOI has been minted.
   retained only as history below the `v0.1.1` commit; its aggregate bytes are
   identical to `review-r2c13`. `review-r2c9` and `review-r2c11` remain local.
   The `v0.1.1` tag supersedes the review tags as the version of record.
-- **Verification.** `make test` (144 tests, skipped=1), `make verify` (15
+- **Verification.** `make test` (147 tests, skipped=0), `make verify` (15
   checks), `cffconvert --validate`, cold-cache notebooks and `make dist` pass;
   the clean PDF is rebuilt from `092702e0…` with 12 tables / 4 figures, dated
   29 October 2026 and without review line numbers.
