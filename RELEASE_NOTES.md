@@ -4,8 +4,8 @@
 
 Documentation, metadata and aggregate-release change; no new fit, no holdout
 read, no plan edit and no change to any V1 result. This is the **archival
-release**: `main` and the annotated tag `v0.1.1` point at the commit carrying
-this file. No DOI has been minted.
+release**: the annotated tag `v0.1.1` points at the commit carrying this
+file; `main` fast-forwards to it on push. No DOI has been minted.
 
 - **V2 docs and metadata.** The public title, abstract, CITATION.cff,
   .zenodo.json, pyproject description, README, results inventory and this note

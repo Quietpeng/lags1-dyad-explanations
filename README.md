@@ -36,8 +36,8 @@ event rows and remain subject to the ICEWS terms. The manuscript is not part of
 this repository.
 
 **Release status:** this is the **`v0.1.1` archival release** of the V2
-artifact. The annotated `v0.1.1` tag and remote `main` point at the commit that
-contains this README. The metadata version is `0.1.1`; **no DOI has been
+artifact. The annotated `v0.1.1` tag points at the commit that contains this README;
+`main` is fast-forwarded to the same commit when the release is pushed. The metadata version is `0.1.1`; **no DOI has been
 minted**, so cite the repository URL and the `v0.1.1` tag until a DOI exists.
 `v0.1.1` carries the V2 aggregate tree
 (`results/framework_pilot_v2/`, aggregates only) alongside the V1 confirmatory
