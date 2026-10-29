@@ -1,22 +1,24 @@
 # Data exclusions and privacy boundary
 
-**Applies to:** the public artifact `lags1-dyad-explanations`, **v0.1.1
-archival release** (the annotated `v0.1.1` tag and `main` point at the commit
-carrying this file). `review-r2c13` at commit `1c3c8ae` is the preceding
-published review snapshot; `review-r2c12` is an earlier published snapshot and
-`review-r2c10` remains fetchable at commit `95aa07b`; `review-r2c9`,
-`review-r2c11` and `review-r2c14` are local and unpublished, and
-`review-r2c14` at `2d27421` is a local text-only revision whose aggregates are
-byte-identical to `review-r2c13`. No DOI has been minted.
-**Status:** the earlier
-row-level leak is closed (the contaminated history is quarantined in a private
-repository and is not reachable from this tree).
+**Applies to:** the public artifact `lags1-dyad-explanations`, `v0.1.2` code
+release (annotated tag object `af229d3` at commit `70d6d78`, which is also the
+`main` head and the snapshot the paper cites). `v0.1.1` at `13b96db` is the
+previous release, retained as history. `review-r2c13` at commit `1c3c8ae` is the
+preceding published review snapshot. `review-r2c12` is an earlier published
+snapshot, and `review-r2c10` remains fetchable at commit `95aa07b`. The
+`review-r2c9`, `review-r2c11` and `review-r2c14` review tags are local and
+unpublished; the `review-r2c14` tag object at `2d27421` is a text-only revision
+whose aggregates are byte-identical to `review-r2c13` and whose commit is an
+ancestor of `v0.1.2`. No DOI, Zenodo DOI or arXiv identifier has been minted.
+
+**Status:** the earlier row-level leak is closed. The contaminated history is
+quarantined in a private repository and is not reachable from this tree.
 
 This file is the authoritative inventory of what the public tree removes or
 redacts, and why. It records file paths, schemas, row counts and reasons only.
 It does not reproduce any removed value, label, probability, actor-month
 observation or dyad identifier. No raw ICEWS data and no holdout label is read
-or redistributed. The public `experiments/` tree remains a **five-seed preview**
+or redistributed. The public `experiments/` tree remains a five-seed preview
 of the stability method, not the restricted 50-refit, holdout-excluded audit.
 
 ## Rule
@@ -48,11 +50,11 @@ release history rewrite (`review-r2c2`); `git ls-files` and
 
 ## 2. Redacted actor tables
 
-Thirteen shipped actor tables remain as **aggregate attribution and exposure**
-tables. Seven column slots were removed across the three schemas — three in the
+Thirteen shipped actor tables remain as aggregate attribution and exposure
+tables. Seven column slots were removed across the three schemas: three in the
 actor-month schema (`p_sum`, `y_sum`, `mean_p`), two in the actor schema
-(`mean_p`, `mean_y`) and two in the all-periods schema (`mean_p`, `mean_y`) —
-covering four distinct names. No other column was changed, and no value in a
+(`mean_p`, `mean_y`) and two in the all-periods schema (`mean_p`, `mean_y`).
+These cover four distinct names. No other column was changed, and no value in a
 retained column was recomputed.
 
 | Files | Rows | Removed columns | Retained content |
@@ -61,11 +63,12 @@ retained column was recomputed.
 | `stability/tables/actor_{source,target}_{inner_2016_17,retro_2018_22,covid_2020_21}.csv` (6) | 196 each | `mean_p`, `mean_y` | period, role, actor id and ISO3 label, region, exposure (`n_rows`, `n_months`), attribution and bucket shares, top-3 features/contributions, ego share, attribution rank and percent |
 | `stability/tables/actor_attribution_all_periods.csv` (1) | 1,176 | `mean_p`, `mean_y` | same aggregate attribution/exposure schema across the three periods |
 
-Why: `mean_p`/`p_sum` are predicted probabilities, `y_sum`/`mean_y` are observed
-event counts/rates. Combined with an actor id or ISO3 label they reconstructed
-an actor-month risk ranking, which contradicted the manuscript's "no actor risk
-scores" statement. Attribution is a bookkeeping decomposition of a dyad
-forecast, not a probability, an intent or an operational risk score.
+Why: `mean_p`/`p_sum` are predicted probabilities, and `y_sum`/`mean_y` are
+observed event counts or rates. Combined with an actor id or ISO3 label, they
+reconstructed an actor-month risk ranking, which contradicted the manuscript's
+"no actor risk scores" statement. Attribution is a bookkeeping decomposition of
+a dyad forecast; it is not a probability, an intent or an operational risk
+score.
 
 ## 3. Removed embedded JSON keys
 
@@ -88,7 +91,7 @@ aggregate summaries remain.
 | Property | Value |
 |---|---|
 | Removed machine-readable rows | `worldline_trace.csv` 240 dyad-step rows (`p_model`, `state`); `node_trace.csv` 249 induced-actor rows (`state_prev`, `active`) |
-| Retained | `worldline_preview.pdf` / `worldline_preview.png` (rendered illustration), `worldline_trace.json` (per-anchor counts, transition tallies, per-anchor `p1_summary`/`p2_summary` distribution statistics — `mean`, `median`, `min`, `max` of the predicted probability over the 20 sampled, unlabeled dyads at steps 1 and 2, with no per-dyad value and no identifier — and provenance), `README.md`, `run_manifest.json` |
+| Retained | `worldline_preview.pdf` / `worldline_preview.png` (rendered illustration); `worldline_trace.json` (per-anchor counts, transition tallies, per-anchor `p1_summary`/`p2_summary` distribution statistics for `mean`, `median`, `min` and `max` of the predicted probability over the 20 sampled, unlabeled dyads at steps 1 and 2, with no per-dyad value and no identifier, plus provenance); `README.md`; `run_manifest.json` |
 | Period | inner validation 2016-01…2017-11; maximum `t_idx` 274 (the 2017-12 embargo row is absent) |
 | Holdout rows | 0 |
 | Sample | 20 sampled dyads per anchor over four anchors (71 distinct across anchors); deliberately selected for visibility, not random |
@@ -96,8 +99,8 @@ aggregate summaries remain.
 | Rationale | the preview is an illustrative, repo-only rendering of a restricted per-row trace export (not redistributed); it is not a manuscript exhibit and no manuscript figure or appendix is derived from it; the figure is marked `ILLUSTRATIVE PREVIEW - NOT VALIDATED`, no accuracy is computed, `labels_used_for_scoring=false`, and deleting the preview changes no main result |
 | Machine enforcement | `scripts/verify_release.py` fails if either per-row CSV reappears under `results/worldline_preview/`; `make worldline-check` asserts the directory ships no CSV, the aggregate JSON is present, the inner-period bound holds and the manifest covers only the rendered/aggregate outputs |
 
-The boundary is bounded and enforced: restoring a per-row export, adding
-anchors, or adding holdout rows fails `make verify` / `make worldline-check`.
+The boundary is enforced: restoring a per-row export, adding anchors, or adding
+holdout rows fails `make verify` / `make worldline-check`.
 
 ## 5. Reviewed and retained (no probability, label or outcome rate)
 
@@ -110,9 +113,8 @@ anchors, or adding holdout rows fails `make verify` / `make worldline-check`.
 | `hgb_occlusion_*.csv` | HGB/logistic occlusion agreement and per-actor failure diagnostics | model-agreement diagnostics (delta log-loss), not predicted event probabilities or observed event rates |
 | `holdout/tables/*.csv`, `holdout/*.json` | one-shot holdout aggregates | no row-level prediction or label; `preds/` remains excluded |
 
-Retained actor-level attribution is explicitly framed as **not** intent, not a
-threat score and not a node-level forecast. See `NOTICE` and
-`results/README.md`.
+Retained actor-level attribution is not intent, a threat score or a node-level
+forecast. See `NOTICE` and `results/README.md`.
 
 `stability/summary.json#/files` is the audit-run inventory and lists 48 names.
 The redistributed stability set is 47 files plus `SHA256SUMS`: the 48th name,
@@ -120,7 +122,7 @@ The redistributed stability set is 47 files plus `SHA256SUMS`: the 48th name,
 
 ## 6. V2 aggregate tree — shipped and withheld
 
-`results/framework_pilot_v2/` ships the V2 **aggregate** outputs only: the
+`results/framework_pilot_v2/` ships the V2 aggregate outputs only: the
 `tables/*.csv` contrasts, cache matrix, ownership and stability tables, `mde.csv`,
 `summary.json`, `v2_manifest.json`, `manifest.json`, `once/run_once_v2.json`,
 the `parts/*.json` summaries and the provenance report. These contain

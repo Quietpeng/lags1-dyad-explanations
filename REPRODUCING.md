@@ -2,29 +2,29 @@
 
 This release separates four levels of reproduction. Only L0–L2 are executable
 from the public tree. L3 needs licensed ICEWS v37, the restricted derived
-feature and contribution caches, the local experiment configuration, and — for
-post-holdout diagnostics — row-level predictions. The public tree has no
+feature and contribution caches, the local experiment configuration, and for
+post-holdout diagnostics row-level predictions. The public tree has no
 cache-build entry point, so licensed access alone is not sufficient. L4 is the
-one-shot confirmatory holdout and **cannot** be re-run without violating the
-plan's split commitment and the one-shot lock.
+one-shot confirmatory holdout; re-running it would violate the plan's split
+commitment and the one-shot lock.
 
 All commands assume the repository root and `python3` (>= 3.12; the pinned
 `numpy==2.5.4` and `scipy==1.18.1` have no cp311 wheels). CPU only.
 
-**What this artifact is.** What ships is the manuscript's ownership
-decomposition, its post-hoc matched-vintage audit and its within-panel
-stability audit, released for verification: a post-hoc six-class ownership convention applied to a
-plan-declared feature list, fixing one owner per feature and the unit and sign,
-an exact group-additive decomposition (the logistic identity, not a new
-estimator), a V2 matched-vintage aggregate audit and a separate stability
-audit. The ownership convention has no
-pre-run record and is not a preregistered object; only the split carries an
-independently written pre-run timestamp. It is one paper path, not a
-reusable framework, and it makes no general claim about graph features,
-persistence or any corpus beyond this panel. The executable surface is L0–L2;
-L3–L4 are documented for context only. The 50-refit audit code is restricted
-and is not in this tree — the public `experiments/` scripts are a five-seed
-preview — and row-level predictions and labels are withheld.
+The artifact contains the manuscript's ownership decomposition, its post-hoc
+matched-vintage audit and its within-panel stability audit, released for
+verification. The analysis applies a post-hoc six-class ownership convention
+to a plan-declared feature list, fixing one owner per feature and the unit and
+sign. It yields an exact group-additive decomposition (the logistic identity,
+not a new estimator), a V2 matched-vintage aggregate audit and a separate
+stability audit. The ownership convention has no pre-run record and is not a
+preregistered object; only the split carries an independently written pre-run
+timestamp. The release is one paper path rather than a reusable framework, and
+it makes no general claim about graph features, persistence or any corpus
+beyond this panel. The executable surface is L0–L2; L3–L4 are documented for
+context only. The 50-refit audit code is restricted and not in this tree (the
+public `experiments/` scripts are a five-seed preview), and row-level
+predictions and labels are withheld.
 
 ## Levels
 
@@ -88,8 +88,8 @@ notebooks unchanged and `git status` clean. Notebook 01 degrades gracefully
 
 ## Level 3 — restricted regeneration (documented, not executable)
 
-The experiment scripts are shipped for auditability, not as a turnkey pipeline.
-They read:
+The experiment scripts ship for audit; they are not a turnkey pipeline. They
+read:
 
 - the ICEWS v37 event panel (doi:10.7910/DVN/28075), which is not
   redistributable;
@@ -121,19 +121,19 @@ caches are absent, `generated_utc` would change and last-bit floating-point
 differences are possible. L3 therefore documents the method; the frozen
 aggregates and their `SHA256SUMS` are the authoritative record.
 
-The **V2 runner** (`experiments/sprint_c_v2.py`, archival copy
+The V2 runner (`experiments/sprint_c_v2.py`, archival copy
 `experiments/sprint_c_v2_fit_repro.py`) is the code that produced
-`results/framework_pilot_v2/`. It is shipped for audit and is **not runnable
-from this tree**: it needs the licensed panel and caches above, the frozen
-protocol and, for the `compare`, `a8` and `a9` stages, the withheld row-level
-predictions. Every stage begins with `verify_protocol()`, which exits with an
-explicit message when `reviews/round2/v2_protocol.md` is absent; a licensed
-working copy re-enables it through `NEUROSIM_V2_PROTOCOL_DIR` (and
-`NEUROSIM_V2_SCRATCH` for `--dry-run` output). The port changes only the header
-and those two paths, so the shipped file's digest differs from the pre-port
-`code_sha256` in `results/framework_pilot_v2/manifest.json`; the aggregate tree
-and its `SHA256SUMS` are the record, and `tests/test_smoke.py` pins the feature
-counts, the fail-closed gate and the byte-identical body of the archival copy.
+`results/framework_pilot_v2/`. It ships for audit and is not runnable from this
+tree: it needs the licensed panel and caches above, the frozen protocol and, for
+the `compare`, `a8` and `a9` stages, the withheld row-level predictions. Every
+stage begins with `verify_protocol()`, which exits with an explicit message when
+`reviews/round2/v2_protocol.md` is absent; a licensed working copy re-enables it
+through `NEUROSIM_V2_PROTOCOL_DIR` (and `NEUROSIM_V2_SCRATCH` for `--dry-run`
+output). The port changes only the header and those two paths, so the shipped
+file's digest differs from the pre-port `code_sha256` in
+`results/framework_pilot_v2/manifest.json`. The aggregate tree and its
+`SHA256SUMS` are the record, and `tests/test_smoke.py` pins the feature counts,
+the fail-closed gate and the byte-identical body of the archival copy.
 
 The preview defaults to refusing writes into
 `results/framework_pilot/stability/`. Use
@@ -143,7 +143,7 @@ shipped aggregates.
 
 ## Level 4 — why the holdout is not reproducible
 
-The confirmatory holdout is a **one-shot** design: `experiments/sprint_a_run.py`
+The confirmatory holdout is a one-shot design: `experiments/sprint_a_run.py`
 refuses a second confirmatory run once `run_once.json` says `completed`, and
 `test_access_log.json` records every post-freeze 2018–22 holdout read; the
 post-freeze stability audit logs its own burned-retrospective read in
@@ -223,8 +223,8 @@ in `results/README.md` and the notebooks rather than by a `paper/` build.
 - no absolute home/temporary paths and no credential-like strings;
 - no forbidden path tracked by git (when run in a git tree).
 
-The path scan names four absolute-path prefixes — `/home`, `/tmp`, `/Users` and
-`C:` user directories — and the credential scan covers AWS key ids, GitHub and
+The path scan names four absolute-path prefixes (`/home`, `/tmp`, `/Users` and
+`C:` user directories), and the credential scan covers AWS key ids, GitHub and
 OpenAI token shapes, private-key blocks and inline secret assignments. Both are
 plain text scans over the shipped tree, so a copied local path or a pasted token
 in a document fails `make verify` exactly as it would in code.

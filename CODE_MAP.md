@@ -1,14 +1,20 @@
 # Code map
 
-The public package contains the paper path only: the ownership decomposition,
-the V2 matched-vintage audit and the within-panel stability audit, not a
-reusable framework and not a new estimator. The
-directory and import name `framework/` are retained for compatibility (tests and
-the installed package import `framework`); they do not imply general-purpose
-abstractions. Earlier pilot, synthetic/T1, graph-encoder, operator and reporting
-modules were removed from the shipped tree; the quarantined history that
-contains them is not part of this public release, and they are not importable
-or tested here.
+**Version:** this map describes the `v0.1.2` tree (annotated tag object
+`af229d3` at commit `70d6d78`, the public `main` head). `v0.1.1` at `13b96db`
+is the previous release and is history only. The packaged metadata version
+stays `0.1.1` because no packaged byte changed between the two tags. No arXiv
+identifier, DOI or Zenodo DOI exists; the paper is cited by an arXiv link to be
+added and is not in this repository.
+
+The public package contains one paper path: the ownership decomposition, the V2
+matched-vintage audit and the within-panel stability audit. It is not a
+reusable framework or a new estimator. The directory and import name
+`framework/` are retained for compatibility (tests and the installed package
+import `framework`) and do not imply general-purpose abstractions. Earlier
+pilot, synthetic/T1, graph-encoder, operator and reporting modules were removed
+from the shipped tree. The quarantined history that contains them is not part
+of this public release, and they are not importable or tested here.
 
 ## Paper path (`framework/`)
 
@@ -57,29 +63,29 @@ The experiment scripts are audit material. They are not invoked by any public
 `make` target, and the public tree does not contain their inputs or local
 configuration.
 
-**V1 versus V2 code.** `sprint_a_*` and `sprint_b_*` are the **historical V1**
-confirmatory and stability scripts: they produced the V1 holdout artifacts (the
-plan-declared primary of record) and the five-seed stability preview. They are
-not the V2 audit runner. `sprint_c_v2.py` / `sprint_c_v2_fit_repro.py` are the
-**V2 matched-vintage runners**; the public port differs from the frozen file
+**V1 versus V2 code.** `sprint_a_*` and `sprint_b_*` are the historical V1
+confirmatory and stability scripts. They produced the V1 holdout artifacts (the
+plan-declared primary of record) and the five-seed stability preview, and they
+are not the V2 audit runner. `sprint_c_v2.py` / `sprint_c_v2_fit_repro.py` are
+the V2 matched-vintage runners. The public port differs from the frozen file
 only in its header and in two parameterised input paths
 (`NEUROSIM_V2_PROTOCOL_DIR`, `NEUROSIM_V2_SCRATCH`), so its digest differs from
 the pre-port `code_sha256` in `results/framework_pilot_v2/manifest.json`. Every
 stage starts with `verify_protocol()`, which exits with an explicit message when
-the frozen protocol is absent: the aggregate-only release cannot re-run the V2
+the frozen protocol is absent. The aggregate-only release cannot re-run the V2
 fits, and no substitute path is provided.
 
 The code that produced the restricted 50-refit audit is not shipped. The
-shipped Sprint-B scripts are a **five-seed preview**: five
-seed replicates, no holdout-dyad exclusion, `C` re-selected on the selection
-window, 1,000 stability bootstrap replicates and a fixed `rep0`–`rep4` loader.
-They do not regenerate the 50-refit, C=1.0, holdout-excluded aggregates behind
+shipped Sprint-B scripts are a five-seed preview: five seed replicates, no
+holdout-dyad exclusion, `C` re-selected on the selection window, 1,000
+stability bootstrap replicates and a fixed `rep0`–`rep4` loader. They do not
+regenerate the 50-refit, C=1.0, holdout-excluded aggregates behind
 `results/framework_pilot/stability/`; `experiments/STABILITY_VARIANT.md`
 records the exact five differences. The preview refuses to write into that
 reserved tree unless `NEUROSIM_ALLOW_OVERWRITE=1` (or `--allow-overwrite`) is
 set, and `NEUROSIM_STABILITY_OUT` redirects output to a preview directory. The
-shipped aggregates and `stability/SHA256SUMS`, not these scripts, are the
-authoritative audit record.
+shipped aggregates and `stability/SHA256SUMS` are the authoritative audit
+record, not these scripts.
 
 ## Data flow (paper path)
 

@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this ownership decomposition, its matched-vintage audit or its public artifact, cite the paper and the code release. The paper is cited by its arXiv link (to be added); this repository contains code and aggregate results only, with no paper PDF or source. The code is v0.1.1 at commit 13b96db; no Zenodo DOI has been minted. Corresponding author: Jingzhe Peng, pengjingzhe_quiet@foxmail.com. The source code is MIT-licensed, code only; the ICEWS-derived aggregate results are not MIT."
+message: "If you use this ownership decomposition, its matched-vintage audit or its public artifact, cite the paper and the code release. The paper is cited by its arXiv link (to be added); no arXiv identifier and no DOI exist yet. The repository holds code and aggregate results only: no paper PDF or source, no figures, no raw data and no row-level predictions. The code is v0.1.2 at commit 70d6d78; v0.1.1 at 13b96db is the previous release, kept as history. No Zenodo DOI has been minted. The single author is Jingzhe Peng, an independent researcher, pengjingzhe_quiet@foxmail.com. The source code is MIT-licensed, code only; the ICEWS-derived aggregate results are not MIT."
 title: "Actor-side components of dyadic event forecasts: an ownership decomposition, specification dependence, and a matched-vintage audit in a 196-actor ICEWS panel"
 abstract: >-
   Public artifact and L0-L2 verification release for the V2 manuscript on
@@ -7,7 +7,7 @@ abstract: >-
   1995-2023. The release ships code, tests, the V1 confirmatory and stability
   aggregates, and the V2 matched-vintage aggregate tree. The analysis applies a
   post-hoc six-class ownership convention to a plan-declared feature list and
-  fixes unit and sign, so every logistic forecast carries an exact
+  fixes unit and sign. Every logistic forecast therefore carries an exact
   group-additive decomposition into source-role, target-role, dyad and
   non-actor groups. The ownership convention has no pre-run record. It is a
   design convention and audit, not a new estimator: the decomposition is the
@@ -23,8 +23,8 @@ abstract: >-
   is null against the matched comparator under the H0 cache. The V2 analysis is
   post hoc and secondary; the V1 49-feature result remains the plan-declared
   primary. The release is one paper path, not a reusable framework, and is
-  executable at L0-L2 only (read the frozen aggregates, verify their hashes and
-  contracts, re-render the notebooks). The restricted 50-refit audit code and
+  executable at L0-L2 only: read the frozen aggregates, verify their hashes and
+  contracts, re-render the notebooks. The restricted 50-refit audit code and
   all ICEWS inputs are not redistributed; row-level predictions, fitted
   coefficients and labels are withheld. The confirmatory evaluation is
   retrospective, not time-fresh. The stability audit is provisional,
@@ -33,9 +33,12 @@ abstract: >-
   not regenerate the 50-refit holdout-row-excluded aggregates. No general claim
   is made about graph features, persistence or any corpus beyond this panel.
   Source code is MIT-licensed; ICEWS-derived aggregate results are not MIT and
-  remain under the ICEWS research-and-teaching terms. This is the v0.1.1 code
-  release at commit 13b96db. The paper is a separate document cited by its
-  arXiv link (to be added); no paper PDF or source is distributed here. No
+  remain under the ICEWS research-and-teaching terms. This is the v0.1.2 code
+  release at commit 70d6d78 (annotated tag object af229d3); v0.1.1 at 13b96db
+  is the previous release, retained as history. The paper is a separate
+  document cited by its arXiv link (to be added). No arXiv identifier exists
+  yet, no paper PDF, source, figures, raw data or row-level predictions are
+  distributed here, and the author has no institutional affiliation. No
   Zenodo DOI has been minted.
 authors:
   - family-names: "Peng"
@@ -53,6 +56,10 @@ preferred-citation:
   year: 2026
   journal: "arXiv"
   url: "https://arxiv.org/abs/XXXX.XXXXX"
+# The packaged version stays 0.1.1: no packaged byte changed between the
+# v0.1.1 (13b96db) and v0.1.2 (70d6d78) tags. The git tag v0.1.2 at commit
+# 70d6d78 is the release identifier the paper cites; it is not an arXiv or
+# Zenodo identifier. The arXiv URL above is a placeholder; no arXiv ID exists.
 version: "0.1.1"
 # SPDX MIT: the source code only. The ICEWS-derived aggregate results under
 # results/ are not MIT and remain under the ICEWS research-and-teaching terms;

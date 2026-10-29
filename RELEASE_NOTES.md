@@ -1,13 +1,37 @@
 # Release notes
 
-## v0.1.2 — V2 code and notebooks (local, unpublished)
+Current state (2026-10-30): the published code release is `v0.1.2` at commit
+`70d6d78` (annotated tag object `af229d3`), which is also the public `main`
+head. `v0.1.1` at `13b96db` is the previous release, retained as history.
+Entries below record the state at the date they describe; a sentence such as
+"no `v0.1.1` tag exists" is a dated record, not the current state. No Zenodo
+DOI and no arXiv identifier exist; the paper is cited by an arXiv link to be
+added, and the author has no institutional affiliation.
 
-Additive documentation/code-completeness change; no new fit, no holdout read,
-no plan edit, no change to any V1 or V2 aggregate. **Local annotated tag
-`v0.1.2` only**: no `v0.1.2` ref exists on the remote, `v0.1.1` at `13b96db`
-remains the published code release, the packaged metadata version stays `0.1.1`
-and no DOI has been minted. The paper is still cited by its arXiv link (to be
-added); there is no `paper/` directory.
+## v0.1.2 — V2 code and notebooks (published)
+
+Additive documentation and code-completeness change; no new fit, no holdout
+read, no plan edit, no change to any V1 or V2 aggregate. The published annotated
+tag `v0.1.2` (object `af229d3`) sits at commit `70d6d78`, the public `main`
+head. It is the release the paper cites; `v0.1.1` at `13b96db` is the previous
+release, retained as history. The packaged metadata version stays `0.1.1`
+because no packaged byte changed between the two tags, and no DOI has been
+minted. The paper is cited by its arXiv link (to be added); there is no
+`paper/` directory.
+
+### Docs overlay (local, uncommitted, not pushed)
+
+Reader-facing documentation was corrected in a local working tree on
+2026-10-30 and is not committed or pushed: `README.md`, `CITATION.cff`,
+`.zenodo.json`, `RELEASE_NOTES.md`, `CODE_MAP.md`, `DATA_EXCLUSIONS.md` and
+`results/README.md`. The overlay replaces stale release-state sentences only. It
+drops the "v0.1.2 is local / unpushed / has no remote ref" wording, names
+`v0.1.2` at `70d6d78` as the current release, moves `v0.1.1` at `13b96db` to
+history, and records that no arXiv identifier, DOI, Zenodo DOI or institutional
+affiliation exists. It touches no code, test, aggregate, figure or packaged
+byte. `make test` and `make verify` were not re-run on the overlay (no pinned
+virtualenv was present in this worktree), so the overlay's gate status is
+unverified; it is inherited from the tagged release.
 
 - **V2 code published.** `experiments/sprint_c_v2.py` (the matched-vintage
   runner behind `results/framework_pilot_v2/`) and its archival copy
@@ -37,16 +61,18 @@ added); there is no `paper/` directory.
   body of the archival copy. `tests/test_notebooks.py` pins the content
   contracts of notebooks 04 and 05. No aggregate byte changed.
 
-## v0.1.1 — V2 code release (current)
+## v0.1.1 — V2 code release (superseded by v0.1.2)
 
 Documentation, metadata and aggregate-release change; no new fit, no holdout
-read, no plan edit and no change to any V1 result. This is the **code release**:
-the annotated tag `v0.1.1` points at commit `13b96db`; `main` points at the same
-commit. **No Zenodo DOI has been minted.**
+read, no plan edit and no change to any V1 result. At that date this was the
+code release: the annotated tag `v0.1.1` points at commit `13b96db`, which was
+then the `main` head. `v0.1.2` at `70d6d78` supersedes it and is the release the
+paper cites. No Zenodo DOI has been minted.
 
-**Paper:** arXiv link (to be added). The repository contains **code and
-aggregate results only** — no paper PDF, source, figures or bibliography — and
-the paper cites this code as `v0.1.1` at `13b96db`.
+**Paper:** arXiv link (to be added). The repository contains code and aggregate
+results only: no paper PDF, source, figures, raw data or bibliography. The
+paper cited this code as `v0.1.1` at `13b96db`; the current citation is `v0.1.2`
+at `70d6d78`.
 
 - **V2 docs and metadata.** The public title, abstract, CITATION.cff,
   .zenodo.json, pyproject description, README, results inventory and this note
@@ -95,7 +121,7 @@ Text and metadata only; no analysis, refit, label read, plan edit, data change
 or aggregate edit. No `results/**` byte moved and the frozen plan stays
 `41bda0e3…`.
 
-- **This revision is not published.** Remote `main` is `review-r2c13` at commit
+- This revision is not published. Remote `main` is `review-r2c13` at commit
   `1c3c8ae`; the `review-r2c14` tag and commit `2d27421` are local only and no
   remote ref carries them. The R2C14 section below described a release-operator
   step that has not been taken; this section supersedes its publication claim.
@@ -110,15 +136,15 @@ or aggregate edit. No `results/**` byte moved and the frozen plan stays
 - **V1 factual corrections.** The class-share sentence now reports 44.9%
   actor-owned and 55.1% not actor-owned as the maximum of the 38.1–55.1% range,
   with 62.3% under a fourth allocation that moves the dyad-specific
-  neighbour-activity terms out of the actor class, and records that only 4 of 49
-  features are role-specific (six of seven source/target pairs are one
+  neighbour-activity terms out of the actor class. It also records that only 4
+  of 49 features are role-specific (six of seven source/target pairs are one
   function). The paper's E1/F1/F5 corrections are recorded in the private
   review note `reviews/round2/paper_v1_factual_fix.md`.
 - **Verifier and tests.** The release-state checks now require the README to
-  name the local r2c14 revision and to deny its publication, instead of
-  requiring the false "published" claim, and require the filled single-author
-  metadata instead of a pending placeholder. No result contract, aggregate hash
-  or notebook changed.
+  name the local r2c14 revision and to deny its publication, rather than
+  requiring the false "published" claim. They also require the filled
+  single-author metadata instead of a pending placeholder. No result contract,
+  aggregate hash or notebook changed.
 
 ## Public-artifact revision (R2C14; text-only trim, release-state roll-forward)
 
@@ -134,27 +160,26 @@ sign, timestamp, split, class share or scope literal changed, and no
 
 - **Local snapshot, not published.** `review-r2c14` at commit `2d27421` was
   prepared as a text-only documentation revision: a frozen record of the
-  reviewed aggregate tree, not an archival release and not a DOI-bearing
-  version. It is local only: no remote tag or branch carries it, remote `main`
+  reviewed aggregate tree, and neither an archival release nor a DOI-bearing
+  version. It is local only. No remote tag or branch carries it, remote `main`
   remains `review-r2c13` at `1c3c8ae`, and the release operator has not created
   the tag or moved `main`. `review-r2c13` and `review-r2c12` are the earlier
   published snapshots and `review-r2c10` remains fetchable at commit `95aa07b`,
   so `review-r2c10`, `review-r2c12` and `review-r2c13` are public.
-  `review-r2c9`, `review-r2c11` and `review-r2c14` are local only: no remote tag
+  `review-r2c9`, `review-r2c11` and `review-r2c14` are local only; no remote tag
   or branch carries them. No `v0.1.0` or `v0.1.1` archival tag is public and no
   DOI has been minted. The CFF keeps `license: MIT` (code only) and Zenodo keeps
   `other-open` (mixed deposit); the version stays `0.1.1`.
-- **Unchanged qualifiers.** The ownership rule remains a **post-hoc** six-class
+- **Unchanged qualifiers.** The ownership rule remains a post-hoc six-class
   analysis convention over a plan-declared feature list with no pre-run record;
   only the split carries an independently written pre-run timestamp. The
   class shares stay 44.9% actor-owned / 55.1% not actor-owned (the maximum of
   the 38.1–55.1% range; 62.3% under the stricter neighbour-activity
-  allocation). The world-line
-  preview stays a repository-only illustration of four anchors × 20 sampled
-  directed dyads (71 distinct, non-random, inner period 2016-01–2017-11), cited
-  once and analysed nowhere in the manuscript. The stability audit stays
-  provisional, holdout-row-excluded and 50-refit; `experiments/` stays a
-  five-seed preview.
+  allocation). The world-line preview stays a repository-only illustration of
+  four anchors × 20 sampled directed dyads (71 distinct, non-random, inner
+  period 2016-01–2017-11), cited once and analysed nowhere in the manuscript.
+  The stability audit stays provisional, holdout-row-excluded and 50-refit;
+  `experiments/` stays a five-seed preview.
 - **Verifier and tests.** The release-state checks carry the R2C14 inventory
   and the previous public snapshots; the negative release-state fixture probed
   denial of `review-r2c14` under the release-operator assumption (superseded by
@@ -174,24 +199,24 @@ unchanged and is the T1 string:
 > near-collinearity in a 196-actor panel, and a within-panel stability audit*
 
 - **Published snapshot.** `main` and annotated tag `review-r2c13` carry the
-  commit that contains these notes as the **published review snapshot**: a
-  frozen, fetchable record of the reviewed aggregate tree, not an archival
-  release and not a DOI-bearing version. `review-r2c12` is the previous
-  published snapshot and `review-r2c10` remains fetchable at commit `95aa07b`,
-  so `review-r2c10`, `review-r2c12` and `review-r2c13` are public.
-  `review-r2c9` and `review-r2c11` were superseded and remain local only: no
-  remote tag or branch carries either. No `v0.1.0` or `v0.1.1` archival tag is
-  public and no DOI has been minted. The CFF keeps `license: MIT` (code only)
-  and Zenodo keeps `other-open` (mixed deposit); the version stays `0.1.1`.
+  commit that contains these notes as the published review snapshot: a frozen,
+  fetchable record of the reviewed aggregate tree, and neither an archival
+  release nor a DOI-bearing version. `review-r2c12` is the previous published
+  snapshot and `review-r2c10` remains fetchable at commit `95aa07b`, so
+  `review-r2c10`, `review-r2c12` and `review-r2c13` are public. `review-r2c9`
+  and `review-r2c11` were superseded and remain local only; no remote tag or
+  branch carries either. No `v0.1.0` or `v0.1.1` archival tag is public and no
+  DOI has been minted. The CFF keeps `license: MIT` (code only) and Zenodo
+  keeps `other-open` (mixed deposit); the version stays `0.1.1`.
 - **Ownership provenance corrected (MJ01).** `README.md`, `REPRODUCING.md`,
   `CITATION.cff`, `.zenodo.json` and `framework/__init__.py` no longer present
   the six-class ownership rule as a pre-run object that fixed ownership in
   advance. They state the defensible provenance: the feature list is
   plan-declared and internally hash-timestamped, the six-class ownership rule
-  is a **post-hoc analysis convention** with no pre-run record, and only the
-  split carries an independently written pre-run timestamp. The 44.9%
-  actor-owned / 55.1% not-actor-owned shares are unchanged and remain
-  descriptive outputs of the convention, not a property of the actors.
+  is a post-hoc analysis convention with no pre-run record, and only the split
+  carries an independently written pre-run timestamp. The 44.9% actor-owned /
+  55.1% not-actor-owned shares are unchanged and remain descriptive outputs of
+  the convention, not a property of the actors.
 - **World-line preview disclosed (MJ02).** `README.md`,
   `results/README.md`, `results/worldline_preview/README.md`,
   `notebooks/README.md`, notebook 03 and the Zenodo description now state the
@@ -272,7 +297,7 @@ scope literal changed. The title is unchanged and is the T1 string:
   agent, after the R2C10 freeze. The public remote now has `main = 95aa07b` and
   annotated tag
   `review-r2c10` (tag object `13f654a3…`, peeled `95aa07b`), i.e. a **published
-  review snapshot** of the reviewed aggregates — frozen and fetchable, but not
+  review snapshot** of the reviewed aggregates: frozen and fetchable, but not
   an archival release and not a DOI-bearing version. At the R2C11 freeze the tag
   inventory was
   `review-r2c2` … `review-r2c8` plus `review-r2c10`; branch `review-r2c8` also
@@ -443,11 +468,11 @@ bytes are tracked by `outputs`/`current_sha256` and `SHA256SUMS`.
   contrast (`−0.004510 [−0.00760, −0.00142]`). The frozen `+0.004510` is
   unchanged.
 - Comparator and cache wording: the previous one-sided comparator label is
-  replaced by “unequal in two directions”, with the **holdout-zeroed**
+  replaced by "unequal in two directions", with the **holdout-zeroed**
   confirmatory cache named separately from the **holdout-row-excluded** audit.
 - Year-fixed-effects status: the anchor is **plan-declared**; its promotion and
   warm-history contrast are post-hoc, C-confounded and uncorrected; it remains
-  “not a prospective model” with the linear-extrapolation limitation.
+  "not a prospective model" with the linear-extrapolation limitation.
 - Deposit metadata: `CITATION.cff` licence was `other-open` at R2C7, matching
   `.zenodo.json`; R2C9 splits the fields (CFF MIT, code only; Zenodo keeps
   `other-open`). `pyproject.toml` and `LICENSE` keep MIT **code only**, and the

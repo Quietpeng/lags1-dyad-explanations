@@ -1,29 +1,31 @@
 # Results — provenance, status and terms
 
-This directory contains the aggregate artifacts for the paper. It contains
-**no ICEWS event rows, no row-level predictions or labels, no actor-level
-predicted probabilities or observed outcome rates, no caches and no run logs**;
-the aggregate results remain subject to the ICEWS terms. The illustrative
-world-line preview ships a rendered figure and aggregate summaries only — no
-row-level trace; see [`../DATA_EXCLUSIONS.md`](../DATA_EXCLUSIONS.md). The
-confirmatory holdout was frozen on 2026-10-23; the stability audit is
-provisional. Read the status table before quoting a number.
+This directory contains the aggregate artifacts for the paper. It contains no
+ICEWS event rows, no row-level predictions or labels, no actor-level predicted
+probabilities or observed outcome rates, and no caches or run logs. The
+aggregate results remain subject to the ICEWS terms. The illustrative world-line
+preview ships a rendered figure and aggregate summaries only, with no row-level
+trace; see [`../DATA_EXCLUSIONS.md`](../DATA_EXCLUSIONS.md). The confirmatory
+holdout was frozen on 2026-10-23, and the stability audit is provisional. Read
+the status table before quoting a number.
 
-The shipped aggregates are part of the **`v0.1.1` code release** at commit
-`13b96db` (annotated tag `v0.1.1`; `main` at the same commit). A **local,
-unpushed** annotated tag `v0.1.2` adds the V2 code
-(`experiments/sprint_c_v2*.py`) and notebooks 04–05; it is not published and
-changes no aggregate byte. The repository
-contains **code and aggregates only**: there is no paper PDF, source, figure or
-bibliography in this tree. The paper is cited by its **arXiv link (to be
-added)**. **No Zenodo DOI has been minted.**
+The shipped aggregates are part of the `v0.1.2` code release at commit
+`70d6d78` (annotated tag object `af229d3`; `main` carries a docs-only follow-up), which is
+the snapshot the paper cites. `v0.1.1` at `13b96db` is the previous release,
+retained as history; it added the V2 aggregate tree (`framework_pilot_v2/`),
+and `v0.1.2` added the V2 code (`experiments/sprint_c_v2*.py`) and notebooks
+04–05 without changing an aggregate byte. The repository contains code and
+aggregates only. There is no paper PDF, source, figure, bibliography, raw data
+or row-level prediction in this tree. The paper is cited by its arXiv link (to
+be added); no arXiv identifier exists yet. No DOI and no Zenodo DOI have been
+minted.
 
-The preceding published review snapshot is `review-r2c13` at commit `1c3c8ae`;
-`review-r2c12` is an earlier published snapshot and `review-r2c10` remains
-fetchable at commit `95aa07b`. `review-r2c9`, `review-r2c11` and
-`review-r2c14` are local and unpublished; `review-r2c14` at `2d27421` is a
-text-only revision whose aggregate bytes are identical to `review-r2c13`. The
-`v0.1.1` tag adds the V2 aggregate tree (`framework_pilot_v2/`).
+The preceding published review snapshot is `review-r2c13` at commit `1c3c8ae`.
+`review-r2c12` is an earlier published snapshot, and `review-r2c10` remains
+fetchable at commit `95aa07b`. The `review-r2c9`, `review-r2c11` and
+`review-r2c14` review tags are local and unpublished; the `review-r2c14` tag
+object at `2d27421` is a text-only revision whose aggregate bytes are identical
+to `review-r2c13` and whose commit is an ancestor of `v0.1.2`.
 
 ## Status at a glance
 
@@ -48,7 +50,7 @@ The stability status is recorded machine-readably in `stability/summary.json`:
 }
 ```
 
-The audit is **not a holdout-side stability test**. It was recomputed with all
+The audit is not a holdout-side stability test. It was recomputed with all
 eventual holdout dyads excluded from fitting and aggregation; every stability
 number remains provisional and must not be written as a confirmatory headline.
 
@@ -85,8 +87,8 @@ and carries no separate exclusion annotation.
 raw-panel support of 6,344,160 training, 317,208 selection and 311,638 holdout
 dyad-months. The frozen fits and the public aggregates correspond to the filtered
 rows: 5,055,328 training, 232,672 selection and 311,638 holdout. The raw-panel
-counts — including the 67,057 inner-period positives — are **manuscript-only
-context**: no public table, aggregate or test is derived from them, they are not
+counts, including the 67,057 inner-period positives, are manuscript-only
+context: no public table, aggregate or test is derived from them, they are not
 redistributed, and Table 1 is neither reproduced nor changed here. `run_once.json`
 and `manifest.json#/counts` carry the filtered counts.
 
@@ -132,7 +134,7 @@ displays the arms, cache matrix and reconciliation, and re-runs the pipeline
 mechanics on synthetic arrays. The code that produced this tree is
 `experiments/sprint_c_v2.py` (archival copy
 `experiments/sprint_c_v2_fit_repro.py`); it ships for audit, fails closed
-without the frozen protocol, and is not runnable here — see
+without the frozen protocol, and is not runnable here. See
 [`../REPRODUCING.md`](../REPRODUCING.md) L3.
 
 **Provenance note.** `manifest.json#/code_path` names
@@ -207,8 +209,8 @@ of the release. `make verify` fails if one appears.
   `+0.004510` (comparator − model; positive = secondary better, as frozen in
   `primary_comparisons.csv`) and `−0.004510` (model − comparator; 95% CI
   `−0.00760` to `−0.00142`, as printed in the manuscript).
-- **Feature-group LOO:** `delta_vs_full` is “log-loss without the group minus
-  the full model”; positive means the removed group carried held-out signal.
+- **Feature-group LOO:** `delta_vs_full` is "log-loss without the group minus
+  the full model"; positive means the removed group carried held-out signal.
   This is a different estimand from the primary contrast and is labelled in the
   notebook.
 
@@ -315,8 +317,8 @@ sed 's|  repo/|  |' figures.sha256 | sha256sum
 `sha256sum -c figures.sha256` verifies the wrapper. The published aggregate
 tree does not ship either file; this note only explains the freeze identity.
 
-All four stability summaries — including the nested `summary_stability.json`
-and `summary_hgb.json` — carry `provisional_holdout_not_integrated`. The
+All four stability summaries, including the nested `summary_stability.json`
+and `summary_hgb.json`, carry `provisional_holdout_not_integrated`. The
 superseded pre-holdout status label survives only in
 `stability/summary_decompose.json#/provisional`
 (`fresh_dyad_holdout: not available in this sprint`); it is annotated here as
@@ -327,9 +329,9 @@ the current status and the holdout-excluded audit literal.
 
 | Internal label | Public meaning |
 |---|---|
-| “Sprint A” | The plan-declared confirmatory holdout phase. |
-| “Sprint B” | The exact-attribution and stability-audit phase. |
-| “P6” | An internal stage identifier; no public claim depends on it. |
+| "Sprint A" | The plan-declared confirmatory holdout phase. |
+| "Sprint B" | The exact-attribution and stability-audit phase. |
+| "P6" | An internal stage identifier; no public claim depends on it. |
 
 ## Claim boundary
 
