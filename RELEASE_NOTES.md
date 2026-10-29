@@ -1,11 +1,15 @@
 # Release notes
 
-## v0.1.1 — V2 archival release (current)
+## v0.1.1 — V2 code release (current)
 
 Documentation, metadata and aggregate-release change; no new fit, no holdout
-read, no plan edit and no change to any V1 result. This is the **archival
-release**: the annotated tag `v0.1.1` points at the commit carrying this
-file; `main` fast-forwards to it on push. No DOI has been minted.
+read, no plan edit and no change to any V1 result. This is the **code release**:
+the annotated tag `v0.1.1` points at commit `13b96db`; `main` points at the same
+commit. **No Zenodo DOI has been minted.**
+
+**Paper:** arXiv link (to be added). The repository contains **code and
+aggregate results only** — no paper PDF, source, figures or bibliography — and
+the paper cites this code as `v0.1.1` at `13b96db`.
 
 - **V2 docs and metadata.** The public title, abstract, CITATION.cff,
   .zenodo.json, pyproject description, README, results inventory and this note
@@ -28,6 +32,11 @@ file; `main` fast-forwards to it on push. No DOI has been minted.
   column) is +0.017743; the nested 47-vs-25 contrast is +0.003211 (15.3%).
   The as-specified 49 is null against the matched comparator under H0
   (−0.003143, q = 0.398). No number is promoted.
+- **Paper metadata.** `CITATION.cff` carries a `preferred-citation` for the
+  paper (title, single author, year 2026, arXiv URL placeholder, no DOI);
+  `.zenodo.json` carries a `related_identifiers` entry of type
+  `publication-preprint` with the same placeholder. No arXiv submission was
+  made and no arXiv identifier is claimed.
 - **Release state.** `review-r2c13` at `1c3c8ae` remains the preceding
   published review snapshot; `review-r2c12` and `review-r2c10` are earlier
   published snapshots. `review-r2c14` at `2d27421` is local, unpublished and
@@ -36,8 +45,8 @@ file; `main` fast-forwards to it on push. No DOI has been minted.
   The `v0.1.1` tag supersedes the review tags as the version of record.
 - **Verification.** `make test` (147 tests, skipped=0), `make verify` (15
   checks), `cffconvert --validate`, cold-cache notebooks and `make dist` pass;
-  the clean PDF is rebuilt from `092702e0…` with 12 tables / 4 figures, dated
-  29 October 2026 and without review line numbers.
+  the clean PDF is rebuilt from `2d306441…` with 24 pages, 12 tables / 4
+  figures, dated 29 October 2026 and without review line numbers.
 
 The earlier sections below are retained as history. Their statements that
 `v0.1.1`/the archival release were "pending" describe the state at those

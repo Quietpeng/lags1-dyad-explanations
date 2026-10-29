@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this ownership decomposition, its matched-vintage audit, its within-panel stability audit, or the public artifact, cite the manuscript and this v0.1.1 archival release. Corresponding author: Jingzhe Peng, pengjingzhe_quiet@foxmail.com. The v0.1.1 git tag is the archival release; no DOI has been minted yet. The source code is MIT-licensed, code only; the ICEWS-derived aggregate results are not MIT."
+message: "If you use this ownership decomposition, its matched-vintage audit or its public artifact, cite the paper and the code release. The paper is cited by its arXiv link (to be added); this repository contains code and aggregate results only, with no paper PDF or source. The code is v0.1.1 at commit 13b96db; no Zenodo DOI has been minted. Corresponding author: Jingzhe Peng, pengjingzhe_quiet@foxmail.com. The source code is MIT-licensed, code only; the ICEWS-derived aggregate results are not MIT."
 title: "Actor-side components of dyadic event forecasts: an ownership decomposition, specification dependence, and a matched-vintage audit in a 196-actor ICEWS panel"
 abstract: >-
   Public artifact and L0-L2 verification release for the V2 manuscript on
@@ -33,13 +33,26 @@ abstract: >-
   not regenerate the 50-refit holdout-row-excluded aggregates. No general claim
   is made about graph features, persistence or any corpus beyond this panel.
   Source code is MIT-licensed; ICEWS-derived aggregate results are not MIT and
-  remain under the ICEWS research-and-teaching terms. This is the v0.1.1
-  archival release; no DOI has been minted.
+  remain under the ICEWS research-and-teaching terms. This is the v0.1.1 code
+  release at commit 13b96db. The paper is a separate document cited by its
+  arXiv link (to be added); no paper PDF or source is distributed here. No
+  Zenodo DOI has been minted.
 authors:
   - family-names: "Peng"
     given-names: "Jingzhe"
     orcid: "https://orcid.org/0009-0001-7037-6244"
     affiliation: "Independent researcher"
+preferred-citation:
+  type: article
+  title: "Actor-side components of dyadic event forecasts: an ownership decomposition, specification dependence, and a matched-vintage audit in a 196-actor ICEWS panel"
+  authors:
+    - family-names: "Peng"
+      given-names: "Jingzhe"
+      orcid: "https://orcid.org/0009-0001-7037-6244"
+      affiliation: "Independent researcher"
+  year: 2026
+  journal: "arXiv"
+  url: "https://arxiv.org/abs/XXXX.XXXXX"
 version: "0.1.1"
 # SPDX MIT: the source code only. The ICEWS-derived aggregate results under
 # results/ are not MIT and remain under the ICEWS research-and-teaching terms;

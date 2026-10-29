@@ -288,14 +288,61 @@ def _cff_sequence(block: list[str]) -> list:
     return items
 
 
+def _parse_preferred(block: list[str]) -> dict:
+    """Parse the ``preferred-citation`` mapping (one nested level).
+
+    The CFF schema needs a mapping with a nested ``authors`` sequence. This is
+    the only nested mapping accepted; everything else stays flat so a malformed
+    edit cannot pass silently.
+    """
+    base = min(len(line) - len(line.lstrip()) for line in block if line.strip())
+    out: dict = {}
+    i = 0
+    while i < len(block):
+        line = block[i]
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            i += 1
+            continue
+        indent = len(line) - len(line.lstrip())
+        if indent != base:
+            raise ValueError(f"unexpected indentation in preferred-citation: {stripped!r}")
+        key, _, value = stripped.partition(":")
+        if not _:
+            raise ValueError(f"unsupported preferred-citation line {stripped!r}")
+        key, value = key.strip(), value.strip()
+        i += 1
+        if value:
+            out[key] = _cff_scalar(value)
+            continue
+        sub: list[str] = []
+        while i < len(block):
+            child = block[i]
+            if not child.strip():
+                i += 1
+                continue
+            if len(child) - len(child.lstrip()) <= base:
+                break
+            sub.append(child)
+            i += 1
+        if sub and sub[0].strip().startswith("- "):
+            out[key] = _cff_sequence(sub)
+        elif sub:
+            out[key] = _parse_preferred(sub)
+        else:
+            out[key] = None
+    return out
+
+
 def parse_cff(path: Path) -> dict:
     """Parse the YAML subset used by ``CITATION.cff``.
 
     Supported: top-level block mappings, quoted/plain scalars, folded or literal
-    block scalars, and sequences of scalars or single-level mappings. Tabs, flow
-    style, anchors, nested mappings and multi-document files are rejected so a
-    malformed CFF edit cannot pass silently. This deliberately avoids a PyYAML
-    runtime dependency; the CFF is a flat metadata file.
+    block scalars, sequences of scalars or single-level mappings, and the one
+    nested ``preferred-citation`` mapping (with its ``authors`` sequence). Tabs,
+    flow style, anchors and multi-document files are rejected so a malformed CFF
+    edit cannot pass silently. This deliberately avoids a PyYAML runtime
+    dependency.
     """
     lines = path.read_text(encoding="utf-8").splitlines()
     top: dict = {}
@@ -338,7 +385,7 @@ def parse_cff(path: Path) -> dict:
             elif block[0].strip().startswith("- "):
                 top[key] = _cff_sequence(block)
             else:
-                raise ValueError(f"key {key!r}: nested mappings are not supported")
+                top[key] = _parse_preferred(block)
         else:
             if block:
                 raise ValueError(f"key {key!r}: unexpected indented block")
@@ -511,10 +558,10 @@ def check_metadata_contract(root: Path) -> list[str]:
             errors.append(f"{name} version is {value!r}, expected '0.1.1'")
     if "v0.1.1" not in readme_flat:
         errors.append("README.md does not name the v0.1.1 archival release")
-    if "archival release" not in readme_flat:
-        errors.append("README.md does not describe v0.1.1 as the archival release")
-    if "no doi has been minted" not in readme_flat:
-        errors.append("README.md does not state that no DOI has been minted")
+    if "code release" not in readme_flat:
+        errors.append("README.md does not describe v0.1.1 as the code release")
+    if "no zenodo doi has been minted" not in readme_flat:
+        errors.append("README.md does not state that no Zenodo DOI has been minted")
 
     # V2 release state: `v0.1.1` is the archival release carried by the
     # commit that contains this README; `review-r2c13` is the preceding
@@ -570,6 +617,32 @@ def check_metadata_contract(root: Path) -> list[str]:
             family, given = (part.strip() for part in name.split(",", 1))
             return f"{given} {family}".strip()
         return name
+
+    preferred = cff.get("preferred-citation")
+    if not isinstance(preferred, dict):
+        errors.append("CITATION.cff preferred-citation is missing")
+    else:
+        if preferred.get("title") != RELEASE_TITLE:
+            errors.append("CITATION.cff preferred-citation title is not the paper title")
+        if str(preferred.get("year")) != "2026":
+            errors.append("CITATION.cff preferred-citation year is not 2026")
+        pref_url = str(preferred.get("url") or "")
+        if not pref_url.startswith("https://arxiv.org/abs/"):
+            errors.append("CITATION.cff preferred-citation lacks the arXiv placeholder URL")
+        pref_authors = [row for row in preferred.get("authors") or []
+                        if isinstance(row, dict)]
+        if [_cff_name(row) for row in pref_authors] != ["Jingzhe Peng"]:
+            errors.append("CITATION.cff preferred-citation author is not Jingzhe Peng")
+        if DOI_RE.search(json.dumps(preferred)):
+            errors.append("CITATION.cff preferred-citation contains a DOI")
+    related = zenodo.get("related_identifiers") or []
+    if not any(
+        isinstance(row, dict)
+        and str(row.get("identifier", "")).startswith("https://arxiv.org/abs/")
+        and row.get("resource_type") == "publication-preprint"
+        for row in related
+    ):
+        errors.append(".zenodo.json related_identifiers lacks the arXiv preprint entry")
 
     cff_names = [_cff_name(row) for row in cff_authors]
     zen_names = [_zen_name(row) for row in zen_authors]

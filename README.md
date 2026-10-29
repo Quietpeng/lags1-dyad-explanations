@@ -32,16 +32,23 @@ aggregates, verifying their hashes and contracts, and re-rendering the
 notebooks. It does not regenerate the restricted experiment pipeline: the
 50-refit audit code is restricted and not redistributed, and row-level
 predictions and labels are withheld. The aggregate results do not redistribute
-event rows and remain subject to the ICEWS terms. The manuscript is not part of
-this repository.
+event rows and remain subject to the ICEWS terms.
 
-**Release status:** this is the **`v0.1.1` archival release** of the V2
-artifact. The annotated `v0.1.1` tag points at the commit that contains this README;
-`main` is fast-forwarded to the same commit when the release is pushed. The metadata version is `0.1.1`; **no DOI has been
-minted**, so cite the repository URL and the `v0.1.1` tag until a DOI exists.
-`v0.1.1` carries the V2 aggregate tree
+**Paper:** arXiv link (to be added).
+
+**Paper and code are separate.** This repository contains **code and aggregate
+results only**: it does **not** contain the paper's PDF, LaTeX/Markdown source,
+figures, bibliography or any `paper/` directory. The paper will be cited by its
+**arXiv link (to be added)**. The code is the **`v0.1.1` release at commit
+`13b96db`**. **No Zenodo DOI has been minted** for the code or the paper.
+
+**Release status:** the annotated `v0.1.1` tag at commit `13b96db` is the
+published code release; `main` points at the same commit. The metadata version
+is `0.1.1`. `v0.1.1` carries the V2 aggregate tree
 (`results/framework_pilot_v2/`, aggregates only) alongside the V1 confirmatory
-and stability aggregates.
+and stability aggregates. The paper's arXiv identifier will be added to this
+README, `CITATION.cff` and `.zenodo.json` when it is assigned; no DOI is
+claimed.
 
 The earlier review snapshot `review-r2c13` at commit `1c3c8ae` remains
 **published** and fetchable; `review-r2c12` and `review-r2c10` (commit
@@ -302,9 +309,13 @@ ORCID `0009-0001-7037-6244`, corresponding e-mail
 `pengjingzhe_quiet@foxmail.com`; the same values are in `CITATION.cff`,
 `.zenodo.json` and the manuscript front matter. The stability audit is
 provisional (holdout-row-excluded, 50 refits); the public `experiments/` tree is
-a five-seed preview. The manuscript is a separate V2 candidate and is not part
-of this repository. The public ref state is recorded under **Release status**
-above: `main` and `v0.1.1` are the current release; `review-r2c13` is the
-preceding published review snapshot; `review-r2c12` and `review-r2c10` are
-earlier published snapshots; `review-r2c14`, `review-r2c9` and `review-r2c11`
-remain local and unpublished; there is no DOI.
+a five-seed preview. The paper is a separate document: **no paper PDF or source
+is included here**; cite the paper by its arXiv link (to be added), and cite the
+code as `v0.1.1` at commit `13b96db`. `CITATION.cff` carries a
+`preferred-citation` entry for the paper (title, author, year, arXiv URL
+placeholder, no DOI) and `.zenodo.json` a `related_identifiers` entry. The
+public ref state is recorded under **Release status** above: `main` and
+`v0.1.1` are the current release at `13b96db`; `review-r2c13` is the preceding
+published review snapshot; `review-r2c12` and `review-r2c10` are earlier
+published snapshots; `review-r2c14`, `review-r2c9` and `review-r2c11` remain
+local and unpublished; there is no DOI.

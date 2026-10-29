@@ -9,16 +9,18 @@ row-level trace; see [`../DATA_EXCLUSIONS.md`](../DATA_EXCLUSIONS.md). The
 confirmatory holdout was frozen on 2026-10-23; the stability audit is
 provisional. Read the status table before quoting a number.
 
-The shipped aggregates are the **`v0.1.1` archival release**: the annotated
-`v0.1.1` tag points at the commit carrying this file; `main` is
-fast-forwarded to it when the release is pushed. The preceding
-published review snapshot is `review-r2c13` at commit `1c3c8ae`;
+The shipped aggregates are part of the **`v0.1.1` code release** at commit
+`13b96db` (annotated tag `v0.1.1`; `main` at the same commit). The repository
+contains **code and aggregates only**: there is no paper PDF, source, figure or
+bibliography in this tree. The paper is cited by its **arXiv link (to be
+added)**. **No Zenodo DOI has been minted.**
+
+The preceding published review snapshot is `review-r2c13` at commit `1c3c8ae`;
 `review-r2c12` is an earlier published snapshot and `review-r2c10` remains
 fetchable at commit `95aa07b`. `review-r2c9`, `review-r2c11` and
 `review-r2c14` are local and unpublished; `review-r2c14` at `2d27421` is a
 text-only revision whose aggregate bytes are identical to `review-r2c13`. The
-`v0.1.1` tag adds the V2 aggregate tree (`framework_pilot_v2/`). **No DOI has
-been minted.**
+`v0.1.1` tag adds the V2 aggregate tree (`framework_pilot_v2/`).
 
 ## Status at a glance
 

@@ -239,6 +239,22 @@ class TestCitationLicenceContract(unittest.TestCase):
                       "and a matched-vintage audit in a 196-actor icews panel",
                       README_FLAT)
 
+    def test_preferred_citation_and_related_identifier(self):
+        preferred = CFF.get("preferred-citation")
+        self.assertIsInstance(preferred, dict)
+        self.assertEqual(preferred["title"], VERIFIER.RELEASE_TITLE)
+        self.assertEqual(preferred["year"], "2026")
+        self.assertTrue(preferred["url"].startswith("https://arxiv.org/abs/"))
+        self.assertEqual(preferred["authors"][0]["family-names"], "Peng")
+        self.assertIsNone(VERIFIER.DOI_RE.search(json.dumps(preferred)))
+        related = ZENODO.get("related_identifiers") or []
+        self.assertTrue(any(
+            row.get("resource_type") == "publication-preprint"
+            and row.get("identifier", "").startswith("https://arxiv.org/abs/")
+            for row in related
+        ))
+        self.assertIn("no paper", README_FLAT)
+
     def test_no_superseded_title_framing(self):
         old_framings = (
             "exact attribution, " + "near-collinearity",
