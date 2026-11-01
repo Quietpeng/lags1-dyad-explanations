@@ -1,6 +1,13 @@
 # Actor-side components of dyadic event forecasts: an ownership decomposition, specification dependence, and a matched-vintage audit in a 196-actor ICEWS panel
 
-> **Landing page:** <https://quietpeng.github.io/lags1-dyad-explanations/>
+## Landing page
+
+<https://quietpeng.github.io/lags1-dyad-explanations/>
+
+![lags1-dyad-explanations landing page hero (desktop 1440x900)](https://quietpeng.github.io/lags1-dyad-explanations/assets/shots/home.webp)
+![lags1-dyad-explanations landing page on mobile (390x844, dark)](https://quietpeng.github.io/lags1-dyad-explanations/assets/shots/home-mobile.webp)
+
+The images are renders of the landing page itself. It lives on the `gh-pages` branch, not in this tree, because `verify_release.py` treats any tracked `docs/` directory as a forbidden path.
 
 Code, tests and aggregate results for the ownership decomposition,
 specification-dependence analysis and matched-vintage audit of the V2
