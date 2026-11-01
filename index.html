@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>lags1-dyad-explanations: dyad forecast ownership decomposition</title>
+<meta name="description" content="Code and frozen aggregates for an actor-side ownership decomposition and matched-vintage audit of dyadic event forecasts in a 196-actor ICEWS panel. MIT code; aggregates under ICEWS terms.">
+<link rel="canonical" href="https://quietpeng.github.io/lags1-dyad-explanations/">
+<meta name="author" content="Jingzhe Peng">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="lags1-dyad-explanations: dyad forecast ownership decomposition">
+<meta property="og:description" content="Code and frozen aggregates for an actor-side ownership decomposition and matched-vintage audit of dyadic event forecasts in a 196-actor ICEWS panel. MIT code; aggregates under ICEWS terms.">
+<meta property="og:url" content="https://quietpeng.github.io/lags1-dyad-explanations/">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+  :root { --bg:#fbfbfd; --fg:#17181c; --muted:#5b6070; --line:#e3e5ec; --accent:#1f3a93; --card:#fff; --warn:#8a5a00; --ok:#1a6b3c }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0e1015; --fg:#eceef4; --muted:#9aa1b2; --line:#252833; --accent:#8fb0ff; --card:#151821; --warn:#e0b25a; --ok:#7fd8a4 } }
+  * { box-sizing:border-box }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.7 -apple-system,"Segoe UI","Noto Sans SC",system-ui,sans-serif; }
+  main { max-width:880px; margin:0 auto; padding:56px 20px 96px; }
+  header { display:flex; gap:16px; align-items:baseline; flex-wrap:wrap; margin-bottom:8px }
+  h1 { font-size:clamp(23px,3.8vw,33px); line-height:1.3; margin:0; flex:1 1 320px }
+  .sub { color:var(--muted); margin:6px 0 26px; font-size:14.5px }
+  h2 { font-size:20px; margin:46px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--line) }
+  h3 { font-size:16.5px; margin:22px 0 6px }
+  .lede { font-size:17px } .lede strong { color:var(--accent) }
+  blockquote { margin:16px 0; padding:6px 0 6px 16px; border-left:3px solid var(--line); color:var(--muted) }
+  blockquote b { color:var(--fg) }
+  table { width:100%; border-collapse:collapse; margin:14px 0; font-size:14.5px }
+  th, td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top }
+  th { color:var(--muted); font-weight:600 }
+  th[scope="row"] { color:var(--fg); font-weight:600; white-space:nowrap }
+  code, pre { background:rgba(127,127,127,.13); border-radius:6px; font-size:.92em }
+  code { padding:1px 5px } pre { padding:14px 16px; overflow:auto; line-height:1.55 }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:14px; margin:18px 0 }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px }
+  .card b { display:block; font-size:21px } .card span { color:var(--muted); font-size:13.5px }
+  a { color:var(--accent) }
+  a:focus-visible, .cta:focus-visible, summary:focus-visible { outline:3px solid var(--accent); outline-offset:3px; border-radius:4px }
+  .cta { display:inline-block; margin:8px 10px 8px 0; padding:10px 18px; border-radius:999px; background:var(--accent); color:#fff; text-decoration:none; font-weight:600 }
+  .cta.ghost { background:transparent; color:var(--accent); border:1px solid var(--accent) }
+  .skip { position:absolute; left:-9999px; top:0; background:var(--card); padding:10px 14px; border:1px solid var(--line); border-radius:8px; z-index:9 }
+  .skip:focus { left:12px; top:12px }
+  .lang { font-size:14px; color:var(--muted); text-decoration:none; border:1px solid var(--line); border-radius:999px; padding:4px 12px }
+  .note { border:1px solid var(--line); border-left:4px solid var(--warn); border-radius:8px; padding:12px 16px; background:var(--card); margin:16px 0 }
+  .note b { color:var(--warn) }
+  .ok { color:var(--ok) }
+  .gallery { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin:16px 0 }
+  .gallery figure { margin:0 }
+  .gallery img { width:100%; height:auto; border:1px solid var(--line); border-radius:10px }
+  .gallery figcaption { color:var(--muted); font-size:13.5px; margin-top:6px }
+  footer { margin-top:56px; color:var(--muted); font-size:13.5px; border-top:1px solid var(--line); padding-top:18px }
+  @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; scroll-behavior:auto !important } }
+  @media print { .skip, .cta, .lang { display:none } body { background:#fff; color:#000 } a[href^="http"]::after { content:" (" attr(href) ")"; font-size:11px } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "lags1-dyad-explanations",
+  "alternateName": [
+    "Dyad explanations",
+    "Actor-side components of dyadic event forecasts"
+  ],
+  "description": "Code and aggregate results for an ownership decomposition, specification-dependence analysis and matched-vintage audit of dyadic event forecasts in a 196-actor ICEWS panel; L0-L2 verification release, code MIT, aggregates under ICEWS terms.",
+  "url": "https://quietpeng.github.io/lags1-dyad-explanations/",
+  "codeRepository": "https://github.com/Quietpeng/lags1-dyad-explanations",
+  "programmingLanguage": "Python",
+  "author": {
+    "@type": "Person",
+    "name": "Jingzhe Peng",
+    "identifier": "https://orcid.org/0009-0001-7037-6244"
+  },
+  "dateModified": "2026-11-01",
+  "inLanguage": "en",
+  "license": "https://opensource.org/licenses/MIT",
+  "version": "0.1.2",
+  "sameAs": [
+    "https://github.com/Quietpeng/lags1-dyad-explanations",
+    "https://doi.org/10.7910/DVN/28075"
+  ],
+  "keywords": "dyadic event forecasting, ownership decomposition, feature attribution, ICEWS, matched-vintage audit, reproducibility"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "lags1-dyad-explanations",
+  "url": "https://quietpeng.github.io/lags1-dyad-explanations/",
+  "inLanguage": "en",
+  "publisher": {
+    "@type": "Person",
+    "name": "Jingzhe Peng"
+  }
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">跳到正文</a>
+<main id="main">
+<article>
+
+<header>
+  <h1>lags1-dyad-explanations: actor-side components of dyadic event forecasts</h1>
+</header>
+<p class="sub">Last updated 2026-11-01 · code release v0.1.2 at commit <code>70d6d78</code> · MIT (code only)</p>
+
+<p class="lede"><strong>In short</strong>: lags1-dyad-explanations is the public artifact for a paper on <em>actor-side components of dyadic event forecasts</em> — a post-hoc six-class ownership convention applied to a plan-declared feature list, an exact additive decomposition of a logistic dyad-month forecast into source-role, target-role, dyad and non-actor parts, plus a matched-vintage audit — shipped as code, tests and frozen aggregate tables for a 196-actor ICEWS panel.</p>
+
+<blockquote>
+<p><b>What ships is a contract plus an audit, not a framework.</b> The decomposition is the logistic identity and coincides with linear SHAP under a training-mean background; it is not a new estimator.</p>
+</blockquote>
+
+<p>
+  <a class="cta" href="https://github.com/Quietpeng/lags1-dyad-explanations">Code repository</a>
+  <a class="cta ghost" href="https://github.com/Quietpeng/lags1-dyad-explanations/blob/main/REPRODUCING.md">Reproduction matrix</a>
+</p>
+
+<div class="grid">
+  <div class="card"><b>49 features</b><span>the plan-declared primary model · <a href="https://github.com/Quietpeng/lags1-dyad-explanations/blob/main/README.md">README</a></span></div>
+  <div class="card"><b>45.2%</b><span>actor-owned share on the V2 5.06 M-row window · <a href="https://github.com/Quietpeng/lags1-dyad-explanations/blob/main/README.md">README</a></span></div>
+  <div class="card"><b>311,638</b><span>dyad-months in the one-shot holdout · <a href="https://github.com/Quietpeng/lags1-dyad-explanations/blob/main/README.md">README</a></span></div>
+  <div class="card"><b>50 refits</b><span>dyad-cluster bootstrap stability audit · <a href="https://github.com/Quietpeng/lags1-dyad-explanations/blob/main/README.md">README</a></span></div>
+</div>
+
+<h2>Paper, release and licence in one table</h2>
+<table>
+  <tbody>
+    <tr><th scope="row">Paper status</th><td>Cited by an arXiv link that does not exist yet; no arXiv identifier, no DOI for the paper or the code. See <a href="https://github.com/Quietpeng/lags1-dyad-explanations/blob/main/README.md">README</a></td></tr>
+    <tr><th scope="row">Code release</th><td><code>v0.1.2</code> at commit <code>70d6d78</code> (annotated tag object <code>af229d3</code>); packaged metadata stays 0.1.1 · <a href="https://github.com/Quietpeng/lags1-dyad-explanations/blob/main/pyproject.toml">pyproject.toml</a></td></tr>
+    <tr><th scope="row">Licence</th><td>MIT, <b>code only</b>. ICEWS-derived aggregates are not MIT and stay under the ICEWS research-and-teaching terms · <a href="https://github.com/Quietpeng/lags1-dyad-explanations/blob/main/LICENSE">LICENSE</a>, <a href="https://github.com/Quietpeng/lags1-dyad-explanations/blob/main/NOTICE">NOTICE</a></td></tr>
+    <tr><th scope="row">Runtime</th><td>Python 3.12 or newer (tested on 3.13.5); pinned numpy 2.5.4 / scipy 1.18.1 publish no 3.11 wheels · <a href="https://github.com/Quietpeng/lags1-dyad-explanations/blob/main/requirements.txt">requirements.txt</a></td></tr>
+    <tr><th scope="row">Data</th><td>No ICEWS rows, no row-level predictions or labels, no caches, no run logs. Aggregates only · <a href="https://github.com/Quietpeng/lags1-dyad-explanations/blob/main/DATA_EXCLUSIONS.md">DATA_EXCLUSIONS.md</a></td></tr>
+    <tr><th scope="row">Executable scope</th><td>L0-L2: read the frozen aggregates, verify hashes and contracts, re-render five notebooks. L3/L4 are not executable here · <a href="https://github.com/Quietpeng/lags1-dyad-explanations/blob/main/REPRODUCING.md">REPRODUCING.md</a></td></tr>
+    <tr><th scope="row">Author</th><td>Jingzhe Peng, independent researcher, ORCID <a href="https://orcid.org/0009-0001-7037-6244">0009-0001-7037-6244</a> · <a href="https://github.com/Quietpeng/lags1-dyad-explanations/blob/main/CITATION.cff">CITATION.cff</a></td></tr>
+  </tbody>
+</table>
+
+<h2>What the ownership decomposition actually computes</h2>
+<p>A logistic regression on dyad-month features gives every prediction an exact additive decomposition, because the linear predictor is a sum of per-feature contributions. The repository fixes one owner per feature using a six-class convention applied <em>after the fact</em> to a plan-declared feature list, and also fixes the unit and the sign. Grouping the contributions by owner yields source-role, target-role, dyad and non-actor components that add up to the model's log-odds exactly — the notebook records a round-trip of <b>1.15e-14</b> on 50,000 evaluation rows (aggregate diagnostic only; the rows are not shipped).</p>
+<p>Two numbers matter for reading the result honestly. On the V2 5.06 M-row training window the convention gives <b>45.2%</b> actor-owned and <b>54.8%</b> not actor-owned (<a href="https://github.com/Quietpeng/lags1-dyad-explanations/blob/main/README.md">README</a>), which is the maximum of a 36.6-54.8% allocation range; if the dyad-specific neighbour-activity terms leave the actor class the figure is <b>63.2%</b>. The V1 6.34 M-row fit gave 44.9/55.1 and 62.3, so the difference between vintages is at most <b>1.2</b> percentage points (<a href="https://github.com/Quietpeng/lags1-dyad-explanations/blob/main/results">results/</a>). These shares describe the output of a convention, not a property of the actors, and the convention has no pre-run record — only the split carries an independently written pre-run timestamp.</p>
+<p>Only <b>4 of the 49 features</b> are role-specific: six of the seven source/target column pairs are one function of the same actor (five undirected graph terms plus the log in-plus-out ego count), so a "source" and a "target" effect often cannot be separated at all. That is a structural finding, not a bug in the code.</p>
+
+<h2>Frozen numbers you can verify locally</h2>
+<p>The plan-declared primary is a 49-feature logistic model on a one-shot, unit-fresh 20% dyad holdout: <b>311,638</b> dyad-months, <b>32,614</b> positives, <b>5,282</b> directed dyads, 2018-01-2022-11, not time-fresh. Its frozen metrics are log-loss <b>0.217875</b>, AUC <b>0.910152</b> and AP <b>0.671863</b>; against the train-only per-dyad Markov baseline it improves log-loss by 0.047999 (<b>18.05%</b>, <a href="https://github.com/Quietpeng/lags1-dyad-explanations/blob/main/results/framework_pilot/holdout">holdout report</a>), and against the stronger warm-history Markov baseline it improves AUC and AP but loses on log-loss by 0.008146 and on ECE by 0.031884. All of these come from <a href="https://github.com/Quietpeng/lags1-dyad-explanations/blob/main/README.md">README</a> and the frozen tables under <a href="https://github.com/Quietpeng/lags1-dyad-explanations/tree/main/results">results/</a>; the page adds nothing that is not there.</p>
+<p>The V2 matched-vintage audit is a post-hoc secondary analysis of the same burned holdout. It removes three asymmetries one at a time: the two future-inclusive train-only columns, the 35-month vintage advantage of the warm comparator, and the H0 cache. After matching, the 47-feature model beats matched persistence by <b>0.020954</b>, a 25-feature model with no actor-owned column beats it by <b>0.017743</b> (<b>84.7%</b> of the gain), and the 22 added columns contribute 0.003211 (<b>15.3%</b>). The honest claim boundary in the README is narrow: the supported statement is that the 47-feature contract beats matched persistence and the nested contrast excludes zero — <em>not</em> that actor-role content drives the gain.</p>
+
+<h2>Data availability and exclusions</h2>
+<p>This is an <b>aggregate-only</b> release, and the gap is deliberate. The following are withheld and must not be implied as downloadable anywhere: the licensed <b>ICEWS v37</b> panel and any raw or derived event rows; <b>row-level predictions and labels</b> for the 311,638 evaluation rows; fitted coefficients, scaling arrays and feature/graph caches; the frozen V2 protocol directory; run logs; and the manuscript itself. The 50-refit audit code is restricted and not redistributed, and the public <code>experiments/</code> scripts are a five-seed preview, not the restricted 50-refit audit.</p>
+<p>What you <em>do</em> get is the verification layer: <code>results/</code> with frozen aggregate tables, summaries and <code>SHA256SUMS</code> manifests; <code>framework/</code> with the paper-path library; five executed read-only notebooks; and <code>scripts/</code> with a release verifier, an aggregate checker and a preflight doctor. <a href="https://github.com/Quietpeng/lags1-dyad-explanations/blob/main/DATA_EXCLUSIONS.md">DATA_EXCLUSIONS.md</a> lists every removed file and redacted column together with the machine checks that enforce the boundary, including the CSV rule that fails the release if any distributed table carries both a label and a prediction column.</p>
+
+<h2>What is runnable, and what is not</h2>
+<table>
+  <thead><tr><th>Level</th><th>What it means here</th><th>Runs from this tree?</th></tr></thead>
+  <tbody>
+    <tr><td>L0 read</td><td>Read the frozen aggregates and summaries as JSON/CSV</td><td><b>Yes</b></td></tr>
+    <tr><td>L1 verify</td><td><code>make verify</code>, <code>sha256sum -c</code>, contract tests, notebook execution</td><td><b>Yes</b>, without restricted inputs</td></tr>
+    <tr><td>L2 re-render</td><td>Re-execute the five notebooks against shipped aggregates</td><td><b>Yes</b>, read-only with respect to the frozen artifacts</td></tr>
+    <tr><td>L3 regenerate</td><td>Rebuild the aggregate tables with the V2 runner</td><td><b>No</b>: needs licensed ICEWS v37, restricted caches, local config and row-level predictions</td></tr>
+    <tr><td>L4 confirmatory</td><td>Re-run the one-shot holdout</td><td><b>No</b>: closed by a one-shot lock; re-running would violate the plan's split commitment</td></tr>
+  </tbody>
+</table>
+
+<h2>This audit vs a reusable framework vs a leaderboard</h2>
+<table>
+  <thead><tr><th>Dimension</th><th>lags1-dyad-explanations</th><th>A reusable attribution framework</th><th>A benchmark leaderboard</th></tr></thead>
+  <tbody>
+    <tr><td>What it optimises for</td><td><b>One paper's claim boundary, verifiable offline</b></td><td>Generality across models and datasets</td><td>Ranking across submissions</td></tr>
+    <tr><td>Who can run it</td><td>Anyone, at L0-L2; L3-L4 need licensed data</td><td>Anyone, if the framework supports their stack</td><td>Only submitters</td></tr>
+    <tr><td>What it will not tell you</td><td><b>Nothing about a different panel, corpus or estimator</b>: no node-level, causal or SOTA claim is made</td><td>Whether a specific published decomposition was implemented faithfully</td><td>Whether a score is reproducible at all</td></tr>
+    <tr><td>Not a good fit for</td><td>Teams that need ready-made attributions for their own data, or a maintained package with a versioned API</td><td>Anyone who needs an audited, paper-faithful contract rather than a toolkit</td><td>Anyone who needs to reproduce, not rank</td></tr>
+  </tbody>
+</table>
+
+<h2>FAQ</h2>
+<h3>How do I decompose dyadic event forecast features by actor side?</h3>
+<p>Apply a fixed ownership convention to your feature list first — one owner per feature, plus a fixed unit and sign — then group the linear contributions by owner. This repository ships that convention as six classes and implements the grouping over a logistic dyad-month model in <code>framework/</code>; the same features also appear as a seven-class view in notebook 04, and the exact round-trip error is 1.15e-14 on 50,000 rows.</p>
+<h3>Is there a reproducible audit of feature attribution in a forecast model?</h3>
+<p>This repository is exactly that, within a deliberately narrow scope: frozen aggregates, <code>SHA256SUMS</code> manifests, contract and negative tests, and a release verifier that fails on forbidden columns. You can run <code>make verify</code>, <code>make stability-check</code>, <code>make worldline-check</code> and the notebook executor from the tree without any restricted input, and compare the numbers against the README.</p>
+<h3>Can I replicate an ICEWS panel event forecasting study with this code?</h3>
+<p>Partly. You can read and verify every frozen aggregate and re-render the notebooks, but you cannot regenerate the tables: that path needs the licensed ICEWS v37 panel, the restricted derived feature and graph caches, the local experiment configuration and row-level predictions, none of which are redistributed. Licensed access alone is not sufficient because the public tree has no cache-build entry point.</p>
+<h3>Does linear SHAP match the logistic decomposition?</h3>
+<p>Yes, under a training-mean background. The README states the decomposition is the logistic identity and coincides with linear SHAP under that background, which is why the artifact frames itself as a contract plus audit rather than a new estimator. The practical consequence is that the actor-side shares are a property of the convention and background you choose, not an identified causal quantity.</p>
+<h3>What data is not included, and can I download the ICEWS rows here?</h3>
+<p>No ICEWS rows ship here — not raw, not derived. Also withheld: row-level predictions and labels for the 311,638 evaluation rows, fitted coefficients, scaling arrays, feature and graph caches, the frozen protocol directory, run logs and the manuscript. Only aggregates, code, tests and notebooks are distributed, and <code>DATA_EXCLUSIONS.md</code> lists each removal with the check that enforces it.</p>
+<h3>What is the difference between the V1 result and the V2 audit?</h3>
+<p>V1 is the plan-declared primary of record: a 49-feature logistic model on a one-shot unit-fresh 20% dyad holdout, log-loss 0.217875. V2 is a post-hoc secondary analysis of the same burned holdout that removes the vintage and cache asymmetries; it cannot upgrade the V1 result and did not re-open the holdout. The 47-feature contract beating matched persistence by 0.020954 is the V2 statement, not a replacement for V1.</p>
+<h3>Does this repository have a DOI or an arXiv identifier?</h3>
+<p>No. There is no arXiv identifier, no paper DOI and no Zenodo DOI; the README says the arXiv link is still to be added, and the packaged metadata version stays 0.1.1 because no packaged byte changed between releases. Cite the code as <code>v0.1.2</code> at commit <code>70d6d78</code> and the paper by its arXiv link once it exists. The only DOI on this page, 10.7910/DVN/28075, belongs to the ICEWS v37 dataset at the Harvard Dataverse, not to this paper.</p>
+
+<h2>Quick start</h2>
+<ol>
+  <li><code>python3 -m venv .venv &amp;&amp; source .venv/bin/activate</code> on Python 3.12 or newer.</li>
+  <li><code>python3 -m pip install -r requirements.txt</code> — the pinned numpy 2.5.4 and scipy 1.18.1 publish no 3.11 wheels.</li>
+  <li><code>make doctor</code> then <code>make test</code> for the public suite; <code>make verify</code> to check hashes, strict JSON, notebook outputs, forbidden paths and credential-like strings.</li>
+  <li>Read the frozen results without Jupyter: load <code>results/framework_pilot/holdout/summary.json</code> and print <code>status</code> and <code>primary.metrics</code>.</li>
+  <li>Optional: <code>make notebooks</code> re-renders the five shipped notebooks; it does not re-fit or re-score anything.</li>
+</ol>
+
+<div class="note"><b>Licence and provenance</b>: source code MIT © 2026 LAGS-1 authors; ICEWS-derived aggregate results are not MIT and remain under the ICEWS research-and-teaching terms. Author: Jingzhe Peng, independent researcher, not affiliated with any company or institution. Every number on this page is quoted from the repository README, CITATION.cff or DATA_EXCLUSIONS.md; no score was recomputed for this page and no identifier was invented.</div>
+
+</article>
+</main>
+</body>
+</html>
