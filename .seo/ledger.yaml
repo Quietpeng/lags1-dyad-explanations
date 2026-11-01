@@ -1,0 +1,47 @@
+project: 双边事件预测审计
+display_name: 双边事件预测审计 (Dyad Explanations)
+repo: Quietpeng/lags1-dyad-explanations
+previous_names: []
+primary_token: lags1-dyad-explanations
+keywords:
+  primary:
+  - lags1-dyad-explanations
+  english:
+  - dyadic event forecasting
+  - ownership decomposition
+  - feature attribution
+  - model audit
+  - reproducibility
+  chinese:
+  - 双边事件预测
+  - 特征归因
+  - 模型审计
+  - 可复现研究
+  tech:
+  - python
+  - shap
+  - logistic-regression
+  - jupyter
+  - icews
+guardrails:
+  max_topics: 20
+  max_changes_per_cycle: 3
+  min_interval_days: 14
+  max_lifetime_writes: 4
+  max_primary_keywords: 3
+  max_queries: 10
+  max_intent_queries: 40
+desired:
+  name: lags1-dyad-explanations
+  description: Dyad event forecast audit · code and frozen aggregates for an ownership decomposition, specification dependence and matched-vintage audit (ICEWS).
+queries:
+  en:
+  - decompose dyadic event forecast features by actor side
+  - reproducible audit of feature attribution in a forecast model
+  - replicate an icews panel event forecasting study
+  - does linear shap match the logistic decomposition
+  zh:
+  - 双边事件预测模型里 特征到底算哪一方的
+  - 预测模型的归因分析 怎么做可复现的审计
+  - ICEWS 面板数据 事件预测 想复现
+  - logistic 回归的 shap 分解 和系数怎么对应
