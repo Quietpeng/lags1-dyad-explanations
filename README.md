@@ -1,5 +1,7 @@
 # Actor-side components of dyadic event forecasts: an ownership decomposition, specification dependence, and a matched-vintage audit in a 196-actor ICEWS panel
 
+> **Landing page:** <https://quietpeng.github.io/lags1-dyad-explanations/>
+
 Code, tests and aggregate results for the ownership decomposition,
 specification-dependence analysis and matched-vintage audit of the V2
 manuscript. The analysis applies a post-hoc six-class ownership convention to a
